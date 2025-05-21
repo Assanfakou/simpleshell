@@ -4,6 +4,13 @@
 #include <string.h>
 #include <ctype.h>
 
+int ft_isspace(char c)
+{
+    if (c == ' ' || (c >= 9 && c <= 14))
+        return (1);
+    return (0);
+}
+
 t_token *create_token(char *str, int len, char *type)
 {
     t_token *tok = malloc(sizeof(t_token));
@@ -32,39 +39,39 @@ t_token *tokenize(char *line)
 
     while (line[i])
     {
-        if (isspace(line[i]))
+        if (ft_isspace(line[i]))
             i++;
         
         if ((line[i] == '>' || line[i] == '<') && line[i + 1] == line[i]) {
-           add_token(&head, create_token(&line[i], 2, token_type(line[i])));
+           add_token(&head, create_token(&line[i], 2, token_type(line[i], line[i + 1])));
             i += 2;
         }
         else if (line[i] == '>' || line[i] == '<' || line[i] == '|') {
-            add_token(&head, create_token(&line[i], 1, token_type(line[i])));
+            add_token(&head, create_token(&line[i], 1, token_type(line[i], '0')));
             i++;
         }
         else {
             int start = i;
             while (line[i] && !isspace(line[i]) && line[i] != '|' && line[i] != '<' && line[i] != '>')
                 i++;
-            add_token(&head, create_token(&line[start], i - start, token_type(line[i])));
+            add_token(&head, create_token(&line[start], i - start, token_type(line[i], '0')));
         }
     }
     return head;
 }
 
-char *token_type(char c)
+char *token_type(char c, char next)
 {
-    if (!ft_strncmp(c, "|", 1))
+    if (c == '|')
         return ft_strdup("T_PIPE");
-    // else if (!ft_strncmp(c, "<<", ft_strlen(c)))
-        // return ft_strdup("T_HERDOC");
-    else if (!ft_strncmp(c, ">", 1))
+    else if (c == '<' && next == c)
+        return ft_strdup("T_HERDOC");
+    else if (c == '>' && next == c)
+        return ft_strdup("T_APPEND");
+    else if (c == '<')
         return ft_strdup("T_INPUT");
-    else if (!ft_strncmp(c, "<", 1))
-        return ft_strdup("T_OUTPUT");
-    // else if (!ft_strncmp(c, ">>", ft_strlen(c)))
-        // return ft_strdup("T_APPEND");
+    else if (c == '>')
+            return ft_strdup("T_OUTPUT");
     return ft_strdup("T_WORD");
 }
 
@@ -80,7 +87,7 @@ void print_token(t_token *token)
         walk = walk->next;
     }
 }
-
+// 
 int main(void)
 {
     char *line;
@@ -89,11 +96,9 @@ int main(void)
     while (1)
     {
        line =  readline("minishell$ ");
+       add_history(line);
         token = tokenize(line);
         print_token(token);
-        if (!line)
-            break;
         free(line);
     }       
-    return 0;
 }
