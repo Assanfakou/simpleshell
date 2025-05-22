@@ -16,9 +16,18 @@
 * value to store the actual token
 * next to the other token i'll get next
 */
+typedef enum s_type
+{
+    T_HERDOC,
+    T_OUTPUT,
+    T_INPUT,
+    T_PIPE,
+    T_APPAND,
+    T_WORD
+}  t_type; 
 
 typedef struct s_token {
-    char     *type; // type "T_input" "output" " word"
+    t_type     type; // type "T_input" "output" " word"
     char             *value; //"<" "|" "command"
     struct s_token   *next;
 }   t_token;
@@ -37,9 +46,9 @@ typedef struct s_cmd
     struct s_cmd *next;
 }   t_cmd;
 
-char *token_type(char c, char next);
+t_type token_type(char c, char next);
 t_token *tokenize(char *line);
 void add_token(t_token **head, t_token *new);
-t_token *create_token(char *str, int len, char *type);
+t_token *create_token(char *str, int len, t_type type);
 int ft_isspace(char i);
 #endif

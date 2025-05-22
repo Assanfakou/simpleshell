@@ -21,7 +21,7 @@ NAME = libft.a
 all : $(NAME)
 
 $(NAME): $(OBJ)
-	@ar rcs $@ $?
+	@ar rcs $(NAME) $(OBJ)
 
 bonus: $(OBJ) $(OBJ_BONUS)
 	@ar rcs $(NAME) $^

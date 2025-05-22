@@ -11,7 +11,7 @@ int ft_isspace(char c)
     return (0);
 }
 
-t_token *create_token(char *str, int len, t_type type)
+t_token *create_token(char *str, int len, char *type)
 {
     t_token *tok = malloc(sizeof(t_token));
     tok->value = strndup(str, len);
@@ -61,30 +61,30 @@ t_token *tokenize(char *line)
     return head;
 }
 
-// void add_command(t_cmd **head, t_cmd *new)
-// {
-//     if (!*head)
-//         *head = new;
-//     else {
-//         t_token *temp = *head;
-//         while (temp->next)
-//             temp = temp->next;
-//         temp->next = new;
-//     }
-// }
-t_type token_type(char c, char next)
+void add_command(t_cmd **head, t_cmd *new)
+{
+    if (!*head)
+        *head = new;
+    else {
+        t_token *temp = *head;
+        while (temp->next)
+            temp = temp->next;
+        temp->next = new;
+    }
+}
+char *token_type(char c, char next)
 {
     if (c == '|')
-        return T_PIPE;
+        return ft_strdup("T_PIPE");
     else if (c == '<' && next == c)
-        return T_HERDOC;
+        return ft_strdup("T_HERDOC");
     else if (c == '>' && next == c)
-        return T_APPAND;
+        return ft_strdup("T_APPEND");
     else if (c == '<')
-        return T_INPUT;
+        return ft_strdup("T_INPUT");
     else if (c == '>')
-            return T_OUTPUT;
-    return T_WORD;
+            return ft_strdup("T_OUTPUT");
+    return ft_strdup("T_WORD");
 }
 
 void print_token(t_token *token)
@@ -94,7 +94,7 @@ void print_token(t_token *token)
     walk = token;
     while (walk)
     {
-        printf("%s type : [%d]\n", walk->value, walk->type);
+        printf("%s type : [%s]\n", walk->value, walk->type);
         
         walk = walk->next;
     }
