@@ -1,8 +1,4 @@
 #include "minishell.h"
-#include "minishell.h"
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 
 int ft_isspace(char c)
 {
@@ -37,6 +33,7 @@ t_token *tokenize(char *line)
     int start;
     t_token *head = NULL;
     int i = 0;
+    char c;
 
     while (line[i])
     {
@@ -48,18 +45,37 @@ t_token *tokenize(char *line)
             i += 2;
         }
         else if (line[i] == '>' || line[i] == '<' || line[i] == '|') {
-            add_token(&head, create_token(&line[i], 1, token_type(line[i], '0')));
+            add_token(&head, create_token(&line[i], 1, T_WORD));
             i++;
+        }
+        else if (line[i] == '\"' || line[i] == '\'')
+        {
+            if (line[i] == '\"')
+                c = '\"';
+            else
+                c = '\'';
+            i++;
+            start = i;
+            while (line[i] && line[i] != c)
+                i++;
+            if (line[i] == '\0')
+                exit(1);
+            i++;
+            add_token(&head, create_token(&line[start], (i - 1) - start, T_WORD));
         }
         else {
             start = i;
-            while (line[i] && !isspace(line[i]) && line[i] != '|' && line[i] != '<' && line[i] != '>')
+            while (line[i] && !isspace(line[i]) 
+            && line[i] != '|' && line[i] != '<' 
+            && line[i] != '>' 
+            && line[i] != '\'' && line[i] != '\"')
                 i++;
-            add_token(&head, create_token(&line[start], i - start, token_type(line[i], '0')));
+            add_token(&head, create_token(&line[start], i - start, T_WORD));
         }
     }
     return head;
 }
+void    ft_
 
 // void add_command(t_cmd **head, t_cmd *new)
 // {
