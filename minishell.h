@@ -36,16 +36,16 @@ typedef struct s_token {
 
 typedef struct s_redir
 {
-    char *type;
-    char *file;
+    t_type type;
+    char *filename;
     struct s_redir *next;
 }   t_redir;
 
 typedef struct s_cmd
 {
-    char **argv;
-    t_redir *redir;
-    struct s_cmd *next;
+    char **argv; // array of pointers to store commands with arguments 
+    t_redir *redir; // list of rredirections if there any of them
+    struct s_cmd *next; // if there is a pipe we creat another t_cmd to store the other arguments after the pipe
 }   t_cmd;
 
 t_type token_type(char c, char next);
@@ -53,4 +53,6 @@ t_token *tokenize(char *line);
 void add_token(t_token **head, t_token *new);
 t_token *create_token(char *str, int len, t_type type);
 int ft_isspace(char i);
+void    ft_error(char *error);
+
 #endif

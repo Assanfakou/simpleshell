@@ -1,4 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/25 12:08:43 by marvin            #+#    #+#             */
+/*   Updated: 2025/05/26 13:24:408 by marvin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+int g_exit_status = 0; // 1 or 0 for $?
 
 int ft_isspace(char c)
 {
@@ -38,14 +52,17 @@ t_token *tokenize(char *line)
     while (line[i])
     {
         if (ft_isspace(line[i]))
+        {
             i++;
+            continue;
+        }
         
         if ((line[i] == '>' || line[i] == '<') && line[i + 1] == line[i]) {
            add_token(&head, create_token(&line[i], 2, token_type(line[i], line[i + 1])));
             i += 2;
         }
         else if (line[i] == '>' || line[i] == '<' || line[i] == '|') {
-            add_token(&head, create_token(&line[i], 1, T_WORD));
+            add_token(&head, create_token(&line[i], 1, token_type(line[i], line[i + 1])));
             i++;
         }
         else if (line[i] == '\"' || line[i] == '\'')
@@ -54,14 +71,17 @@ t_token *tokenize(char *line)
                 c = '\"';
             else
                 c = '\'';
-            i++;
             start = i;
+            i++;
             while (line[i] && line[i] != c)
                 i++;
             if (line[i] == '\0')
-                exit(1);
+            {
+                ft_error("double quots doesn't closed");
+                break;
+            }
             i++;
-            add_token(&head, create_token(&line[start], (i - 1) - start, T_WORD));
+            add_token(&head, create_token(&line[start], i - start, T_WORD));
         }
         else {
             start = i;
@@ -71,11 +91,89 @@ t_token *tokenize(char *line)
             && line[i] != '\'' && line[i] != '\"')
                 i++;
             add_token(&head, create_token(&line[start], i - start, T_WORD));
-        }
+        } 
     }
     return head;
 }
-void    ft_
+
+int is_start_char(int c) 
+{ 
+    return ft_isalpha(c) || c == '_'; 
+}
+
+int is_var_char(int c)   
+{ 
+    return ft_isalnum(c) || c == '_'; 
+}
+
+void expand_variables(t_token *head)
+{
+    while (head)
+    {
+        char *src = head->value;
+        size_t len = strlen(src);
+
+        // Skip expansion for tokens inside single quotes: '...'
+        if (len >= 2 && src[0] == '\'' && src[len - 1] == '\'')
+        {
+            head = head->next;
+            continue;
+        }
+
+        // Preallocate buffer (4x size for safe expansion room)
+        char *result = calloc(len * 4 + 1, 1);
+        size_t ri = 0; // write index
+
+        size_t i = 0;
+        while (src[i])
+        {
+            if (src[i] == '$')
+            {
+                if (src[i + 1] == '?')
+                {
+                    char *exit_code = ft_itoa(g_exit_status);
+                    size_t ec_len = strlen(exit_code);
+                    memcpy(result + ri, exit_code, ec_len);
+                    ri += ec_len;
+                    free(exit_code);
+                    i += 2;
+                    continue;
+                }
+                else if (is_start_char((unsigned char)src[i + 1]))
+                {
+                    size_t j = i + 1;
+                    while (is_var_char((unsigned char)src[j])) j++;
+
+                    char *name = ft_substr(src, i + 1, j - (i + 1));
+                    char *val = getenv(name);  // use ft_getenv if needed
+                    if (val)
+                    {
+                        size_t val_len = strlen(val);
+                        memcpy(result + ri, val, val_len);
+                        ri += val_len;
+                    }
+                    free(name);
+                    i = j;
+                    continue;
+                }
+            }
+            // Ordinary character
+            result[ri++] = src[i++];
+        }
+
+        result[ri] = '\0';
+
+        free(head->value);
+        head->value = result;
+
+        head = head->next;
+    }
+}
+
+void    ft_error(char *error)
+{
+    printf("%s\n", error);
+}
 
 // void add_command(t_cmd **head, t_cmd *new)
 // {
@@ -126,6 +224,7 @@ int main(void)
        line =  readline("minishell$ ");
        add_history(line);
         token = tokenize(line);
+        expand_variables(token);
         print_token(token);
         free(line);
     }       
