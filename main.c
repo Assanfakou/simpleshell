@@ -14,34 +14,6 @@
 
 int g_exit_status = 0; // 1 or 0 for $?
 
-int ft_isspace(char c)
-{
-    if (c == ' ' || (c >= 9 && c <= 14))
-        return (1);
-    return (0);
-}
-
-t_token *create_token(char *str, int len, t_type type)
-{
-    t_token *tok = malloc(sizeof(t_token));
-    tok->value = strndup(str, len);
-    tok->type = type;
-    tok->next = NULL;
-    return tok;
-}
-
-void add_token(t_token **head, t_token *new)
-{
-    if (!*head)
-        *head = new;
-    else {
-        t_token *temp = *head;
-        while (temp->next)
-            temp = temp->next;
-        temp->next = new;
-    }
-}
-
 t_token *tokenize(char *line)
 {
     int start;
@@ -77,7 +49,7 @@ t_token *tokenize(char *line)
                 i++;
             if (line[i] == '\0')
             {
-                ft_error("double quots doesn't closed");
+                ft_print_error("minishell: syntax error: unmatched quote");
                 break;
             }
             i++;
@@ -96,83 +68,91 @@ t_token *tokenize(char *line)
     return head;
 }
 
-int is_start_char(int c) 
-{ 
-    return ft_isalpha(c) || c == '_'; 
-}
-
-int is_var_char(int c)   
-{ 
-    return ft_isalnum(c) || c == '_'; 
-}
-
 void expand_variables(t_token *head)
 {
+    int here;
+    char *src;
+    size_t len;
+    char *result;
+    size_t i;
+    char *exit_code;
+
     while (head)
     {
-        char *src = head->value;
-        size_t len = strlen(src);
-
-        // Skip expansion for tokens inside single quotes: '...'
+        here = 0;
+        src = head->value;
+        len = strlen(src);
         if (len >= 2 && src[0] == '\'' && src[len - 1] == '\'')
         {
             head = head->next;
             continue;
         }
-
-        // Preallocate buffer (4x size for safe expansion room)
-        char *result = calloc(len * 4 + 1, 1);
-        size_t ri = 0; // write index
-
-        size_t i = 0;
+        i = 0;
         while (src[i])
         {
             if (src[i] == '$')
             {
                 if (src[i + 1] == '?')
                 {
-                    char *exit_code = ft_itoa(g_exit_status);
-                    size_t ec_len = strlen(exit_code);
-                    memcpy(result + ri, exit_code, ec_len);
-                    ri += ec_len;
-                    free(exit_code);
+                    here = 1;
+                    exit_code = ft_itoa(g_exit_status);
+                    size_t ec_len = ft_strlen(exit_code);
+                    result = exit_code;
                     i += 2;
                     continue;
                 }
-                else if (is_start_char((unsigned char)src[i + 1]))
+                if (is_start_char(src[i + 1]))
                 {
+                    here = 1;
                     size_t j = i + 1;
-                    while (is_var_char((unsigned char)src[j])) j++;
+                    while (is_var_char(src[j])) 
+                        j++;
 
                     char *name = ft_substr(src, i + 1, j - (i + 1));
-                    char *val = getenv(name);  // use ft_getenv if needed
+                    char *val = getenv(name);
                     if (val)
                     {
-                        size_t val_len = strlen(val);
-                        memcpy(result + ri, val, val_len);
-                        ri += val_len;
+                        size_t val_len = ft_strlen(val);
+                        result = ft_calloc(val_len + 1, 1);
+                        ft_memcpy(result, val, val_len);
                     }
                     free(name);
                     i = j;
                     continue;
                 }
             }
-            // Ordinary character
-            result[ri++] = src[i++];
+            else
+                i++;
         }
-
-        result[ri] = '\0';
-
-        free(head->value);
-        head->value = result;
-
-        head = head->next;
+        if (here)
+        {
+            free(head->value);
+            head->value = result;
+        }
+            head = head->next;
     }
 }
-
-void    ft_error(char *error)
+void check_errors(t_token *head)
 {
-    printf("%s\n", error);
+    char *src;
+    int i;
+
+    if (head->type == T_PIPE)
+    {
+        ft_print_error("minishell: syntax error near unexpected token `|'");
+        g_exit_status = 2;
+    }
+    // while (head)
+    // {
+    //     src = head->value;
+    
+
+}
+
+void    ft_print_error(char *error)
+{
+    write(2, error, ft_strlen(error));
+    write (2, "\n", 1);
 }
 
 // void add_command(t_cmd **head, t_cmd *new)
@@ -186,34 +166,7 @@ void    ft_error(char *error)
 //         temp->next = new;
 //     }
 // }
-t_type token_type(char c, char next)
-{
-    if (c == '|')
-        return T_PIPE;
-    else if (c == '<' && next == c)
-        return T_HERDOC;
-    else if (c == '>' && next == c)
-        return T_APPAND;
-    else if (c == '<')
-        return T_INPUT;
-    else if (c == '>')
-            return T_OUTPUT;
-    return T_WORD;
-}
 
-void print_token(t_token *token)
-{
-    t_token *walk;
-
-    walk = token;
-    while (walk)
-    {
-        printf("%s type : [%d]\n", walk->value, walk->type);
-        
-        walk = walk->next;
-    }
-}
-// 
 int main(void)
 {
     char *line;
@@ -221,10 +174,11 @@ int main(void)
 
     while (1)
     {
-       line =  readline("minishell$ ");
-       add_history(line);
+        line =  readline("minishell$ ");
+        add_history(line);
         token = tokenize(line);
         expand_variables(token);
+        check_errors(token);
         print_token(token);
         free(line);
     }       
