@@ -19,6 +19,8 @@ void print_token(t_token *token)
 {
     t_token *walk;
 
+    if (!token)
+        return ;
     walk = token;
     while (walk)
     {
@@ -99,3 +101,20 @@ int parce_d_s_quotes(char *line, int i, t_token *head)
     add_token(&head, create_token(line + start, i - start, T_WORD));
     return (i);
 }
+void free_t_token(t_token **head)
+{
+    t_token *temp;
+
+    if (!*head)
+        return ;
+
+    while (*head)
+    {
+        free((*head)->value);
+        temp = *head;
+        *head = (*head)->next;
+        free(temp);
+    }
+    *head = NULL;
+}
+// int check_global_input(

@@ -17,6 +17,7 @@ int g_exit_status = 0; // 1 or 0 for $?
 t_token *tokenize(char *line)
 {
     int start;
+    char c;
     t_token *head = NULL;
     int i = 0;
 
@@ -27,15 +28,33 @@ t_token *tokenize(char *line)
             i++;
             continue;
         }
-        i = parce_pipe_redi(line, i, head);
-        if (line[i] == '\"' || line[i] == '\'')
+        if ((line[i] == '>' || line[i] == '<') && line[i + 1] == line[i])
         {
-            i = parce_d_s_quotes(line, i, head);
-            if (i == 0)
+            add_token(&head, create_token(line + i , 2, token_type(line[i], line[i + 1])));
+            i += 2;
+        }
+        else if (line[i] == '>' || line[i] == '<' || line[i] == '|')
+        {
+            add_token(&head, create_token(line + i, 1, token_type(line[i], line[i + 1])));
+            i++;
+        }
+        else if (line[i] == '\"' || line[i] == '\'')
+        {
+            if (line[i] == '\"')
+                c = '\"';
+            else
+                c = '\'';
+            start = i;
+            i++;
+            while (line[i] && line[i] != c)
+                i++;
+            if (line[i] == '\0')
             {
                 ft_print_error("minishell: syntax error: unmatched quote");
                 break;
             }
+            i++;
+            add_token(&head, create_token(line + start, i - start, T_WORD));
         }
         else 
         {
@@ -44,11 +63,10 @@ t_token *tokenize(char *line)
             && line[i] != '>' && line[i] != '\'' && line[i] != '\"')
                 i++;
             add_token(&head, create_token(line + start, i - start, T_WORD));
-    }
+        }
     }
     return head;
 }
-
 
 void expand_variables(t_token *head)
 {
@@ -85,15 +103,14 @@ void expand_variables(t_token *head)
                 }
                 if (is_start_char(src[i + 1]))
                 {
-                    here = 1;
                     size_t j = i + 1;
                     while (is_var_char(src[j])) 
-                        j++;
-
+                    j++;
                     char *name = ft_substr(src, i + 1, j - (i + 1));
                     char *val = getenv(name);
                     if (val)
                     {
+                        here = 1;
                         size_t val_len = ft_strlen(val);
                         result = ft_calloc(val_len + 1, 1);
                         ft_memcpy(result, val, val_len);
@@ -111,24 +128,52 @@ void expand_variables(t_token *head)
             free(head->value);
             head->value = result;
         }
-            head = head->next;
+        head = head->next;
     }
 }
-void check_errors(t_token *head)
+void check_errors(t_token **head)
 {
-    char *src;
+    t_token *step;
     int i;
+    if (!*head)
+        return ;
 
-    if (head->type == T_PIPE)
+    step = *head;
+    if (step->type == T_PIPE)
     {
         ft_print_error("minishell: syntax error near unexpected token `|'");
         g_exit_status = 2;
+        free_t_token(head);
+        return ;
     }
-    // while (head)
-    // {
-    //     src = head->value;
-    
-
+    while (step->next)
+    {
+        if (step->type == T_PIPE && step->next->type != T_WORD)
+        {
+            printf("minishell: syntax error near unexpeted token `%s'\n", step->next->value);
+            g_exit_status = 2;
+            free_t_token(head);
+            return ;
+        }
+        else if (step->type == T_HERDOC || step->type == T_OUTPUT || step->type == T_INPUT || step->type == T_APPAND)
+        {
+            if (step->next->type != T_WORD)
+            {
+                 printf("minishell: syntax error near unexpeted token `%s'\n", step->next->value);
+                g_exit_status = 2;
+                free_t_token(head);
+                return ;
+            }
+        }
+        step = step->next;
+    }
+    if (step->type == T_PIPE)
+    {
+        ft_print_error("minishell: syntax error near unexpected token `|'");
+        g_exit_status = 2;
+        free_t_token(head);
+        return ;
+    }
 }
 
 void    ft_print_error(char *error)
@@ -156,12 +201,13 @@ int main(void)
 
     while (1)
     {
-        line =  readline("minishell$ ");
+        line = readline("minishell$ ");
         add_history(line);
         token = tokenize(line);
         expand_variables(token);
-        check_errors(token);
-        print_token(token);
+        check_errors(&token);
+        if (token)
+            print_token(token);
         free(line);
     }       
 }

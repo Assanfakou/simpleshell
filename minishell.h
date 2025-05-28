@@ -61,6 +61,8 @@ int parce_pipe_redi(char *line, int i, t_token *head);
 int parce_d_s_quotes(char *line, int i, t_token *head);
 
 void    ft_print_error(char *error);
-void check_errors(t_token *head);
+void check_errors(t_token **head);
+
+void free_t_token(t_token **head);
 
 #endif
