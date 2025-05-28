@@ -63,3 +63,39 @@ void add_token(t_token **head, t_token *new)
         temp->next = new;
     }
 }
+int parce_pipe_redi(char *line, int i, t_token *head)
+{
+    char c;
+    int start;
+    
+    if ((line[i] == '>' || line[i] == '<') && line[i + 1] == line[i])
+    {
+        add_token(&head, create_token(line + i , 2, token_type(line[i], line[i + 1])));
+        i += 2;
+    }
+    else if (line[i] == '>' || line[i] == '<' || line[i] == '|')
+    {
+        add_token(&head, create_token(line + i, 1, token_type(line[i], line[i + 1])));
+        i++;
+    }
+    return (i);
+}
+int parce_d_s_quotes(char *line, int i, t_token *head)
+{
+    char c;
+    size_t start;
+
+    if (line[i] == '\"')
+        c = '\"';
+    else
+        c = '\'';
+    start = i;
+    i++;
+    while (line[i] && line[i] != c)
+        i++;
+    if (line[i] == '\0')
+        return (0);
+    i++;
+    add_token(&head, create_token(line + start, i - start, T_WORD));
+    return (i);
+}

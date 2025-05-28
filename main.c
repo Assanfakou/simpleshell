@@ -19,7 +19,6 @@ t_token *tokenize(char *line)
     int start;
     t_token *head = NULL;
     int i = 0;
-    char c;
 
     while (line[i])
     {
@@ -28,45 +27,28 @@ t_token *tokenize(char *line)
             i++;
             continue;
         }
-        
-        if ((line[i] == '>' || line[i] == '<') && line[i + 1] == line[i]) {
-           add_token(&head, create_token(&line[i], 2, token_type(line[i], line[i + 1])));
-            i += 2;
-        }
-        else if (line[i] == '>' || line[i] == '<' || line[i] == '|') {
-            add_token(&head, create_token(&line[i], 1, token_type(line[i], line[i + 1])));
-            i++;
-        }
-        else if (line[i] == '\"' || line[i] == '\'')
+        i = parce_pipe_redi(line, i, head);
+        if (line[i] == '\"' || line[i] == '\'')
         {
-            if (line[i] == '\"')
-                c = '\"';
-            else
-                c = '\'';
-            start = i;
-            i++;
-            while (line[i] && line[i] != c)
-                i++;
-            if (line[i] == '\0')
+            i = parce_d_s_quotes(line, i, head);
+            if (i == 0)
             {
                 ft_print_error("minishell: syntax error: unmatched quote");
                 break;
             }
-            i++;
-            add_token(&head, create_token(&line[start], i - start, T_WORD));
         }
-        else {
+        else 
+        {
             start = i;
-            while (line[i] && !isspace(line[i]) 
-            && line[i] != '|' && line[i] != '<' 
-            && line[i] != '>' 
-            && line[i] != '\'' && line[i] != '\"')
+            while (line[i] && !isspace(line[i]) && line[i] != '|' && line[i] != '<' 
+            && line[i] != '>' && line[i] != '\'' && line[i] != '\"')
                 i++;
-            add_token(&head, create_token(&line[start], i - start, T_WORD));
-        } 
+            add_token(&head, create_token(line + start, i - start, T_WORD));
+    }
     }
     return head;
 }
+
 
 void expand_variables(t_token *head)
 {
