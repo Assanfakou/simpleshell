@@ -182,17 +182,7 @@ void    ft_print_error(char *error)
     write (2, "\n", 1);
 }
 
-// void add_command(t_cmd **head, t_cmd *new)
-// {
-//     if (!*head)
-//         *head = new;
-//     else {
-//         t_token *temp = *head;
-//         while (temp->next)
-//             temp = temp->next;
-//         temp->next = new;
-//     }
-// }
+
 
 int main(void)
 {
