@@ -65,24 +65,24 @@ void add_token(t_token **head, t_token *new)
         temp->next = new;
     }
 }
-int parce_pipe_redi(char *line, int i, t_token *head)
+int parce_pipe_redi(char *line, int i, t_token **head)
 {
     char c;
     int start;
     
     if ((line[i] == '>' || line[i] == '<') && line[i + 1] == line[i])
     {
-        add_token(&head, create_token(line + i , 2, token_type(line[i], line[i + 1])));
+        add_token(head, create_token(line + i , 2, token_type(line[i], line[i + 1])));
         i += 2;
     }
     else if (line[i] == '>' || line[i] == '<' || line[i] == '|')
     {
-        add_token(&head, create_token(line + i, 1, token_type(line[i], line[i + 1])));
+        add_token(head, create_token(line + i, 1, token_type(line[i], line[i + 1])));
         i++;
     }
     return (i);
 }
-int parce_d_s_quotes(char *line, int i, t_token *head)
+int parce_d_s_quotes(char *line, int i, t_token **head)
 {
     char c;
     size_t start;
@@ -96,11 +96,15 @@ int parce_d_s_quotes(char *line, int i, t_token *head)
     while (line[i] && line[i] != c)
         i++;
     if (line[i] == '\0')
+    {
+        ft_print_error("minishell: syntax error: unmatched quote");
         return (0);
+    } 
     i++;
-    add_token(&head, create_token(line + start, i - start, T_WORD));
+    add_token(head, create_token(line + start, i - start, T_WORD));
     return (i);
 }
+
 void free_t_token(t_token **head)
 {
     t_token *temp;

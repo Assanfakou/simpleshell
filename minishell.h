@@ -57,8 +57,8 @@ t_type token_type(char c, char next);
 t_token *tokenize(char *line);
 void add_token(t_token **head, t_token *new);
 void print_token(t_token *token);
-int parce_pipe_redi(char *line, int i, t_token *head);
-int parce_d_s_quotes(char *line, int i, t_token *head);
+int parce_pipe_redi(char *line, int i, t_token **head);
+int parce_d_s_quotes(char *line, int i, t_token **head);
 
 void    ft_print_error(char *error);
 void check_errors(t_token **head);
