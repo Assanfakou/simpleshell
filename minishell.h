@@ -52,13 +52,16 @@ int ft_isspace(char i);
 int is_start_char(int c);
 int is_var_char(int c);
 
+int is_operator(char c);
+int is_redir_or_pipe(char *line, int i);
+
 t_token *create_token(char *str, int len, t_type type);
 t_type token_type(char c, char next);
 t_token *tokenize(char *line);
 void add_token(t_token **head, t_token *new);
 void print_token(t_token *token);
 int parce_pipe_redi(char *line, int i, t_token **head);
-int parce_d_s_quotes(char *line, int i, t_token **head);
+char *parce_d_s_quotes(char *line, int *i);
 
 void    ft_print_error(char *error);
 void check_errors(t_token **head);

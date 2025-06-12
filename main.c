@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 19:17:48 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/11 19:58:40 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/12 18:53:40 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,6 @@
 #include "minishell.h"
 
 int g_exit_status = 0; // 1 or 0 for $?
-
-t_token *tokenize(char *line)
-{
-    int start;
-    t_token *head = NULL;
-    int i = 0;
-
-    while (line[i])
-    {
-        if (ft_isspace(line[i]))
-        {
-            i++;
-            continue;
-        }
-        else if (((line[i] == '>' || line[i] == '<') && line[i + 1] == line[i]) || (line[i] == '>' || line[i] == '<' || line[i] == '|'))
-            i = parce_pipe_redi(line, i, &head);
-        else if (line[i] == '\"' || line[i] == '\'')
-        {
-            i = parce_d_s_quotes(line, i, &head);
-            if (i == 0)
-                return (NULL);
-        } 
-        else 
-        {
-            start = i;
-            while (line[i] && !isspace(line[i]) && line[i] != '|' && line[i] != '<' 
-            && line[i] != '>' && line[i] != '\'' && line[i] != '\"')
-                i++;
-            add_token(&head, create_token(line + start, i - start, T_WORD));
-        }
-    }
-    return head;
-}
 
 void expand_variables(t_token *head)
 {
@@ -106,6 +73,54 @@ void expand_variables(t_token *head)
         head = head->next;
     }
 }
+
+t_token *tokenize(char *line)
+{
+    int start;
+    t_token *head = NULL;
+    int i = 0;
+    char *h;
+    int j;
+    char *word;
+
+    while (line[i])
+    {
+        if (ft_isspace(line[i]))
+        {
+            i++;
+            continue;
+        }
+        else if (is_redir_or_pipe(line, i))
+            i = parce_pipe_redi(line, i, &head);
+        else
+        {
+            word = ft_strdup("");
+            while (line[i] && !isspace(line[i]) && !is_operator(line[i]))
+            {
+                if (line[i] == '\"' || line[i] == '\'')
+                {
+                    h = parce_d_s_quotes(line, &i);
+                    if (!h)
+                        return (NULL);
+                    char *temp = ft_strjoin(word, h);
+                    free(word);
+                    free(h);
+                    word = temp;
+                }
+                else
+                {
+                    char t[2] = {line[i++], 0};
+                    char *tmp = ft_strjoin(word, t);
+                    free(word);
+                    word = tmp;
+                }
+            }
+            add_token(&head, create_token(word, ft_strlen(word), T_WORD));
+        }
+    }
+    return head;
+}
+
 void check_errors(t_token **head)
 {
     t_token *step;
@@ -167,7 +182,7 @@ int main(void)
         line = readline("minishell$ ");
         add_history(line);
         token = tokenize(line);
-        expand_variables(token);
+        // expand_variables(token);
         check_errors(&token);
         if (token)
             print_token(token);
