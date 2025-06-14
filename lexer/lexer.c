@@ -59,7 +59,9 @@ t_token token_word(t_lexer *lexer)
 
 	tok.literal = &lexer->input[lexer->pos];
 	tok.len = 0;
-	while (lexer->c && lexer->c != '|' && lexer->c != '<' && lexer->c != '>' && lexer->c != '\'' && lexer->c != '\"' && !ft_isspace(lexer->c))
+	while (lexer->c && lexer->c != '|' && lexer->c != '<' 
+			&& lexer->c != '>' && lexer->c != '\''
+			&& lexer->c != '\"' && !ft_isspace(lexer->c))
 	{
 		tok.len++;
 		read_char(lexer);
@@ -68,10 +70,17 @@ t_token token_word(t_lexer *lexer)
 	return (tok);
 }
 	
-void skip_white_space(t_lexer *lexer)
+bool skip_white_space(t_lexer *lexer)
 {
-	while ((lexer->c >= 9 && lexer->c == 13) || lexer->c == 32)
+	bool found;
+
+	found = 0;
+	while (ft_isspace(lexer->c))
+	{
 		read_char(lexer);
+		found = 1;
+	}
+	return (found);
 }
 
 t_token token_s_d_word(t_lexer *lexer)
@@ -104,32 +113,31 @@ t_token token_s_d_word(t_lexer *lexer)
 	return (tok);
 }
 
-t_token lexer_next_token(t_lexer *lexer)
+t_token token_redir(t_lexer *lexer)
 {
 	t_token tok;
 
-	skip_white_space(lexer);
 	if (lexer->c == '<')
 	{
-		tok = token_new(&lexer->input[lexer->pos], TOK_INPUT, 1);
-		read_char(lexer);
+		if (lexer->input[lexer->read_pos] == lexer->c)
+		{
+			tok = token_new(&lexer->input[lexer->pos], TOK_HERDOC, 2);
+			read_char(lexer);
+		}
+		else
+			tok = token_new(&lexer->input[lexer->pos], TOK_INPUT, 1);
 	}
-	else if (lexer->c == '>')
-	{
-		tok = token_new(&lexer->input[lexer->pos], TOK_OUTPUT, 1);
-		read_char(lexer);
-	}
-	else if (lexer->c == '|')
-	{
-		tok = token_new(&lexer->input[lexer->pos], TOK_PIPE, 1);
-		read_char(lexer);
-	}
-	else if (lexer->c == '\0')
-		tok = token_new(NULL, TOK_NULL, 0);
-	else if (lexer->c == '\'' || lexer->c == '\"')
-		tok = token_s_d_word(lexer);
 	else
-		tok = token_word(lexer);
+	{
+		if (lexer->input[lexer->read_pos] == lexer->c)
+		{
+			tok = token_new(&lexer->input[lexer->pos], TOK_APPAND, 2);
+			read_char(lexer);
+		}
+		else
+			tok = token_new(&lexer->input[lexer->pos], TOK_OUTPUT, 1);
+	}
+	read_char(lexer);
 	return (tok);
 }
 
@@ -137,6 +145,8 @@ void token_print(t_token token)
 {
 	if (token.type == TOK_INPUT)
 		printf("(TOK_IN)");
+	else if (token.type == TOK_HERDOC)
+		printf("(TOK_HERDOC)");
 	else if (token.type == TOK_OUTPUT)
 		printf("(TOK_OUT)");
 	else if (token.type == TOK_PIPE)
@@ -149,24 +159,53 @@ void token_print(t_token token)
 		printf("(TOK_SINGLE)");
 	else if (token.type == TOK_DOUBLE)
 		printf("(TOK_DOUBLE)");
+	else if (token.type == TOK_APPAND)
+		printf("(TOK_APPAND)");
 	else if (token.type == TOK_INVALID)
-		printf("unmatched quote\n");
+		printf("(TOK_INVALID)");
 	else
 	{
-		UNIMPLEMENTED("INVALID TOKRN RECEIVED");
+		UNIMPLEMENTED("INVALID TOKEN RECEIVED");
 	}
 	printf(" \"%.*s\"\n", (int) token.len, token.literal);
 }
 
+t_token lexer_next_token(t_lexer *lexer)
+{
+	t_token tok;
+	bool space;
+
+	space = skip_white_space(lexer);
+	if (lexer->c == '>' || lexer->c == '<')
+		tok = token_redir(lexer);
+	else if (lexer->c == '|')
+	{
+		tok = token_new(&lexer->input[lexer->pos], TOK_PIPE, 1);
+		read_char(lexer);
+	}
+	else if (lexer->c == '\0')
+		tok = token_new(NULL, TOK_NULL, 0);
+	else if (lexer->c == '\'' || lexer->c == '\"')
+		tok = token_s_d_word(lexer);
+	else
+		tok = token_word(lexer);
+	tok.space = space;
+	return (tok);
+}
+
+t_token check_errors(t_token *token, t_lexer *lexer)
+{
+
+}
 int main()
 {
 	t_lexer lexer;
 	t_token tok;
-
+	char *input;
 
 	while (1)
 	{
-		char *input = readline("hello world# ");
+		input = readline("hello world# ");
 		add_history(input);
 		lexer = lexer_new(input);
 		printf("%s\n", input);
@@ -174,7 +213,6 @@ int main()
 		while (tok.type)
 		{
 			token_print(tok);
-			//print_lexer(&lexer);
 			tok = lexer_next_token(&lexer);
 		}
 	}
