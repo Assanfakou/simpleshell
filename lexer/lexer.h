@@ -6,11 +6,17 @@
 /*   By: hfakou <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/13 19:18:06 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/14 12:19:56 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdio.h>
+#include "string.h"
+#include "stdlib.h"
+#include "readline/readline.h"
+#include "readline/history.h"
+
 
 typedef struct s_lexer	{
 	char 	*input;

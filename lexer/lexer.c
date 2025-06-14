@@ -1,8 +1,5 @@
-#include <stdio.h>
 #include "lexer.h"
-#include "string.h"
-#include "stdlib.h"
-#include "readline/readline.h"
+
 void print_lexer(t_lexer *lexer)
 {
 	printf("Input: \"%s\"\n", lexer->input);
@@ -36,6 +33,7 @@ t_lexer lexer_new(char *str)
 	read_char(&l);
 	return (l);
 }
+
 t_token token_new(char *s, t_token_type type, size_t len)
 {
 	t_token tok;
@@ -46,6 +44,7 @@ t_token token_new(char *s, t_token_type type, size_t len)
 
 	return (tok);
 }
+
 int ft_isspace(char c)
 {
 	if ((c >= 9 && c <= 13) || c == 32)
@@ -53,6 +52,7 @@ int ft_isspace(char c)
 	else 
 		return (0);
 }
+
 t_token token_word(t_lexer *lexer)
 {
 	t_token tok;
@@ -73,6 +73,7 @@ void skip_white_space(t_lexer *lexer)
 	while ((lexer->c >= 9 && lexer->c == 13) || lexer->c == 32)
 		read_char(lexer);
 }
+
 t_token token_s_d_word(t_lexer *lexer)
 {
 	t_token tok;
@@ -92,7 +93,7 @@ t_token token_s_d_word(t_lexer *lexer)
 	}
 	if (lexer->c == '\0')
 	{
-		printf("unmatched quote\n");
+		tok.type = TOK_INVALID;
 		return (tok);
 	}
 	read_char(lexer);
@@ -102,6 +103,7 @@ t_token token_s_d_word(t_lexer *lexer)
 		tok.type = TOK_DOUBLE;
 	return (tok);
 }
+
 t_token lexer_next_token(t_lexer *lexer)
 {
 	t_token tok;
@@ -130,6 +132,7 @@ t_token lexer_next_token(t_lexer *lexer)
 		tok = token_word(lexer);
 	return (tok);
 }
+
 void token_print(t_token token)
 {
 	if (token.type == TOK_INPUT)
@@ -146,13 +149,15 @@ void token_print(t_token token)
 		printf("(TOK_SINGLE)");
 	else if (token.type == TOK_DOUBLE)
 		printf("(TOK_DOUBLE)");
+	else if (token.type == TOK_INVALID)
+		printf("unmatched quote\n");
 	else
 	{
 		UNIMPLEMENTED("INVALID TOKRN RECEIVED");
 	}
 	printf(" \"%.*s\"\n", (int) token.len, token.literal);
 }
-		
+
 int main()
 {
 	t_lexer lexer;
@@ -162,7 +167,7 @@ int main()
 	while (1)
 	{
 		char *input = readline("hello world# ");
-
+		add_history(input);
 		lexer = lexer_new(input);
 		printf("%s\n", input);
 		tok = lexer_next_token(&lexer);
