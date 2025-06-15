@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/14 18:21:35 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/15 11:03:07 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_lexer	{
 } t_lexer;
 
 
-typedef enum
+typedef enum s_token_type
 {
 	TOK_NULL = 0,
 	TOK_PIPE,
@@ -38,20 +38,21 @@ typedef enum
 	TOK_WORD,
 	TOK_DOUBLE,
 	TOK_SINGLE,
-	TOK_INVALID
+	TOK_INVALID,
+	TOK_NONE
 } t_token_type;
 
 typedef enum s_redir_type
 {
-    R_HERDOC,
-    R_OUTPUT,
-    R_INPUT,
-    R_APPAND,
+	R_HERDOC,
+	R_OUTPUT,
+	R_INPUT,
+	R_APPAND,
 } t_redir_type;
 
 typedef struct s_redir
 {
-    t_redir_type type;
+t_redir_type type;
     char *filename;
     struct s_redir *next;
 }   t_redir;
@@ -63,7 +64,7 @@ typedef struct s_cmd
     struct s_cmd *next; // if there is a pipe we creat another t_cmd to store the other arguments after the pipe
 }   t_cmd;
 
-typedef struct
+typedef struct s_token
 {
 	t_token_type type;
 	char *literal;

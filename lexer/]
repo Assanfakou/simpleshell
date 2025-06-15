@@ -194,10 +194,8 @@ t_token lexer_next_token(t_lexer *lexer)
 	tok.space = space;
 	return (tok);
 }
-
 void print_until_size(char *pointer, size_t size)
 {
-	write(1, "minishell: syntax error near unexpeted token ", 46);
 	write (1, pointer, size);
 	write (1, "\n", 1);
 }
@@ -212,6 +210,7 @@ int check_errors(t_token *curr, t_token *prev)
 	}
 	else if (prev->type == TOK_PIPE && curr->type != TOK_WORD)
         {
+            printf("minishell: syntax error near unexpeted token ");
 	    print_until_size(curr->literal, curr->len); 
             g_exit_status = 2;
             return (1);
@@ -220,6 +219,7 @@ int check_errors(t_token *curr, t_token *prev)
         {
             if (curr->type != TOK_WORD)
             {
+                 printf("minishell: syntax error near unexpeted token ");
 		 print_until_size(curr->literal, curr->len); 
 		 g_exit_status = 2;
 		 return (1);
