@@ -59,7 +59,7 @@ char *expand_variable(char *variable)
 	}
 	return (result);
 }
-char *words_if_nospace(t_token *tok, t_lexer *lexer, t_env *env)
+char *words_if_nospace(t_token *tok, t_lexer *lexer)
 {
 	char *word;
 	char *tmp;
@@ -96,7 +96,6 @@ char *words_if_nospace(t_token *tok, t_lexer *lexer, t_env *env)
 	return (word);
 }
 
-
 t_redir *new_redir(t_token *tok, t_lexer *lexer)
 {
 	t_redir *redirect;
@@ -107,17 +106,24 @@ t_redir *new_redir(t_token *tok, t_lexer *lexer)
 	next = lexer_next_token(lexer); 
 	redirect->filename = word_if_nospace(tok, lexer);
 	redirect->next = NULL;
-	return (redirect);	
+	return (redirect);
 }
 
 t_cmd *new_cmnd(t_token *token, t_lexer *lexer)
 {
 	t_cmd *cmd;
+	t_redir *redir;
+	int i;
 
 	cmd = malloc(sizeof(t_cmd));
-	
+	cmd->argv = malloc(sizeof(char *) * 12);
 	while (tok->type && tok->type != TOK_PIPE)
 	{
-		if (tok->type == TOK_WORD || tok
+		i = 0;
+		while ((tok->type == TOK_WORD || tok->type == TOK_DOUBLE || TOK_SINGLE) && i < 12) 
+		{
+			argv[i] == words_if_nospace(token, lexer);
+			i++;
+		}
 	}
 }	
