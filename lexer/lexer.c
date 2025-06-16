@@ -50,7 +50,7 @@ t_token token_new(char *s, t_token_type type, size_t len)
 int ft_isspace(char c)
 {
 	if ((c >= 9 && c <= 13) || c == 32)
-		return 1;
+		return (1);
 	else 
 		return (0);
 }

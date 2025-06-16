@@ -26,7 +26,37 @@ typedef enum s_type
     T_PIPE,
     T_APPAND,
     T_WORD
+    // T_SINGLE_Q,
+    // T_DOUBLE_Q,
 }  t_type; 
+
+typedef enum s_redir_type
+{
+    R_HERDOC,
+    R_OUTPUT,
+    R_INPUT,
+    R_APPAND,
+} t_redir_type;
+
+typedef struct s_redir
+{
+    t_redir_type type;
+    char *filename;
+    struct s_redir *next;
+}   t_redir;
+
+typedef struct s_cmd
+{
+    char **argv; // array of pointers to store commands with arguments 
+    t_redir *redir; // list of rredirections if there any of them
+    struct s_cmd *next; // if there is a pipe we creat another t_cmd to store the other arguments after the pipe
+}   t_cmd;  t_redire_type; 
+// typedef struct s_lexer
+// {
+//     char *position;
+//     size_t size;
+//     struct s_lexer *next;
+// }   t_lexer; 
 
 typedef struct s_token {
     t_type     type; // type "T_input" "output" " word"
@@ -36,7 +66,7 @@ typedef struct s_token {
 
 typedef struct s_redir
 {
-    t_type type;
+    t_redire_type type;
     char *filename;
     struct s_redir *next;
 }   t_redir;
@@ -54,13 +84,14 @@ int is_var_char(int c);
 
 int is_operator(char c);
 int is_redir_or_pipe(char *line, int i);
+char  *extract_word(char *line, int *i, t_token **head);
 
 t_token *create_token(char *str, int len, t_type type);
 t_type token_type(char c, char next);
 t_token *tokenize(char *line);
 void add_token(t_token **head, t_token *new);
 void print_token(t_token *token);
-int parce_pipe_redi(char *line, int i, t_token **head);
+void parce_pipe_redi(char *line, int *i, t_token **head);
 char *parce_d_s_quotes(char *line, int *i);
 
 void    ft_print_error(char *error);

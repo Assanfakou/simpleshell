@@ -82,22 +82,19 @@ void add_token(t_token **head, t_token *new)
         temp->next = new;
     }
 }
-int parce_pipe_redi(char *line, int i, t_token **head)
+void parce_pipe_redi(char *line, int *i, t_token **head)
 {
-    char c;
-    int start;
-    
-    if ((line[i] == '>' || line[i] == '<') && line[i + 1] == line[i])
+    if ((line[*i] == '>' || line[*i] == '<') && line[*i + 1] == line[*i])
     {
-        add_token(head, create_token(line + i , 2, token_type(line[i], line[i + 1])));
-        i += 2;
+        add_token(head, create_token(line + *i , 2, token_type(line[*i], line[*i + 1])));
+        *i += 2;
     }
-    else if (line[i] == '>' || line[i] == '<' || line[i] == '|')
+    else if (line[*i] == '>' || line[*i] == '<' || line[*i] == '|')
     {
-        add_token(head, create_token(line + i, 1, token_type(line[i], line[i + 1])));
-        i++;
+        add_token(head, create_token(line + *i, 1, token_type(line[*i], line[*i + 1])));
+        (*i)++;
     }
-    return (i);
+    return ;
 }
 char *parce_d_s_quotes(char *line, int *i)
 {
@@ -118,7 +115,6 @@ char *parce_d_s_quotes(char *line, int *i)
         return (NULL);
     } 
     (*i)++;
-    // add_token(head, create_token(line + start, *i - start, T_WORD));
     return (ft_strndup(line + start, *i - start));
 }
 
@@ -138,31 +134,46 @@ void free_t_token(t_token **head)
     }
     *head = NULL;
 }
-char  *extract_word(char *line, int *i, t_token **head)
-{
-    char *word;
-    char *h;
 
-    while (line[*i] && !isspace(line[*i]) && !is_operator(line[*i]))
+// char  *extract_word(char *line, int *i, t_token **head)
+// {
+//     char *word;
+//     char *h;
+
+//     while (line[*i] && !isspace(line[*i]) && !is_operator(line[*i]))
+//     {
+//         word = ft_strdup("");
+//         if (line[*i] == '\"' || line[*i] == '\'')
+//         {
+//             h = parce_d_s_quotes(line, i);
+//             if (!h)
+//                 return (NULL);
+//             char *temp = ft_strjoin(word, h);
+//             free(word);
+//             free(h);
+//             word = temp;
+//         }
+//         else
+//         {
+//             char t[2] = {line[(*i)++], 0};
+//             char *tmp = ft_strjoin(word, t);
+//             free(word);
+//             word = tmp;
+//         }
+//     }
+//     add_token(head, create_token(word, ft_strlen(word), T_WORD));
+//     return (word);
+// }
+
+void extract_ds_var(t_token **head)
+{
+    t_token *walk;
+    char *src;
+
+    walk = *head;
+    while (walk)
     {
-        word = ft_strdup("");
-        if (line[*i] == '\"' || line[*i] == '\'')
-        {
-            h = parce_d_s_quotes(line, &i);
-            if (!h)
-                return (NULL);
-            char *temp = ft_strjoin(word, h);
-            free(word);
-            free(h);
-            word = temp;
-        }
-        else
-        {
-            char t[2] = {line[(*i)++], 0};
-            char *tmp = ft_strjoin(word, t);
-            free(word);
-            word = tmp;
-        }
+        src = walk->value;
+        
     }
-    add_token(head, create_token(word, ft_strlen(word), T_WORD));
 }

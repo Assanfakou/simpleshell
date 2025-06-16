@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 16:13:12 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/12 12:31:51 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/16 19:19:01 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	*ft_strndup(const char *str, size_t size);
 void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_substr(const char *s, unsigned int start, size_t len);
 char				*ft_strjoin(const char *s1, const char *s2);
+char	*ft_strnjoin(const char *s1, const char *s2, size_t size);
 char				*ft_strtrim(char const *s1, char const *set);
 char				**ft_split(char const *s, char c);
 char				*ft_itoa(int n);

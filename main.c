@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 19:17:48 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/12 18:53:40 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/16 18:12:52 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ t_token *tokenize(char *line)
             continue;
         }
         else if (is_redir_or_pipe(line, i))
-            i = parce_pipe_redi(line, i, &head);
+             parce_pipe_redi(line, &i, &head);
         else
         {
             word = ft_strdup("");
@@ -116,6 +116,7 @@ t_token *tokenize(char *line)
                 }
             }
             add_token(&head, create_token(word, ft_strlen(word), T_WORD));
+            free(word);
         }
     }
     return head;
@@ -182,7 +183,7 @@ int main(void)
         line = readline("minishell$ ");
         add_history(line);
         token = tokenize(line);
-        // expand_variables(token);
+        expand_variables(token);
         check_errors(&token);
         if (token)
             print_token(token);
