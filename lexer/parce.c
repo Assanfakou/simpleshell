@@ -31,8 +31,6 @@ char *expand_variable(char *variable)
 	size_t i;
 
 	len = ft_strlen(variable);
-	if (len >= 2)
-		return (ft_strdup(variable));
 	i = 0;
 	while (variable[i])
 	{
@@ -40,7 +38,7 @@ char *expand_variable(char *variable)
 		{
 			if (variable[i + 1] == '?')
 			{
-				result = ft_itoa(3);
+				result = ft_itoa(2);
 				i += 2;
 			}
 			else if (is_start_char(variable[i + 1]))
@@ -85,16 +83,14 @@ char *words_if_nospace(t_lexer *lexer)
 		processed = NULL;
 		if (tok.type == TOK_SINGLE) 
 			processed = if_var;
-		else
+		else if (ft_strchr(if_var, '$'))
 		{
-			if (ft_strchr(if_var, '$'))
-			{
-				processed = expand_variable(if_var);
-				free(if_var);
-			}
-			else
-				processed = if_var;	
+			printf("[%s]\n", if_var);
+			processed = expand_variable(if_var);
+			free(if_var);
 		}
+		else
+			processed = if_var;	
 		tmp = ft_strjoin(word, processed);
 		free(word);
 		free(processed);
