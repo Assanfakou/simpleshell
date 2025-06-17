@@ -16,7 +16,6 @@ int ft_isspace(char c)
 }
 char *expand_variable(char *variable)
 {
-    int here;
     size_t len;
     char *result = ft_strdup("");
     size_t i;
@@ -60,10 +59,11 @@ char *expand_variable(char *variable)
 	}
         return (result);
 }
+/*
 int main (int ac, char **av)
 {
 	char *pa = expand_variable(av[1]);
 	printf("%s\n", pa);
 }
-
+*/
 

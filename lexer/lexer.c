@@ -263,14 +263,15 @@ int main()
 	t_lexer lexer;
 	t_token tok;
 	char *input;
+	t_cmd *cmd = NULL;
 
 	while (1)
 	{
 		input = readline("JUST_TYPE #$ ");
 		add_history(input);
 		lexer = lexer_new(input);
-		printf("%s\n", input);
 		tok = lexer_next_token(&lexer);
+		printf("%s\n", input);
 		if (check_first_tok(&tok))
 		{
 			tok.type = TOK_INVALID;
@@ -283,8 +284,12 @@ int main()
 				tok.type = TOK_NULL;
 				continue;
 			}
-			token_print(tok);
+			// token_print(tok);
 			tok = lexer_next_token(&lexer);
 		}
+		lexer = lexer_new(input);
+		cmd = build_cmd_list(&lexer);
+		print_cmd(cmd);
 	}
+	
 }
