@@ -75,6 +75,9 @@ void free_t_cmd(t_cmd *cmd)
 		}
 		cmd = cmd->next;
 	}
+	cmd->argv = NULL;
+	cmd = NULL;
+
 }
 
 t_redir_type type_redir(t_token *token)

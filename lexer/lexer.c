@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/18 17:01:55 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/18 19:28:25 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,12 +286,17 @@ int main()
 	while (1)
 	{
 		input = readline("JUST_TYPE #$ ");
+		if (!input)
+		{
+			write(1, "exit\n", 5);
+			break ;
+		}
 		add_history(input);
 		lexer = lexer_new(input);
 		tok = lexer_next_token(&lexer);
 		printf("%s\n", input);
 		if (check_first_tok(&tok))
-				i = 1;
+			i = 1;
 		while (tok.type && !check_errors(&lexer, tok) && i == 0)
 		{
 			if (check_errors(&lexer ,tok) == 1)
@@ -303,7 +308,9 @@ int main()
 			lexer = lexer_new(input);
 			cmd = build_cmd_list(&lexer);
 			print_cmd(cmd);
+			free_t_cmd(cmd);
+			
 		}
+		free(input);
 	}
-	
 }

@@ -110,9 +110,6 @@ char *words_if_nospace(t_lexer *lexer)
        	return (word);
 }
 
-
-
-
 void add_redirection(t_cmd *cmd, t_redir_type type, char *file)
 {
 	t_redir *walk;
@@ -175,7 +172,4 @@ t_cmd *build_cmd_list(t_lexer *lexer)
 	}
 	return head;
 }
-
-
-
 
