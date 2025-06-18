@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
+/*   Updated: 2025/06/18 17:01:55 by hfakou           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lexer.h"
 
 int g_exit_status = 0;
@@ -216,29 +228,30 @@ t_token lexer_peek_next_token(t_lexer *lexer)
 int check_errors(t_lexer *lexer ,t_token curr)
 {
 	t_token n_tok = lexer_peek_next_token(lexer); 
-	
-	if (curr.type == TOK_PIPE && n_tok.type == TOK_NONE)
+
+	if (curr.type == TOK_PIPE && n_tok.type == TOK_NULL)
 	{
 		printf("minishell: syntax error near unexpected token `|'\n");
 		g_exit_status = 2;
 		return (1);
 	}
+	/*
 	else if (curr.type == TOK_PIPE && (n_tok.type != TOK_WORD && n_tok.type != TOK_DOUBLE && n_tok.type != TOK_SINGLE))
-        {
-	    print_until_size(n_tok.literal, n_tok.len); 
-            g_exit_status = 2;
-            return (1);
-        }
+	{
+		print_until_size(n_tok.literal, n_tok.len); 
+		g_exit_status = 2;
+		return (1);
+	}*/
 	else if (curr.type == TOK_HERDOC || curr.type == TOK_OUTPUT || curr.type == TOK_INPUT || curr.type == TOK_APPAND)
-        {
-            if (n_tok.type != TOK_WORD && n_tok.type != TOK_SINGLE && n_tok.type != TOK_DOUBLE)
-            {
-		 print_until_size(n_tok.literal, n_tok.len); 
-		 g_exit_status = 2;
-		 return (1);
-            }
-	    else
-		    return (0);
+	{
+		if (n_tok.type != TOK_WORD && n_tok.type != TOK_SINGLE && n_tok.type != TOK_DOUBLE)
+		{
+			print_until_size(n_tok.literal, n_tok.len); 
+			g_exit_status = 2;
+			return (1);
+		}
+		else
+			return (0);
 
 	}
 	else if (curr.type == TOK_PIPE && n_tok.type == TOK_PIPE)
@@ -253,7 +266,11 @@ int check_errors(t_lexer *lexer ,t_token curr)
 int check_first_tok(t_token *token)
 {
 	if (token->type == TOK_PIPE)
+	{
+		token->type = TOK_NULL;
+		write(2, "minishell: syntax error near unexpeted token |\n", 48);
 		return (1);
+	}
 	else
 		return (0);
 }
@@ -264,6 +281,7 @@ int main()
 	t_token tok;
 	char *input;
 	t_cmd *cmd = NULL;
+	int i = 0;
 
 	while (1)
 	{
@@ -273,23 +291,19 @@ int main()
 		tok = lexer_next_token(&lexer);
 		printf("%s\n", input);
 		if (check_first_tok(&tok))
+				i = 1;
+		while (tok.type && !check_errors(&lexer, tok) && i == 0)
 		{
-			tok.type = TOK_INVALID;
-			write(2, "minishell: syntax error near unexpeted token |", 47);
-		}
-		while (tok.type)
-		{
-			if (check_errors(&lexer ,tok))
-			{
-				tok.type = TOK_NULL;
-				continue;
-			}
-			// token_print(tok);
+			if (check_errors(&lexer ,tok) == 1)
+				i = 1;
 			tok = lexer_next_token(&lexer);
 		}
-		lexer = lexer_new(input);
-		cmd = build_cmd_list(&lexer);
-		print_cmd(cmd);
+		if (i == 0)
+		{
+			lexer = lexer_new(input);
+			cmd = build_cmd_list(&lexer);
+			print_cmd(cmd);
+		}
 	}
 	
 }

@@ -11,61 +11,70 @@ int is_var_char(int c)
     return ft_isalnum(c) || c == '_'; 
 }
 
-t_redir_type type_redir(t_token *token)
+void	handle_env_var(char **res, char *var, size_t *i)
 {
-	if (token->type == TOK_HERDOC)
-		return (R_HERDOC);
-	else if (token->type == TOK_INPUT)
-		return (R_INPUT);
-	else if (token->type == TOK_OUTPUT)
-		return (R_OUTPUT);
-	else if (token->type == TOK_APPAND)
-		return (R_APPAND);
-	else
-		return 0;
-}
-char *expand_variable(char *variable)
-{
-	size_t len;
-	char *result = ft_strdup("");
-	size_t i;
+	size_t	j;
+	char	*key;
+	char	*val;
+	char	*tmp;
 
-	len = ft_strlen(variable);
-	i = 0;
-	while (variable[i])
+	j = *i + 1;
+	while (is_var_char(var[j]))
+		j++;
+	key = ft_substr(var, *i + 1, j - *i - 1);
+	val = getenv(key);
+	free(key);
+	if (val)
 	{
-		if (variable[i] == '$')
+		tmp = ft_strjoin(*res, val);
+		free(*res);
+		*res = tmp;
+	}
+	*i = j;
+}
+
+char	*join_and_free(char *s1, char *s2)
+{
+	char	*res;
+
+	res = ft_strjoin(s1, s2);
+	free(s1);
+	return (res);
+}
+
+char	*expand_variable(char *var)
+{
+	size_t	i;
+	char	*res;
+	char	*tmp;
+	char	t[2];
+
+	i = 0;
+	res = ft_strdup("");
+	while (var[i])
+	{
+		if (var[i] == '$' && var[i + 1] == '?')
 		{
-			if (variable[i + 1] == '?')
-			{
-				result = ft_itoa(2);
-				i += 2;
-			}
-			else if (is_start_char(variable[i + 1]))
-			{
-				size_t j = i;
-				while (is_var_char(variable[j]))
-					j++;
-				char *val = getenv(ft_substr(variable, i, j - i));
-				if (val)
-				{
-					size_t val_len = ft_strlen(val);
-					result = ft_calloc(val_len + 1, 1);
-					ft_memcpy(result, val, val_len);
-				}
-				i = j;
-			}
+			tmp = ft_itoa(2);
+			res = join_and_free(res, tmp);
+			free(tmp);
+			i += 2;
 		}
+		else if (var[i] == '$' && is_start_char(var[i + 1]))
+			handle_env_var(&res, var, &i);
 		else
 		{
-			char t[2] = { variable[i++], 0 };
-			char *tmp = ft_strjoin(result, t);
-			free(result);
-			result = tmp;
+			t[0] = var[i];
+			t[1] = '\0';
+			tmp = ft_strjoin(res, t);
+			free(res);
+			res = tmp;
+			i++;
 		}
 	}
-	return (result);
+	return (res);
 }
+
 char *words_if_nospace(t_lexer *lexer)
 {
 	char *word;
@@ -85,7 +94,6 @@ char *words_if_nospace(t_lexer *lexer)
 			processed = if_var;
 		else if (ft_strchr(if_var, '$'))
 		{
-			printf("[%s]\n", if_var);
 			processed = expand_variable(if_var);
 			free(if_var);
 		}
@@ -101,72 +109,10 @@ char *words_if_nospace(t_lexer *lexer)
 	}
        	return (word);
 }
-/*
-t_redir *new_redir(t_token *tok, t_lexer *lexer)
-{
-	t_redir *redirect;
-	t_token *next; 
-	
-	redirect = malloc(sizeof(t_redir));
-	redirect->type = type_redir(tok);
-	next = lexer_next_token(lexer); 
-	redirect->filename = word_if_nospace(tok, lexer);
-	redirect->next = NULL;
-	return (redirect);
-}
 
-t_cmd *new_cmnd(t_token *token, t_lexer *lexer)
-{
-	t_cmd *cmd;
-	t_redir *redir;
-	int i;
 
-	cmd = malloc(sizeof(t_cmd));
-	cmd->argv = malloc(sizeof(char *) * 12);
-	while (tok->type && tok->type != TOK_PIPE)
-	{
-		i = 0;
-		if ((tok->type == TOK_WORD || tok->type == TOK_DOUBLE || TOK_SINGLE) && i < 12) 
-		{
-			argv[i] == words_if_nospace(token, lexer);
-			i++;
-		}
-	}
-}*/
 
-t_cmd *create_cmd(void)
-{
-	t_cmd *cmd;
-       
-	cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
-		return NULL;
-	cmd->argv = NULL;
-	cmd->redir = NULL;
-	cmd->next = NULL;
-	return cmd;
-}
 
-void add_to_argv(t_cmd *cmd, char *arg)
-{
-	int count = 0;
-	char **new_argv;
-	int i;
-
-	while (cmd->argv && cmd->argv[count])
-		count++;
-	new_argv = malloc(sizeof(char *) * (count + 2));
-	i = 0;
-	while (i < count)
-	{
-		new_argv[i] = cmd->argv[i];
-		i++;
-	}
-	new_argv[count] = arg;
-	new_argv[count + 1] = NULL;
-	free(cmd->argv);
-	cmd->argv = new_argv;
-}
 void add_redirection(t_cmd *cmd, t_redir_type type, char *file)
 {
 	t_redir *walk;
@@ -230,44 +176,6 @@ t_cmd *build_cmd_list(t_lexer *lexer)
 	return head;
 }
 
-void print_cmd(t_cmd *cmd)
-{
-	t_cmd *walk = cmd;
-	
-	while (walk)
-	{
-		printf("BETWEEN PIPE\n");
-		int i = 0;
-		while (walk->argv[i])
-		{
-			printf("%s\n", walk->argv[i]);
-			i++;
-		}
-		while (walk->redir)
-		{
-			printf("type [%u] | file name : %s\n", walk->redir->type, walk->redir->filename);
-			walk->redir = walk->redir->next;
-		}
-		walk = walk->next;
-	}
-}
-void free_t_cmd(t_cmd *cmd)
-{
-	int i;	
 
-	while (cmd)
-	{
-		i = 0;
-		while (cmd->argv[i])
-		{
-			free(cmd->argv[i]);
-			i++;
-		}
-		while (cmd->redir)
-		{
-			free(cmd->redir->filename);
-			cmd->redir = cmd->redir->next;
-		}
-		cmd = cmd->next;
-	}
-}
+
+

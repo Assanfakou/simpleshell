@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/17 15:26:38 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/18 16:45:11 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef struct s_lexer	{
 	size_t 	read_pos; // next char index
 } t_lexer;
 
-
 typedef enum s_token_type
 {
 	TOK_NULL = 0,
@@ -40,8 +39,7 @@ typedef enum s_token_type
 	TOK_WORD,
 	TOK_DOUBLE,
 	TOK_SINGLE,
-	TOK_INVALID,
-	TOK_NONE
+	TOK_INVALID
 } t_token_type;
 
 typedef struct s_token
@@ -75,7 +73,6 @@ typedef struct s_cmd
 	struct s_cmd *next; // if there is a pipe we creat another t_cmd to store the other arguments after the pipe
 }   t_cmd;
 
-
 t_cmd *build_cmd_list(t_lexer *lexer);
 void print_cmd(t_cmd *cmd);
 
@@ -96,3 +93,8 @@ void print_lexer(t_lexer *lexer);
 
 t_token lexer_peek_next_token(t_lexer *lexer);
 
+t_redir_type type_redir(t_token *token);
+void free_t_cmd(t_cmd *cmd);
+void print_cmd(t_cmd *cmd);
+t_cmd *create_cmd(void);
+void add_to_argv(t_cmd *cmd, char *arg);
