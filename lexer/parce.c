@@ -33,6 +33,18 @@ void	handle_env_var(char **res, char *var, size_t *i)
 	*i = j;
 }
 
+char *ft_get_env(char *name, t_env *env)
+{
+	while (env)
+	{
+		if (env->name == name)
+			return (env->content);
+		else
+			env = env->next;
+	}
+	return (NULL);
+}
+
 char	*join_and_free(char *s1, char *s2)
 {
 	char	*res;

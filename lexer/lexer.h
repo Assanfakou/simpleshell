@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/18 16:45:11 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/20 15:05:41 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,12 @@ typedef struct s_redir
 	char *filename;
 	struct s_redir *next;
 }   t_redir;
+typedef struct s_env
+{
+	char *name; // name of variable
+	char *content; // content of variable
+	struct s_env *next;
+} t_env; 
 
 typedef struct s_cmd
 {
