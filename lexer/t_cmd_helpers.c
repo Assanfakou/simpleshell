@@ -45,10 +45,13 @@ void print_cmd(t_cmd *cmd)
 	{
 		printf("BETWEEN PIPE\n");
 		int i = 0;
-		while (walk->argv[i])
+		if (walk->argv)
 		{
-			printf("%s\n", walk->argv[i]);
-			i++;
+			while (walk->argv[i])
+			{
+				printf("%s\n", walk->argv[i]);
+				i++;
+			}
 		}
 		while (walk->redir)
 		{

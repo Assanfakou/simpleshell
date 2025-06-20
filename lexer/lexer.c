@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/20 15:09:25 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/20 18:56:36 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void print_lexer(t_lexer *lexer)
 	printf("char: %c;%zu\n", lexer->c, lexer->pos);
 	printf("Future index: %zu\n", lexer->read_pos);
 }
-
 
 void	read_char(t_lexer *lexer)
 {
@@ -43,7 +42,7 @@ t_lexer lexer_new(char *str)
 	l.read_pos = 0;
 	l.c = 0;
 	l.pos = 0;
-	l.len = strlen(str);
+	l.len = ft_strlen(str);
 	read_char(&l);
 	return (l);
 }
@@ -208,9 +207,7 @@ t_token lexer_next_token(t_lexer *lexer)
 
 void print_error(char *pointer, size_t size)
 {
-	write(1, "minishell: syntax error near unexpeted token ", 46);
-	write (1, pointer, size);
-	write (1, "\n", 1);
+	printf("minishell: syntax error near unexpeted token `%s`\n", pointer);
 	g_exit_status = 2;
 }
 
@@ -232,13 +229,15 @@ int check_errors(t_lexer *lexer ,t_token curr)
 	if (curr.type == TOK_PIPE && n_tok.type == TOK_NULL)
 	{
 		print_error(curr.literal, curr.len);
+		printf("hello1\n");
 		return (1);
 	}
 	else if (curr.type == TOK_HERDOC || curr.type == TOK_OUTPUT || curr.type == TOK_INPUT || curr.type == TOK_APPAND)
 	{
 		if (n_tok.type != TOK_WORD && n_tok.type != TOK_SINGLE && n_tok.type != TOK_DOUBLE)
 		{
-			print_error(curr.literal, curr.len);
+			print_error(n_tok.literal, n_tok.len);
+			printf("hello2\n");
 			return (1);
 		}
 		else
@@ -246,7 +245,13 @@ int check_errors(t_lexer *lexer ,t_token curr)
 	}
 	else if (curr.type == TOK_PIPE && n_tok.type == TOK_PIPE)
 	{
-		print_error(curr.literal, curr.len);
+		print_error(n_tok.literal, n_tok.len);
+		printf("hello3\n");
+		return (1);
+	}
+	else if (curr.type == TOK_INVALID)
+	{
+		write (2, "UNMATCHED QUOTE\n", 17);
 		return (1);
 	}
 	return (0);
@@ -257,7 +262,9 @@ int check_first_tok(t_token *token)
 	if (token->type == TOK_PIPE)
 	{
 		token->type = TOK_NULL;
-		print_error(token->literal, token->len);
+		write(2, "minishell: syntax error near unexpeted token `|`", 49);
+		write (2, "\n", 1);
+		g_exit_status = 2;
 		return (1);
 	}
 	else
@@ -270,10 +277,11 @@ int main()
 	t_token tok;
 	char *input;
 	t_cmd *cmd = NULL;
-	int i = 0;
+	int i;
 
 	while (1)
 	{
+		i = 0;
 		input = readline("JUST_TYPE #$ ");
 		if (!input)
 		{
@@ -286,7 +294,7 @@ int main()
 		printf("%s\n", input);
 		if (check_first_tok(&tok))
 			i = 1;
-		while (tok.type && !check_errors(&lexer, tok) && i == 0)
+		while (tok.type && i == 0)
 		{
 			if (check_errors(&lexer ,tok) == 1)
 				i = 1;

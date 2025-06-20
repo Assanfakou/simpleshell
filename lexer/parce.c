@@ -1,4 +1,3 @@
-
 #include "lexer.h"
 
 int is_start_char(int c) 
