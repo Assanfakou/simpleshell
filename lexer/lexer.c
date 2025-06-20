@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/18 19:28:25 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/20 13:45:02 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ t_token token_new(char *s, t_token_type type, size_t len)
 	tok.literal = s;
 	tok.type = type;
 	tok.len = len;
-
 	return (tok);
 }
 
@@ -232,16 +231,10 @@ int check_errors(t_lexer *lexer ,t_token curr)
 	if (curr.type == TOK_PIPE && n_tok.type == TOK_NULL)
 	{
 		printf("minishell: syntax error near unexpected token `|'\n");
+		printf("here \n");
 		g_exit_status = 2;
 		return (1);
 	}
-	/*
-	else if (curr.type == TOK_PIPE && (n_tok.type != TOK_WORD && n_tok.type != TOK_DOUBLE && n_tok.type != TOK_SINGLE))
-	{
-		print_until_size(n_tok.literal, n_tok.len); 
-		g_exit_status = 2;
-		return (1);
-	}*/
 	else if (curr.type == TOK_HERDOC || curr.type == TOK_OUTPUT || curr.type == TOK_INPUT || curr.type == TOK_APPAND)
 	{
 		if (n_tok.type != TOK_WORD && n_tok.type != TOK_SINGLE && n_tok.type != TOK_DOUBLE)
@@ -252,7 +245,6 @@ int check_errors(t_lexer *lexer ,t_token curr)
 		}
 		else
 			return (0);
-
 	}
 	else if (curr.type == TOK_PIPE && n_tok.type == TOK_PIPE)
 	{

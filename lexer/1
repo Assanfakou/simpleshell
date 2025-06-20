@@ -2,11 +2,10 @@
 
 void add_to_argv(t_cmd *cmd, char *arg)
 {
-	int count;
+	int count = 0;
 	char **new_argv;
 	int i;
 
-	count = 0;
 	while (cmd->argv && cmd->argv[count])
 		count++;
 	new_argv = malloc(sizeof(char *) * (count + 2));
@@ -27,7 +26,7 @@ void add_to_argv(t_cmd *cmd, char *arg)
 t_cmd *create_cmd(void)
 {
 	t_cmd *cmd;
-
+       
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return NULL;
@@ -40,7 +39,7 @@ t_cmd *create_cmd(void)
 void print_cmd(t_cmd *cmd)
 {
 	t_cmd *walk = cmd;
-
+	
 	while (walk)
 	{
 		printf("BETWEEN PIPE\n");
@@ -63,24 +62,21 @@ void free_t_cmd(t_cmd *cmd)
 {
 	int i;
 	t_cmd *walk;	
-	t_redir *redir_tmp;
 
 	while (cmd)
 	{
 		i = 0;
-		if (cmd->argv)
+		while (cmd->argv[i])
 		{
-			while (cmd->argv[i])
-				free(cmd->argv[i++]);
-			free(cmd->argv);
+			free(cmd->argv[i]);
+			i++;
 		}
 		while (cmd->redir)
 		{
 			free(cmd->redir->filename);
-			redir_tmp = cmd->redir;
 			cmd->redir = cmd->redir->next;
-			free(redir_tmp);
 		}
+	//	cmd->argv = NULL;
 		walk = cmd;
 		cmd = cmd->next;
 		free(walk);
