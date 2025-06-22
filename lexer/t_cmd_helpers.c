@@ -37,6 +37,28 @@ t_cmd *create_cmd(void)
 	return cmd;
 }
 
+void add_redirection(t_cmd *cmd, t_redir_type type, char *file)
+{
+	t_redir *walk;
+	t_redir *redir;
+
+	redir = malloc(sizeof(t_redir));
+	if (!redir)
+		return;
+	redir->type = type;
+	redir->filename = file;
+	redir->next = NULL;
+	if (!cmd->redir)
+	{
+		cmd->redir = redir;
+		return;
+	}
+	walk = cmd->redir;
+	while (walk->next)
+		walk = walk->next;
+	walk->next = redir;
+}
+
 void print_cmd(t_cmd *cmd)
 {
 	t_cmd *walk = cmd;

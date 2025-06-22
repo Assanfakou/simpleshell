@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/20 16:26:34 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/22 18:17:50 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include "readline/history.h"
 #include <stdbool.h>
 #include "../libft/libft.h"
-
 
 typedef struct s_lexer	{
 	char 	*input;
@@ -83,25 +82,32 @@ typedef struct s_cmd
 t_cmd *build_cmd_list(t_lexer *lexer);
 void print_cmd(t_cmd *cmd);
 
-
-# define UNIMPLEMENTED(...) printf("%s:%d: UNIMPEMENTED: %s \n", __FILE__, __LINE__, __VA_ARGS__); \
-	exit(1);
-
-void token_print(t_token token);
+void	token_print(t_token token);
 t_token lexer_next_token(t_lexer *lexer);
 t_token token_redir(t_lexer *lexer);
-t_token token_s_d_word(t_lexer *lexer);
-bool skip_white_space(t_lexer *lexer);
-int ft_isspace(char c);
+t_token	token_s_d_word(t_lexer *lexer);
+bool	skip_white_space(t_lexer *lexer);
+int	ft_isspace(char c);
 t_token token_new(char *s, t_token_type type, size_t len);
 t_lexer lexer_new(char *str);
 void	read_char(t_lexer *lexer);
-void print_lexer(t_lexer *lexer);
+void	print_lexer(t_lexer *lexer);
 
 t_token lexer_peek_next_token(t_lexer *lexer);
 
-t_redir_type type_redir(t_token *token);
-void free_t_cmd(t_cmd *cmd);
-void print_cmd(t_cmd *cmd);
-t_cmd *create_cmd(void);
-void add_to_argv(t_cmd *cmd, char *arg);
+//cmd_helpers
+
+t_redir_type	type_redir(t_token *token);
+void	free_t_cmd(t_cmd *cmd);
+void	print_cmd(t_cmd *cmd);
+t_cmd	*create_cmd(void);
+void	add_to_argv(t_cmd *cmd, char *arg);
+void	add_redirection(t_cmd *cmd, t_redir_type type, char *file);
+//expand
+
+char	*expand_variable(char *var);
+char	*join_and_free(char *s1, char *s2);
+char	*ft_get_env(char *name, t_env *env);
+void	handle_env_var(char **res, char *var, size_t *i);
+int	is_var_char(int c);
+int	is_start_char(int c); 

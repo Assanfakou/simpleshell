@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/20 18:56:36 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/22 19:07:19 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	read_char(t_lexer *lexer)
 
 t_lexer lexer_new(char *str)
 {
-	t_lexer l;
+	t_lexer	l;
 
 	l.input = str;
 	l.read_pos = 0;
@@ -49,7 +49,7 @@ t_lexer lexer_new(char *str)
 
 t_token token_new(char *s, t_token_type type, size_t len)
 {
-	t_token tok;
+	t_token	tok;
 
 	tok.literal = s;
 	tok.type = type;
@@ -67,7 +67,7 @@ int ft_isspace(char c)
 
 t_token token_word(t_lexer *lexer)
 {
-	t_token tok;
+	t_token	tok;
 
 	tok.literal = &lexer->input[lexer->pos];
 	tok.len = 0;
@@ -84,7 +84,7 @@ t_token token_word(t_lexer *lexer)
 	
 bool skip_white_space(t_lexer *lexer)
 {
-	bool found;
+	bool	found;
 
 	found = 0;
 	while (ft_isspace(lexer->c))
@@ -95,10 +95,17 @@ bool skip_white_space(t_lexer *lexer)
 	return (found);
 }
 
+t_token_type	toke_type(char c)
+{
+	if (c == '\'')
+		return (TOK_SINGLE);
+	else
+		return (TOK_DOUBLE);
+}
 t_token token_s_d_word(t_lexer *lexer)
 {
-	t_token tok;
-	char c;
+	t_token	tok;
+	char	c;
 
 	if (lexer->c == '\'')
 		c = '\'';
@@ -118,16 +125,13 @@ t_token token_s_d_word(t_lexer *lexer)
 		return (tok);
 	}
 	read_char(lexer);
-	if (c == '\'')
-		tok.type = TOK_SINGLE;
-	else
-		tok.type = TOK_DOUBLE;
+	tok.type = toke_type(c);
 	return (tok);
 }
 
 t_token token_redir(t_lexer *lexer)
 {
-	t_token tok;
+	t_token	tok;
 
 	if (lexer->c == '<')
 	{
@@ -175,17 +179,13 @@ void token_print(t_token token)
 		printf("(TOK_APPAND)");
 	else if (token.type == TOK_INVALID)
 		printf("(TOK_INVALID)");
-	else
-	{
-		UNIMPLEMENTED("INVALID TOKEN RECEIVED");
-	}
 	printf(" \"%.*s\"\n", (int) token.len, token.literal);
 }
 
 t_token lexer_next_token(t_lexer *lexer)
 {
-	t_token tok;
-	bool space;
+	t_token	tok;
+	bool	space;
 
 	space = skip_white_space(lexer);
 	if (lexer->c == '>' || lexer->c == '<')
@@ -207,14 +207,16 @@ t_token lexer_next_token(t_lexer *lexer)
 
 void print_error(char *pointer, size_t size)
 {
-	printf("minishell: syntax error near unexpeted token `%s`\n", pointer);
+	write (2, "minishell: syntax error near unexpeted token `", 47);
+	write (2, pointer, size);
+	write (2, "`\n", 2);
 	g_exit_status = 2;
 }
 
 t_token lexer_peek_next_token(t_lexer *lexer)
 {
-	t_lexer prev_lexer;
-	t_token tok;
+	t_lexer	prev_lexer;
+	t_token	tok;
 
 	prev_lexer = *lexer;
 	tok = lexer_next_token(lexer);
@@ -229,7 +231,6 @@ int check_errors(t_lexer *lexer ,t_token curr)
 	if (curr.type == TOK_PIPE && n_tok.type == TOK_NULL)
 	{
 		print_error(curr.literal, curr.len);
-		printf("hello1\n");
 		return (1);
 	}
 	else if (curr.type == TOK_HERDOC || curr.type == TOK_OUTPUT || curr.type == TOK_INPUT || curr.type == TOK_APPAND)
@@ -237,7 +238,6 @@ int check_errors(t_lexer *lexer ,t_token curr)
 		if (n_tok.type != TOK_WORD && n_tok.type != TOK_SINGLE && n_tok.type != TOK_DOUBLE)
 		{
 			print_error(n_tok.literal, n_tok.len);
-			printf("hello2\n");
 			return (1);
 		}
 		else
@@ -246,12 +246,6 @@ int check_errors(t_lexer *lexer ,t_token curr)
 	else if (curr.type == TOK_PIPE && n_tok.type == TOK_PIPE)
 	{
 		print_error(n_tok.literal, n_tok.len);
-		printf("hello3\n");
-		return (1);
-	}
-	else if (curr.type == TOK_INVALID)
-	{
-		write (2, "UNMATCHED QUOTE\n", 17);
 		return (1);
 	}
 	return (0);
@@ -271,17 +265,37 @@ int check_first_tok(t_token *token)
 		return (0);
 }
 
+int find_error(t_lexer lexer, char *input)
+{
+	t_token tok;
+	
+	lexer = lexer_new(input);	
+	tok = lexer_next_token(&lexer);	
+	printf("%s\n", input);
+	if (check_first_tok(&tok))
+		return (1);
+	while (tok.type)
+	{
+		if (check_errors(&lexer ,tok) == 1)
+			return (1);
+		else if (tok.type == TOK_INVALID)
+		{
+			write (2, "UNMATCHED QUOTE\n", 17);
+			return (1);
+		}
+		tok = lexer_next_token(&lexer);
+	}
+	return (0);	
+}
+
 int main()
 {
-	t_lexer lexer;
-	t_token tok;
-	char *input;
-	t_cmd *cmd = NULL;
-	int i;
+	t_lexer	lexer;
+	char	*input;
+	t_cmd	*cmd = NULL;
 
 	while (1)
 	{
-		i = 0;
 		input = readline("JUST_TYPE #$ ");
 		if (!input)
 		{
@@ -289,18 +303,7 @@ int main()
 			break ;
 		}
 		add_history(input);
-		lexer = lexer_new(input);
-		tok = lexer_next_token(&lexer);
-		printf("%s\n", input);
-		if (check_first_tok(&tok))
-			i = 1;
-		while (tok.type && i == 0)
-		{
-			if (check_errors(&lexer ,tok) == 1)
-				i = 1;
-			tok = lexer_next_token(&lexer);
-		}
-		if (i == 0)
+		if (!find_error(lexer, input))
 		{
 			lexer = lexer_new(input);
 			cmd = build_cmd_list(&lexer);

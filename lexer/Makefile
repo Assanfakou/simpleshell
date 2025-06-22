@@ -1,10 +1,10 @@
 SCC = cc
 CFLAGS = -Wall -Wextra -Werror -ggdb3 -g3
-LINKERS = -lft -lreadline
+LINKERS =  ../libft/libft.a -lreadline 
 
 SRC_FILES= $(wildcard *.c)
 SRC_OBJ= $(SRC_FILES:%.c=%.o)
-
+LIBFT_DIR= libft.a 
 
 NAME=minishell
 
@@ -14,7 +14,7 @@ libft_rule:
 	$(MAKE) -s -C $(LIBFT_DIR)
 
 $(NAME): $(SRC_OBJ) 
-	$(CC) $(SRC_OBJ) -L$(LIBFT_DIR) $(LINKERS) -o $(NAME)
+	$(CC) $(SRC_OBJ) $(LINKERS) -o $(NAME)
 
 clean: 
 	$(RM) $(SRC_OBJ) $(OBJ_BONUS)
