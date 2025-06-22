@@ -66,7 +66,7 @@ char	*expand_variable(char *var)
 	{
 		if (var[i] == '$' && var[i + 1] == '?')
 		{
-			tmp = ft_itoa(2);
+			tmp = ft_itoa(g_exit_status);
 			res = join_and_free(res, tmp);
 			free(tmp);
 			i += 2;

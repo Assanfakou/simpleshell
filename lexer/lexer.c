@@ -6,20 +6,13 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/22 19:07:19 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/22 20:31:26 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
 int g_exit_status = 0;
-
-void print_lexer(t_lexer *lexer)
-{
-	printf("Input: \"%s\"\n", lexer->input);
-	printf("char: %c;%zu\n", lexer->c, lexer->pos);
-	printf("Future index: %zu\n", lexer->read_pos);
-}
 
 void	read_char(t_lexer *lexer)
 {
@@ -157,30 +150,6 @@ t_token token_redir(t_lexer *lexer)
 	return (tok);
 }
 
-void token_print(t_token token)
-{
-	if (token.type == TOK_INPUT)
-		printf("(TOK_IN)");
-	else if (token.type == TOK_HERDOC)
-		printf("(TOK_HERDOC)");
-	else if (token.type == TOK_OUTPUT)
-		printf("(TOK_OUT)");
-	else if (token.type == TOK_PIPE)
-		printf("(TOK_PIPE)");
-	else if (token.type == TOK_NULL)
-		printf("(nil)");
-	else if (token.type == TOK_WORD)
-		printf("(TOK_WORD)");
-	else if (token.type == TOK_SINGLE)
-		printf("(TOK_SINGLE)");
-	else if (token.type == TOK_DOUBLE)
-		printf("(TOK_DOUBLE)");
-	else if (token.type == TOK_APPAND)
-		printf("(TOK_APPAND)");
-	else if (token.type == TOK_INVALID)
-		printf("(TOK_INVALID)");
-	printf(" \"%.*s\"\n", (int) token.len, token.literal);
-}
 
 t_token lexer_next_token(t_lexer *lexer)
 {

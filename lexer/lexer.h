@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/22 18:17:50 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/22 20:20:22 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@
 #include <stdbool.h>
 #include "../libft/libft.h"
 
-typedef struct s_lexer	{
+
+extern int g_exit_status;
+
+typedef struct s_lexer
+{
 	char 	*input;
 	char 	c;
 	size_t 	pos; // index of c
