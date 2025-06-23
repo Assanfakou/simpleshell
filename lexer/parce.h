@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/23 15:44:11 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/23 19:11:49 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-	char **argv;        // array of pointers to store commands with arguments
-	t_redir *redir;     // list of rredirections if there any of them
-	struct s_cmd *next;
-		// if there is a pipe we creat another t_cmd to store the other arguments after the pipe
+	char **argv;    // array of pointers to store commands with arguments
+	t_redir *redir; // list of rredirections if there any of them
+	struct s_cmd	*next;
+	// if there is a pipe we creat another t_cmd to store the other arguments after the pipe
 }					t_cmd;
 
 t_cmd				*build_cmd_list(t_lexer *lexer);
@@ -56,11 +56,12 @@ void				print_cmd(t_cmd *cmd);
 t_cmd				*create_cmd(void);
 void				add_to_argv(t_cmd *cmd, char *arg);
 void				add_redirection(t_cmd *cmd, t_redir_type type, char *file);
+int					check_for_red(t_token tok);
 // expand
 
 char				*expand_variable(char *var);
 char				*join_and_free(char *s1, char *s2);
-char				*ft_get_env(char *name, t_env *env);
+char				*join_and_free_two(char *s1, char *s2);
 void				handle_env_var(char **res, char *var, size_t *i);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:09:42 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/23 15:09:45 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/23 19:02:36 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,8 @@ t_token	lexer_next_token(t_lexer *lexer)
 
 t_token	lexer_peek_next_token(t_lexer *lexer)
 {
-	t_lexer prev_lexer;
-	t_token tok;
+	t_lexer	prev_lexer;
+	t_token	tok;
 
 	prev_lexer = *lexer;
 	tok = lexer_next_token(lexer);

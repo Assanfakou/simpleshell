@@ -4,7 +4,7 @@ LINKERS = -L ../libft -lft -lreadline
 
 SRC_FILES= $(wildcard *.c)
 SRC_OBJ= $(SRC_FILES:%.c=%.o)
-LIBFT_DIR= libft
+LIBFT_DIR= ../libft
 
 NAME=minishell
 

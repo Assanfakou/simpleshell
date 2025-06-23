@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 16:05:50 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/23 16:05:52 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/23 19:10:05 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,6 @@ void	handle_env_var(char **res, char *var, size_t *i)
 		*res = tmp;
 	}
 	*i = j;
-}
-
-char	*ft_get_env(char *name, t_env *env)
-{
-	while (env)
-	{
-		if (env->name == name)
-			return (env->content);
-		else
-			env = env->next;
-	}
-	return (NULL);
 }
 
 char	*join_and_free(char *s1, char *s2)
@@ -79,8 +67,8 @@ char	*expand_variable(char *var)
 		if (var[i] == '$' && var[i + 1] == '?')
 		{
 			tmp = ft_itoa(g_exit_status);
-			res = join_and_free(res, tmp);
-			free(tmp);
+			res = join_and_free_two(res, tmp);
+			// free(tmp);
 			i += 2;
 		}
 		else if (var[i] == '$' && is_start_char(var[i + 1]))

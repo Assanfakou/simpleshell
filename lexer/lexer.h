@@ -19,9 +19,9 @@
 # include "stdlib.h"
 # include "string.h"
 # include <stdbool.h>
+# include <stddef.h>
 # include <stdio.h>
 # include <unistd.h>
-# include <stddef.h>
 
 extern int			g_exit_status;
 

@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:15:17 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/23 16:07:01 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/23 19:01:37 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	check_first_tok(t_token *token)
 
 int	find_error(t_lexer lexer, char *input)
 {
-	t_token     tok;
+	t_token	tok;
 
 	lexer = lexer_new(input);
 	tok = lexer_next_token(&lexer);
