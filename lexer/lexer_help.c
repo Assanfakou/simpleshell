@@ -1,4 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_help.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/23 15:08:53 by hfakou            #+#    #+#             */
+/*   Updated: 2025/06/23 15:11:46 by hfakou           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lexer.h"
+
+int	is_start_char(int c)
+{
+	return (ft_isalpha(c) || c == '_');
+}
+
+int	is_var_char(int c)
+{
+	return (ft_isalnum(c) || c == '_');
+}
 
 void	read_char(t_lexer *lexer)
 {
@@ -12,7 +34,8 @@ void	read_char(t_lexer *lexer)
 	lexer->pos = lexer->read_pos;
 	lexer->read_pos++;
 }
-t_lexer lexer_new(char *str)
+
+t_lexer	lexer_new(char *str)
 {
 	t_lexer	l;
 

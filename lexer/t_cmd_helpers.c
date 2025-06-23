@@ -1,10 +1,22 @@
-#include "lexer.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   t_cmd_helpers.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/23 15:31:18 by hfakou            #+#    #+#             */
+/*   Updated: 2025/06/23 15:31:29 by hfakou           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void add_to_argv(t_cmd *cmd, char *arg)
+#include "parce.h"
+
+void	add_to_argv(t_cmd *cmd, char *arg)
 {
-	int count;
-	char **new_argv;
-	int i;
+	int		count;
+	char	**new_argv;
+	int		i;
 
 	count = 0;
 	while (cmd->argv && cmd->argv[count])
@@ -24,34 +36,34 @@ void add_to_argv(t_cmd *cmd, char *arg)
 	cmd->argv = new_argv;
 }
 
-t_cmd *create_cmd(void)
+t_cmd	*create_cmd(void)
 {
-	t_cmd *cmd;
+	t_cmd	*cmd;
 
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
-		return NULL;
+		return (NULL);
 	cmd->argv = NULL;
 	cmd->redir = NULL;
 	cmd->next = NULL;
-	return cmd;
+	return (cmd);
 }
 
-void add_redirection(t_cmd *cmd, t_redir_type type, char *file)
+void	add_redirection(t_cmd *cmd, t_redir_type type, char *file)
 {
-	t_redir *walk;
-	t_redir *redir;
+	t_redir	*walk;
+	t_redir	*redir;
 
 	redir = malloc(sizeof(t_redir));
 	if (!redir)
-		return;
+		return ;
 	redir->type = type;
 	redir->filename = file;
 	redir->next = NULL;
 	if (!cmd->redir)
 	{
 		cmd->redir = redir;
-		return;
+		return ;
 	}
 	walk = cmd->redir;
 	while (walk->next)
@@ -59,14 +71,16 @@ void add_redirection(t_cmd *cmd, t_redir_type type, char *file)
 	walk->next = redir;
 }
 
-void print_cmd(t_cmd *cmd)
+void	print_cmd(t_cmd *cmd)
 {
-	t_cmd *walk = cmd;
+	t_cmd	*walk;
+	int		i;
 
+	walk = cmd;
 	while (walk)
 	{
 		printf("BETWEEN PIPE\n");
-		int i = 0;
+		i = 0;
 		if (walk->argv)
 		{
 			while (walk->argv[i])
@@ -77,18 +91,19 @@ void print_cmd(t_cmd *cmd)
 		}
 		while (walk->redir)
 		{
-			printf("type [%u] | file name : %s\n", walk->redir->type, walk->redir->filename);
+			printf("type [%u] | file name : %s\n", walk->redir->type,
+				walk->redir->filename);
 			walk->redir = walk->redir->next;
 		}
 		walk = walk->next;
 	}
 }
 
-void free_t_cmd(t_cmd *cmd)
+void	free_t_cmd(t_cmd *cmd)
 {
-	int i;
-	t_cmd *walk;	
-	t_redir *redir_tmp;
+	int		i;
+	t_cmd	*walk;
+	t_redir	*redir_tmp;
 
 	while (cmd)
 	{
@@ -112,7 +127,7 @@ void free_t_cmd(t_cmd *cmd)
 	}
 }
 
-t_redir_type type_redir(t_token *token)
+t_redir_type	type_redir(t_token *token)
 {
 	if (token->type == TOK_HERDOC)
 		return (R_HERDOC);
@@ -123,5 +138,5 @@ t_redir_type type_redir(t_token *token)
 	else if (token->type == TOK_APPAND)
 		return (R_APPAND);
 	else
-		return 0;
+		return (0);
 }

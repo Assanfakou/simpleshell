@@ -6,29 +6,33 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/23 12:34:38 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/23 16:15:18 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include "string.h"
-#include "stdlib.h"
-#include "readline/readline.h"
-#include "readline/history.h"
-#include <stdbool.h>
-#include "../libft/libft.h"
+#ifndef LEXER_H
+# define LEXER_H
 
-extern int g_exit_status;
+# include "../libft/libft.h"
+# include "readline/history.h"
+# include "readline/readline.h"
+# include "stdlib.h"
+# include "string.h"
+# include <stdbool.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <stddef.h>
+
+extern int			g_exit_status;
 
 typedef struct s_lexer
 {
-	char 	*input;
-	char 	c;
-	size_t 	pos; // index of c
-	size_t 	len; // length of input
-	size_t 	read_pos; // next char index
-} t_lexer;
+	char			*input;
+	char			c;
+	size_t pos;      // index of c
+	size_t len;      // length of input
+	size_t read_pos; // next char index
+}					t_lexer;
 
 typedef enum s_token_type
 {
@@ -42,85 +46,44 @@ typedef enum s_token_type
 	TOK_DOUBLE,
 	TOK_SINGLE,
 	TOK_INVALID
-} t_token_type;
+}					t_token_type;
 
 typedef struct s_token
 {
-	t_token_type type;
-	char *literal;
-	size_t len;
-	bool space;
-} t_token;
+	t_token_type	type;
+	char			*literal;
+	size_t			len;
+	bool			space;
+}					t_token;
 
+// teconizing
+t_token				lexer_next_token(t_lexer *lexer);
+t_token				lexer_peek_next_token(t_lexer *lexer);
+t_token				token_redir(t_lexer *lexer);
+t_token				token_s_d_word(t_lexer *lexer);
+t_token				token_word(t_lexer *lexer);
 
-typedef enum s_redir_type
-{
-	R_HERDOC,
-	R_OUTPUT,
-	R_INPUT,
-	R_APPAND,
-} t_redir_type;
+// token_help
+t_token_type		toke_type(char c);
+bool				skip_white_space(t_lexer *lexer);
+int					ft_isspace(char c);
+t_token				token_new(char *s, t_token_type type, size_t len);
 
-typedef struct s_redir
-{
-	t_redir_type type;
-	char *filename;
-	struct s_redir *next;
-}   t_redir;
+// lexer_help
 
-typedef struct s_env
-{
-	char *name; // name of variable
-	char *content; // content of variable
-	struct s_env *next;
-} t_env; 
+t_lexer				lexer_new(char *str);
+void				read_char(t_lexer *lexer);
 
-typedef struct s_cmd
-{
-	char **argv; // array of pointers to store commands with arguments 
-	t_redir *redir; // list of rredirections if there any of them
-	struct s_cmd *next; // if there is a pipe we creat another t_cmd to store the other arguments after the pipe
-}   t_cmd;
+// error
 
-t_cmd *build_cmd_list(t_lexer *lexer);
-void print_cmd(t_cmd *cmd);
+int					check_errors(t_lexer *lexer, t_token curr);
+int					check_first_tok(t_token *token);
+int					find_error(t_lexer lexer, char *input);
+void				print_error(char *pointer, size_t size);
 
-void	token_print(t_token token);
-t_token lexer_next_token(t_lexer *lexer);
-t_token token_redir(t_lexer *lexer);
-t_token	token_s_d_word(t_lexer *lexer);
-bool	skip_white_space(t_lexer *lexer);
-int	ft_isspace(char c);
-t_token token_new(char *s, t_token_type type, size_t len);
-void	print_lexer(t_lexer *lexer);
+// expand
 
-//lexer_help
+int					is_var_char(int c);
+int					is_start_char(int c);
 
-t_lexer lexer_new(char *str);
-void	read_char(t_lexer *lexer);
-
-//error
-
-int check_errors(t_lexer *lexer ,t_token curr);
-int check_first_tok(t_token *token);
-int find_error(t_lexer lexer, char *input);
-
-
-t_token lexer_peek_next_token(t_lexer *lexer);
-
-//cmd_helpers
-
-t_redir_type	type_redir(t_token *token);
-void	free_t_cmd(t_cmd *cmd);
-void	print_cmd(t_cmd *cmd);
-t_cmd	*create_cmd(void);
-void	add_to_argv(t_cmd *cmd, char *arg);
-void	add_redirection(t_cmd *cmd, t_redir_type type, char *file);
-//expand
-
-char	*expand_variable(char *var);
-char	*join_and_free(char *s1, char *s2);
-char	*ft_get_env(char *name, t_env *env);
-void	handle_env_var(char **res, char *var, size_t *i);
-int	is_var_char(int c);
-int	is_start_char(int c); 
+#endif

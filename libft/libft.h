@@ -43,12 +43,12 @@ char				*ft_strnstr(const char *big, const char *little,
 char				*ft_strrchr(const char *s, int c);
 int					ft_atoi(const char *str);
 char				*ft_strdup(const char *str);
-//just added
-char	*ft_strndup(const char *str, size_t size);	
+// just added
+char				*ft_strndup(const char *str, size_t size);
 void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_substr(const char *s, unsigned int start, size_t len);
 char				*ft_strjoin(const char *s1, const char *s2);
-char	*ft_strnjoin(const char *s1, const char *s2, size_t size);
+char				*ft_strnjoin(const char *s1, const char *s2, size_t size);
 char				*ft_strtrim(char const *s1, char const *set);
 char				**ft_split(char const *s, char c);
 char				*ft_itoa(int n);

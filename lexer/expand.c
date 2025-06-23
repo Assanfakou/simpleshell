@@ -1,4 +1,16 @@
-#include "lexer.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/23 16:05:50 by hfakou            #+#    #+#             */
+/*   Updated: 2025/06/23 16:05:52 by hfakou           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "parce.h"
 
 void	handle_env_var(char **res, char *var, size_t *i)
 {
@@ -43,10 +55,10 @@ char	*join_and_free(char *s1, char *s2)
 	return (res);
 }
 
-char *join_char(char c, char *res)
+char	*join_char(char c, char *res)
 {
-	char t[2];
-	char *tmp;
+	char	t[2];
+	char	*tmp;
 
 	t[0] = c;
 	t[1] = '\0';

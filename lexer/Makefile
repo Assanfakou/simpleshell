@@ -1,19 +1,19 @@
 SCC = cc
 CFLAGS = -Wall -Wextra -Werror -ggdb3 -g3
-LINKERS =  ../libft/libft.a -lreadline 
+LINKERS = -L ../libft -lft -lreadline 
 
 SRC_FILES= $(wildcard *.c)
 SRC_OBJ= $(SRC_FILES:%.c=%.o)
-LIBFT_DIR= libft.a 
+LIBFT_DIR= libft
 
 NAME=minishell
 
-all:  $(NAME)
+all: $(NAME)
 
 libft_rule:
-	$(MAKE) -s -C $(LIBFT_DIR)
+	$(MAKE) -C $(LIBFT_DIR)
 
-$(NAME): $(SRC_OBJ) 
+$(NAME): $(SRC_OBJ) $(libft_rule) 
 	$(CC) $(SRC_OBJ) $(LINKERS) -o $(NAME)
 
 clean: 
@@ -21,10 +21,8 @@ clean:
 	$(MAKE) -s -C $(LIBFT_DIR) clean
 
 fclean:
-	$(RM) $(SRC_OBJ) $(OBJ_BONUS)
-	$(RM) $(NAME)
+	$(RM) $(SRC_OBJ) $(NAME) 
 	$(MAKE) -s -C $(LIBFT_DIR) fclean
-
 
 re: fclean all
 
