@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/22 20:20:22 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/23 12:34:38 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include "readline/history.h"
 #include <stdbool.h>
 #include "../libft/libft.h"
-
 
 extern int g_exit_status;
 
@@ -93,9 +92,19 @@ t_token	token_s_d_word(t_lexer *lexer);
 bool	skip_white_space(t_lexer *lexer);
 int	ft_isspace(char c);
 t_token token_new(char *s, t_token_type type, size_t len);
+void	print_lexer(t_lexer *lexer);
+
+//lexer_help
+
 t_lexer lexer_new(char *str);
 void	read_char(t_lexer *lexer);
-void	print_lexer(t_lexer *lexer);
+
+//error
+
+int check_errors(t_lexer *lexer ,t_token curr);
+int check_first_tok(t_token *token);
+int find_error(t_lexer lexer, char *input);
+
 
 t_token lexer_peek_next_token(t_lexer *lexer);
 
