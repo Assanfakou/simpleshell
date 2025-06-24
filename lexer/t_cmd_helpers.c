@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_cmd_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:31:18 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/23 15:31:29 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/24 15:05:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,17 @@ void	add_redirection(t_cmd *cmd, t_redir_type type, char *file)
 		walk = walk->next;
 	walk->next = redir;
 }
+void ft_red_printf(t_redir_type type, char *name)
+{
+	if (type == R_HERDOC)
+		printf("R_HERDOC {%s}\n", name);
+	else if (type == R_OUTPUT)
+		printf("R_OUTPUT {%s}\n", name);
+	else if (type == R_INPUT)
+		printf("R_INPUT {%s}\n", name);
+	else if (type == R_APPAND)
+		printf("R_APPAND {%s}\n", name);
+}
 
 void	print_cmd(t_cmd *cmd)
 {
@@ -91,8 +102,7 @@ void	print_cmd(t_cmd *cmd)
 		}
 		while (walk->redir)
 		{
-			printf("type [%u] | file name : %s\n", walk->redir->type,
-				walk->redir->filename);
+			ft_red_printf(walk->redir->type, walk->redir->filename);
 			walk->redir = walk->redir->next;
 		}
 		walk = walk->next;

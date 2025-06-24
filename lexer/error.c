@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:15:17 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/23 19:01:37 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/24 14:55:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	find_error(t_lexer lexer, char *input)
 
 	lexer = lexer_new(input);
 	tok = lexer_next_token(&lexer);
-	printf("%s\n", input);
+	// printf("%s\n", input);
 	if (check_first_tok(&tok))
 		return (1);
 	while (tok.type)
