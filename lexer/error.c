@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:15:17 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/24 14:55:24 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/25 19:11:57 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,13 @@ int	find_error(t_lexer lexer, char *input)
 		return (1);
 	while (tok.type)
 	{
-		if (check_errors(&lexer, tok) == 1)
-			return (1);
-		else if (tok.type == TOK_INVALID)
+		if (tok.type == TOK_INVALID)
 		{
 			write(2, "UNMATCHED QUOTE\n", 17);
 			return (1);
 		}
+		else if (check_errors(&lexer, tok) == 1)
+			return (1);
 		tok = lexer_next_token(&lexer);
 	}
 	return (0);

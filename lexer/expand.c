@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 16:05:50 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/23 19:10:05 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/25 19:05:46 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ char	*expand_variable(char *var)
 		{
 			tmp = ft_itoa(g_exit_status);
 			res = join_and_free_two(res, tmp);
-			// free(tmp);
 			i += 2;
 		}
 		else if (var[i] == '$' && is_start_char(var[i + 1]))

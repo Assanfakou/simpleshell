@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/23 15:27:34 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/27 18:26:26 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	main(void)
 	t_env	env;
 	t_lexer	lexer;
 	char	*input;
-	t_cmd	*cmd;
+	t_cmd	*head;
 
-	cmd = NULL;
+	head = NULL;
 	(void)env;
 	while (1)
 	{
@@ -35,9 +35,9 @@ int	main(void)
 		if (!find_error(lexer, input))
 		{
 			lexer = lexer_new(input);
-			cmd = build_cmd_list(&lexer);
-			print_cmd(cmd);
-			free_t_cmd(cmd);
+			head = build_cmd_list(&lexer);
+			print_cmd(head);
+			free_t_cmd(head);
 		}
 		free(input);
 	}

@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/23 19:07:38by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/27 19:35:18 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,37 @@ char	*words_if_nospace(t_lexer *lexer)
 	return (word);
 }
 
+/*
+char	*herdoc_word(t_lexer *lexer)
+{
+	char	*word;
+	char	*if_var;
+	char	*processed;
+	t_token	next_tok;
+	t_token	tok;
+
+	word = ft_strdup("");
+	while (1)
+	{
+		tok = lexer_next_token(lexer);
+		if_var = ft_strndup(tok.literal, tok.len);
+		if (tok.type == TOK_SINGLE || !ft_strchr(if_var, '$'))
+			processed = if_var;
+		else if (ft_strchr(if_var, '$'))
+		{
+			processed = expand_variable(if_var);
+			free(if_var);
+		}
+		word = join_and_free_two(word, processed);
+		next_tok = lexer_peek_next_token(lexer);
+		if ((next_tok.type != TOK_WORD && next_tok.type != TOK_SINGLE
+				&& next_tok.type != TOK_DOUBLE) || next_tok.space == true)
+			break ;
+	}
+	return (word);
+}
+*/
+
 int	check_for_red(t_token tok)
 {
 	if (tok.type == TOK_APPAND || tok.type == TOK_OUTPUT
@@ -75,8 +106,11 @@ t_cmd	*build_cmd_list(t_lexer *lexer)
 			add_to_argv(cmd, words_if_nospace(lexer));
 		else if (check_for_red(tok))
 		{
-			tok = lexer_next_token(lexer);
-			add_redirection(cmd, type_redir(&tok), words_if_nospace(lexer));
+			if (tok.type == TOK_HERDOC)
+			{
+				tok = lexer_next_token(lexer);
+				add_redirection(cmd, type_redir(&tok), words_if_nospace(lexer));
+			}
 		}
 		else if (tok.type == TOK_PIPE)
 		{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_cmd_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:31:18 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/24 15:05:11 by marvin           ###   ########.fr       */
+/*   Updated: 2025/06/27 18:29:26 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 void	add_to_argv(t_cmd *cmd, char *arg)
 {
-	int		count;
+	int	count;
 	char	**new_argv;
-	int		i;
+	int	i;
 
+	if (!arg)
+		return ;
 	count = 0;
 	while (cmd->argv && cmd->argv[count])
 		count++;
@@ -70,6 +72,7 @@ void	add_redirection(t_cmd *cmd, t_redir_type type, char *file)
 		walk = walk->next;
 	walk->next = redir;
 }
+
 void ft_red_printf(t_redir_type type, char *name)
 {
 	if (type == R_HERDOC)
@@ -88,9 +91,9 @@ void	print_cmd(t_cmd *cmd)
 	int		i;
 
 	walk = cmd;
+	printf("-------------------\n");
 	while (walk)
 	{
-		printf("BETWEEN PIPE\n");
 		i = 0;
 		if (walk->argv)
 		{
@@ -100,13 +103,18 @@ void	print_cmd(t_cmd *cmd)
 				i++;
 			}
 		}
-		while (walk->redir)
+		t_redir *walk_redirect;
+		walk_redirect = walk->redir;
+		while (walk_redirect)
 		{
-			ft_red_printf(walk->redir->type, walk->redir->filename);
-			walk->redir = walk->redir->next;
+			ft_red_printf(walk_redirect->type, walk_redirect->filename);
+			walk_redirect = walk_redirect->next;
 		}
 		walk = walk->next;
+		if (walk)
+			printf("\n  --- PIPE -------------------\n\n");
 	}
+	printf("-------------------\n");
 }
 
 void	free_t_cmd(t_cmd *cmd)
