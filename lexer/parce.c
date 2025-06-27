@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/27 19:35:18 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/27 22:51:01 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,9 @@ char	*words_if_nospace(t_lexer *lexer)
 	return (word);
 }
 
-/*
-char	*herdoc_word(t_lexer *lexer)
+char	*herdoc_word(t_lexer *lexer, bool *expand)
 {
 	char	*word;
-	char	*if_var;
 	char	*processed;
 	t_token	next_tok;
 	t_token	tok;
@@ -64,14 +62,9 @@ char	*herdoc_word(t_lexer *lexer)
 	while (1)
 	{
 		tok = lexer_next_token(lexer);
-		if_var = ft_strndup(tok.literal, tok.len);
-		if (tok.type == TOK_SINGLE || !ft_strchr(if_var, '$'))
-			processed = if_var;
-		else if (ft_strchr(if_var, '$'))
-		{
-			processed = expand_variable(if_var);
-			free(if_var);
-		}
+		processed = ft_strndup(tok.literal, tok.len);
+		if (tok.type == TOK_DOUBLE)
+			*expand = true;
 		word = join_and_free_two(word, processed);
 		next_tok = lexer_peek_next_token(lexer);
 		if ((next_tok.type != TOK_WORD && next_tok.type != TOK_SINGLE
@@ -80,7 +73,6 @@ char	*herdoc_word(t_lexer *lexer)
 	}
 	return (word);
 }
-*/
 
 int	check_for_red(t_token tok)
 {
@@ -95,8 +87,10 @@ t_cmd	*build_cmd_list(t_lexer *lexer)
 	t_cmd	*head;
 	t_cmd	*cmd;
 	t_token	tok;
+	bool expand;
 
 	head = create_cmd();
+	expand = false;
 	cmd = head;
 	while (1)
 	{
@@ -109,7 +103,12 @@ t_cmd	*build_cmd_list(t_lexer *lexer)
 			if (tok.type == TOK_HERDOC)
 			{
 				tok = lexer_next_token(lexer);
-				add_redirection(cmd, type_redir(&tok), words_if_nospace(lexer));
+				add_redirection(cmd, type_redir(&tok), herdoc_word(lexer, &expand), expand);
+			}
+			else
+			{
+				tok = lexer_next_token(lexer);
+				add_redirection(cmd, type_redir(&tok), words_if_nospace(lexer), expand);
 			}
 		}
 		else if (tok.type == TOK_PIPE)

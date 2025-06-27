@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/23 19:11:49 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/27 23:09:32 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_redir
 {
 	t_redir_type	type;
 	char			*filename;
+	bool expand;
 	struct s_redir	*next;
 }					t_redir;
 
@@ -55,7 +56,7 @@ void				free_t_cmd(t_cmd *cmd);
 void				print_cmd(t_cmd *cmd);
 t_cmd				*create_cmd(void);
 void				add_to_argv(t_cmd *cmd, char *arg);
-void				add_redirection(t_cmd *cmd, t_redir_type type, char *file);
+void				add_redirection(t_cmd *cmd, t_redir_type type, char *file, bool expanded);
 int					check_for_red(t_token tok);
 // expand
 
@@ -63,5 +64,7 @@ char				*expand_variable(char *var);
 char				*join_and_free(char *s1, char *s2);
 char				*join_and_free_two(char *s1, char *s2);
 void				handle_env_var(char **res, char *var, size_t *i);
+char				*herdoc_word(t_lexer *lexer, bool *expand);
+char				*words_if_nospace(t_lexer *lexer);
 
 #endif

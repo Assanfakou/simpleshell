@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:15:17 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/25 19:11:57 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/27 23:00:05 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	check_errors(t_lexer *lexer, t_token curr)
 		|| curr.type == TOK_INPUT || curr.type == TOK_APPAND)
 	{
 		if (n_tok.type != TOK_WORD && n_tok.type != TOK_SINGLE
-			&& n_tok.type != TOK_DOUBLE)
+			&& n_tok.type != TOK_DOUBLE && n_tok.type != TOK_INVALID)
 		{
 			print_error(n_tok.literal, n_tok.len);
 			return (1);
