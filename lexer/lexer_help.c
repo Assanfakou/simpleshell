@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:08:53 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/23 15:11:46 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/30 17:05:10 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@ int	is_var_char(int c)
 {
 	return (ft_isalnum(c) || c == '_');
 }
+
+/*
+ ** Advances the lexer to the next character in the input line.
+ ** Updates the current character (`c`), position (`pos`), and read position (`read_pos`).
+ **
+ ** @param lexer - pointer to the lexer structure
+ */
 
 void	read_char(t_lexer *lexer)
 {

@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/27 22:51:01 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/30 17:50:15 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,15 @@ char	*join_and_free_two(char *s1, char *s2)
 	return (res);
 }
 
-char	*words_if_nospace(t_lexer *lexer)
+/*
+ ** Collects and joins consecutive word-like tokens that are not separated by spaces.
+ ** Expands environment variables when appropriate, except inside single-quoted tokens.
+ **
+ ** @param lexer - pointer to the current lexer state
+ ** @return      - new allocated string representing the joined and processed word
+ */
+
+char	*collect_joined_words(t_lexer *lexer)
 {
 	char	*word;
 	char	*if_var;
@@ -50,8 +58,17 @@ char	*words_if_nospace(t_lexer *lexer)
 	}
 	return (word);
 }
+/*
+** Parses and joins tokens that form the heredoc delimiter.
+** Sets the expand flag to true if any token is double-quoted,
+** which means variable expansion should be allowed in the heredoc.
+**
+** @param lexer  - pointer to the current lexer state
+** @param expand - pointer to a flag set to true if expansion is needed
+** @return       - new allocated string representing the heredoc delimiter
+*/
 
-char	*herdoc_word(t_lexer *lexer, bool *expand)
+char	*parse_heredoc_delim(t_lexer *lexer, bool *expand)
 {
 	char	*word;
 	char	*processed;
@@ -82,6 +99,14 @@ int	check_for_red(t_token tok)
 	return (0);
 }
 
+/*
+ ** Parses the input from the lexer and builds a linked list of commands.
+ ** Handles command arguments, redirections (including heredocs), and pipes.
+ **
+ ** @param lexer - pointer to the lexer containing the token stream
+ ** @return      - pointer to the head t_cmd list
+ */
+
 t_cmd	*build_cmd_list(t_lexer *lexer)
 {
 	t_cmd	*head;
@@ -95,20 +120,19 @@ t_cmd	*build_cmd_list(t_lexer *lexer)
 	while (1)
 	{
 		tok = lexer_peek_next_token(lexer);
-		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE
-			|| tok.type == TOK_SINGLE)
-			add_to_argv(cmd, words_if_nospace(lexer));
+		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE || tok.type == TOK_SINGLE)
+			add_to_argv(cmd, collect_joined_words(lexer));
 		else if (check_for_red(tok))
 		{
 			if (tok.type == TOK_HERDOC)
 			{
 				tok = lexer_next_token(lexer);
-				add_redirection(cmd, type_redir(&tok), herdoc_word(lexer, &expand), expand);
+				add_redirection(cmd, type_redir(&tok), parse_heredoc_delim(lexer, &expand), expand);
 			}
 			else
 			{
 				tok = lexer_next_token(lexer);
-				add_redirection(cmd, type_redir(&tok), words_if_nospace(lexer), expand);
+				add_redirection(cmd, type_redir(&tok), collect_joined_words(lexer), expand);
 			}
 		}
 		else if (tok.type == TOK_PIPE)

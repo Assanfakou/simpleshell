@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:09:42 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/25 17:11:56 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/30 15:08:27 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,15 @@ t_token	token_redir(t_lexer *lexer)
 	return (tok);
 }
 
+/*
+ ** Gets the next token from the lexer input.
+ ** Skips any whitespace and define the token type
+ ** based on the current character in the input.
+ **
+ ** @param lexer - pointer to the lexer structure tracking the input from readline
+ ** @return      - the next token
+ */
+
 t_token	lexer_next_token(t_lexer *lexer)
 {
 	t_token	tok;
@@ -105,6 +114,15 @@ t_token	lexer_next_token(t_lexer *lexer)
 	tok.space = space;
 	return (tok);
 }
+
+/*
+ ** Peeks at the next token without advancing the lexer.
+ ** Creates a copy of the current lexer, retrieves the next token,
+ ** then restores the original lexer state.
+ **
+ ** @param lexer - pointer to the current lexer
+ ** @return      - the next token without consuming it
+ */
 
 t_token	lexer_peek_next_token(t_lexer *lexer)
 {

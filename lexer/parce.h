@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/27 23:09:32 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/06/30 17:37:19 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char				*expand_variable(char *var);
 char				*join_and_free(char *s1, char *s2);
 char				*join_and_free_two(char *s1, char *s2);
 void				handle_env_var(char **res, char *var, size_t *i);
-char				*herdoc_word(t_lexer *lexer, bool *expand);
-char				*words_if_nospace(t_lexer *lexer);
+char				*parse_heredoc_delim(t_lexer *lexer, bool *expand);
+char				*collect_joined_words(t_lexer *lexer);
 
 #endif
