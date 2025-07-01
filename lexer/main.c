@@ -3,19 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/30 17:08:17 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/01 13:57:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parce.h"
+#include "../execution_part/execution/main.h"
 
 int	g_exit_status = 0;
 
-int	main(void)
+int	main(int ac, char **av, char **envp)
 {
+	(void) ac;
+	(void) av;
+
 	t_env	env;
 	t_lexer	lexer;
 	char	*input;
@@ -37,8 +41,7 @@ int	main(void)
 			lexer = lexer_new(input);
 			head = build_cmd_list(&lexer);
 			if (head)
-				print_cmd(head);
-			free_t_cmd(head);
+				f_main(head, envp); 
 		}
 		free(input);
 	}
