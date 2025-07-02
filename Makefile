@@ -14,7 +14,7 @@ RM = rm -f
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
 
 
@@ -26,9 +26,7 @@ fclean: clean
 	@$(RM) $(NAME)
 	@$(RM) $(LIBFT)
 
-
-all: libft_rule $(NAME)
-libft_rule:
+$(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
 
 re: fclean all
