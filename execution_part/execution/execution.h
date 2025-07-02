@@ -33,6 +33,7 @@ typedef struct s_cmd
 } t_cmd;
 
 
+extern int g_exit_status; //bach tlinka fga3 files li m7tajinha 
 
 
 //execute_external

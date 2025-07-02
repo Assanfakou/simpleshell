@@ -13,8 +13,8 @@ int is_builtin(t_cmd *cmd)
         return 1;
     if (ft_strcmp(cmd->argv[0], "pwd") == 0)
         return 1;
-    // if (ft_strcmp(cmd->argv[0], "exit") == 0)
-    //     return 1;
+    if (ft_strcmp(cmd->argv[0], "exit") == 0)
+        return 1;
     if (ft_strcmp(cmd->argv[0], "env") == 0)
         return 1;
     if (ft_strcmp(cmd->argv[0], "export") == 0)
@@ -32,8 +32,8 @@ void exec_builtin(t_cmd *cmd, t_env *env)
         do_echo(cmd->argv, env);
     else if (ft_strcmp(cmd->argv[0], "pwd") == 0)
         do_pwd(cmd->argv, env);
-    // else if (ft_strcmp(cmd->argv[0], "exit") == 0)
-    //     do_exit(cmd->argv, env);
+    else if (ft_strcmp(cmd->argv[0], "exit") == 0)
+        do_exit(cmd->argv, &g_exit_status);
     else if (ft_strcmp(cmd->argv[0], "env") == 0)
         do_env(cmd->argv, env);
     else if (ft_strcmp(cmd->argv[0], "export") == 0)
@@ -74,7 +74,6 @@ void f_main(t_cmd *cmd, char **envp)
     t_env *env;
 
 
-    // // cmd: echo hello
 
     env = create_env(envp);
     executor(cmd, env, envp);

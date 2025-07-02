@@ -26,9 +26,6 @@ int do_cd(char **args, t_env *env)
     {
         perror("cd");
         return (1);
-    }
-
-    printf("Path = %s\n", path);
-    
+    }    
     return (0);
 }   

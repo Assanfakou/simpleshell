@@ -1,5 +1,6 @@
 #include "builtins.h"
 
+
 int ft_isnumeric(char *str)
 {
 	if (!str || !*str)
