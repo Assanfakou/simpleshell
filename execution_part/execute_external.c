@@ -15,7 +15,8 @@ char *get_cmd_path(char *cmd)
     char *chunk;
     char *full_path;
     char **paths;
-    
+
+    //the probleme of "/bin/ls" instead of going to getenv and looking for "/bin/ls"just return  that "/bin/ls" that was the probleme here
     paths = ft_split(getenv("PATH"), ':');
     full_path = NULL;
     i = 0;
