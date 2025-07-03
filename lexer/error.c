@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:15:17 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/27 23:00:05 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/03 18:45:36 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int	find_error(t_lexer lexer, char *input)
 
 	lexer = lexer_new(input);
 	tok = lexer_next_token(&lexer);
-	// printf("%s\n", input);
 	if (check_first_tok(&tok))
 		return (1);
 	while (tok.type)

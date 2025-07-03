@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/30 17:37:19 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/03 18:23:54 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void				print_cmd(t_cmd *cmd);
 
 // cmd_helpers
 
+void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer);
 t_redir_type		type_redir(t_token *token);
 void				free_t_cmd(t_cmd *cmd);
 void				print_cmd(t_cmd *cmd);

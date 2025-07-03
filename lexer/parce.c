@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/02 10:30:25 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/03 18:27:09 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,23 @@ int	check_for_red(t_token tok)
 	return (0);
 }
 
+void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer)
+{
+	bool expand;
+
+	expand = false;
+	if (tok->type == TOK_HERDOC)
+	{
+		*tok = lexer_next_token(lexer);
+		add_redirection(cmd, type_redir(tok), parse_heredoc_delim(lexer, &expand), expand);
+	}
+	else
+	{
+		*tok = lexer_next_token(lexer);
+		add_redirection(cmd, type_redir(tok), collect_joined_words(lexer), expand);
+	}
+}
+
 /*
  ** Parses the input from the lexer and builds a linked list of commands.
  ** Handles command arguments, redirections (including heredocs), and pipes.
@@ -112,10 +129,8 @@ t_cmd	*build_cmd_list(t_lexer *lexer)
 	t_cmd	*head;
 	t_cmd	*cmd;
 	t_token	tok;
-	bool expand;
 
 	head = create_cmd();
-	expand = false;
 	cmd = head;
 	while (1)
 	{
@@ -123,18 +138,7 @@ t_cmd	*build_cmd_list(t_lexer *lexer)
 		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE || tok.type == TOK_SINGLE)
 			add_to_argv(cmd, collect_joined_words(lexer));
 		else if (check_for_red(tok))
-		{
-			if (tok.type == TOK_HERDOC)
-			{
-				tok = lexer_next_token(lexer);
-				add_redirection(cmd, type_redir(&tok), parse_heredoc_delim(lexer, &expand), expand);
-			}
-			else
-			{
-				tok = lexer_next_token(lexer);
-				add_redirection(cmd, type_redir(&tok), collect_joined_words(lexer), expand);
-			}
-		}
+			redirect_del(&tok, cmd, lexer);
 		else if (tok.type == TOK_PIPE)
 		{
 			cmd->next = create_cmd();
