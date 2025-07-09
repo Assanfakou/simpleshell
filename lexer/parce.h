@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/09 09:35:19 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/09 10:05:43 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ typedef struct s_cmd
 	// if there is a pipe we creat another t_cmd to store the other arguments after the pipe
 }					t_cmd;
 
-t_cmd				*build_cmd_list(t_lexer *lexer);
+t_cmd				*build_cmd_list(t_lexer *lexer, t_env *env);
 void				print_cmd(t_cmd *cmd);
 
 // cmd_helpers
 
-void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer);
+void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env);
 t_redir_type		type_redir(t_token *token);
 void				free_t_cmd(t_cmd *cmd);
 void				print_cmd(t_cmd *cmd);
@@ -61,11 +61,15 @@ void				add_redirection(t_cmd *cmd, t_redir_type type, char *file, bool expanded
 int					check_for_red(t_token tok);
 // expand
 
-char				*expand_variable(char *var);
+char				*expand_variable(char *var, t_env *env);
 char				*join_and_free(char *s1, char *s2);
 char				*join_and_free_two(char *s1, char *s2);
-void				handle_env_var(char **res, char *var, size_t *i);
+void				handle_env_var(char **res, char *var, size_t *i, t_env *env);
 char				*parse_heredoc_delim(t_lexer *lexer, bool *expand);
-char				*collect_joined_words(t_lexer *lexer);
+char				*collect_joined_words(t_lexer *lexer, t_env *env);
+
+
+
+char *_ft_getenv(char *name_of_variable, t_env *env);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 16:05:50 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/30 13:02:23 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/09 10:01:42 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parce.h"
 
-void	handle_env_var(char **res, char *var, size_t *i)
+void	handle_env_var(char **res, char *var, size_t *i, t_env *env)
 {
 	size_t	j;
 	char	*key;
@@ -23,7 +23,7 @@ void	handle_env_var(char **res, char *var, size_t *i)
 	while (is_var_char(var[j]))
 		j++;
 	key = ft_substr(var, *i + 1, j - *i - 1);
-	val = getenv(key);
+	val = _ft_getenv(key, env);
 	free(key);
 	if (val)
 	{
@@ -54,7 +54,7 @@ char	*join_char(char c, char *res)
 	return (tmp);
 }
 
-char	*expand_variable(char *var)
+char	*expand_variable(char *var, t_env *env)
 {
 	size_t	i;
 	char	*res;
@@ -71,7 +71,7 @@ char	*expand_variable(char *var)
 			i += 2;
 		}
 		else if (var[i] == '$' && is_start_char(var[i + 1]))
-			handle_env_var(&res, var, &i);
+			handle_env_var(&res, var, &i, env);
 		else
 		{
 			res = join_char(var[i], res);

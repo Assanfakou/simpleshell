@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parce.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/03 18:27:09 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/09 10:04:14 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*join_and_free_two(char *s1, char *s2)
  ** @return      - new allocated string representing the joined and processed word
  */
 
-char	*collect_joined_words(t_lexer *lexer)
+char	*collect_joined_words(t_lexer *lexer, t_env *env)
 {
 	char	*word;
 	char	*if_var;
@@ -47,7 +47,7 @@ char	*collect_joined_words(t_lexer *lexer)
 			processed = if_var;
 		else if (ft_strchr(if_var, '$'))
 		{
-			processed = expand_variable(if_var);
+			processed = expand_variable(if_var, env);
 			free(if_var);
 		}
 		word = join_and_free_two(word, processed);
@@ -99,7 +99,7 @@ int	check_for_red(t_token tok)
 	return (0);
 }
 
-void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer)
+void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 {
 	bool expand;
 
@@ -112,7 +112,7 @@ void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer)
 	else
 	{
 		*tok = lexer_next_token(lexer);
-		add_redirection(cmd, type_redir(tok), collect_joined_words(lexer), expand);
+		add_redirection(cmd, type_redir(tok), collect_joined_words(lexer, env), expand);
 	}
 }
 
@@ -124,7 +124,7 @@ void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer)
  ** @return      - pointer to the head t_cmd list
  */
 
-t_cmd	*build_cmd_list(t_lexer *lexer)
+t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 {
 	t_cmd	*head;
 	t_cmd	*cmd;
@@ -136,9 +136,9 @@ t_cmd	*build_cmd_list(t_lexer *lexer)
 	{
 		tok = lexer_peek_next_token(lexer);
 		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE || tok.type == TOK_SINGLE)
-			add_to_argv(cmd, collect_joined_words(lexer));
+			add_to_argv(cmd, collect_joined_words(lexer, env));
 		else if (check_for_red(tok))
-			redirect_del(&tok, cmd, lexer);
+			redirect_del(&tok, cmd, lexer, env);
 		else if (tok.type == TOK_PIPE)
 		{
 			cmd->next = create_cmd();
