@@ -6,13 +6,14 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/09 10:05:43 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/09 18:33:48 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARCE_H
 # define PARCE_H
 
+#include <signal.h>
 # include "lexer.h"
 
 typedef enum s_redir_type
@@ -58,7 +59,7 @@ void				print_cmd(t_cmd *cmd);
 t_cmd				*create_cmd(void);
 void				add_to_argv(t_cmd *cmd, char *arg);
 void				add_redirection(t_cmd *cmd, t_redir_type type, char *file, bool expanded);
-int					check_for_red(t_token tok);
+int				check_for_red(t_token tok);
 // expand
 
 char				*expand_variable(char *var, t_env *env);
@@ -67,8 +68,6 @@ char				*join_and_free_two(char *s1, char *s2);
 void				handle_env_var(char **res, char *var, size_t *i, t_env *env);
 char				*parse_heredoc_delim(t_lexer *lexer, bool *expand);
 char				*collect_joined_words(t_lexer *lexer, t_env *env);
-
-
 
 char *_ft_getenv(char *name_of_variable, t_env *env);
 

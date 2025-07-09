@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/09 10:36:27 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/09 18:51:31 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,16 @@ t_env *_create_env(char **envp)
     return (env);
 }
 
+void	sigint_prompt(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	//free t_env
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	(void) ac;
@@ -72,12 +82,15 @@ int	main(int ac, char **av, char **envp)
 
 	head = NULL;
 	env = _create_env(envp);
+	signal(SIGINT, sigint_prompt); // ctr + C
 	while (1)
 	{
 		input = readline("JUST_TYPE# ");
 		if (!input)
 		{
 			write(1, "exit\n", 5);
+			free(input);
+			//free t_env
 			break ;
 		}
 		add_history(input);
