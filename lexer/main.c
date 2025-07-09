@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/09 09:56:53 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/09 10:36:27 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	main(int ac, char **av, char **envp)
 	env = _create_env(envp);
 	while (1)
 	{
-		input = readline("JUST_TYPE #$ ");
+		input = readline("JUST_TYPE# ");
 		if (!input)
 		{
 			write(1, "exit\n", 5);
