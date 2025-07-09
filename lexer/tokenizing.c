@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:09:42 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/30 15:08:27 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/03 18:36:06 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,11 @@ t_token	lexer_next_token(t_lexer *lexer)
 
 /*
  ** Peeks at the next token without advancing the lexer.
- ** Creates a copy of the current lexer, retrieves the next token,
+ ** Creates a copy of the current lexer.
  ** then restores the original lexer state.
  **
  ** @param lexer - pointer to the current lexer
- ** @return      - the next token without consuming it
+ ** @return      - the next token without consuming the lexer,
  */
 
 t_token	lexer_peek_next_token(t_lexer *lexer)

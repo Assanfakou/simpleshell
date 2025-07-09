@@ -20,7 +20,7 @@ char	*ft_strdup(const char *s1);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
 
 //do_echo
-int	ft_strcmp(char *s1, char *s2);
+// int	ft_strcmp(char *s1, char *s2);
 int do_echo(char **args, t_env *env);
 
 
