@@ -31,10 +31,10 @@ int do_cd(char **args, t_env *env);
 int do_pwd(char **args, t_env *env);
 
 //do_env
-int do_env(char **args, t_env *env);
+int do_env(char **args, t_env **env);
 
 //do_export
-int do_export(char **args, t_env *env);
+int do_export(char **args, t_env **env);
 
 //do_unset
 int *do_unset(char **args, t_env *env);

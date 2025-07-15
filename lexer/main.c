@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/09 18:51:31 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/15 20:25:27 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	main(int ac, char **av, char **envp)
 			lexer = lexer_new(input);
 			head = build_cmd_list(&lexer, env);
 			if (head)
-				f_main(head, envp); 
+				f_main(head, envp, &env); 
 		}
 		free(input);
 	}

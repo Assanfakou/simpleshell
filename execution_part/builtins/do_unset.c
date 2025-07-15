@@ -10,9 +10,9 @@ t_env *remove_node(t_env *env, char *key) // lghaya mn dik t_env treurni lista j
     t_env *next = env->next;
     if (ft_strcmp(env->name_of_variable, key) == 0)
     {
-        // free(env->name_of_variable);
-        // free(env->value);
-        // free(env);
+         free(env->name_of_variable);
+         free(env->value);
+         free(env);
 
         // had l3ibat dlfree li 9bel maghaykhdmoch lamadrtich malloc fmain si non 7iydhom okhdem bstack aykhdem
         
