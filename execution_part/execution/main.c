@@ -65,6 +65,11 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
         close(saved_stdout);                       // 4. Clean up
         return;
     }
+    if (has_pipe(cmd))
+    {
+        pipe_executor(cmd, envp);
+        return;
+    }
     if (is_builtin(cmd))
     {
         saved_stdout = dup(STDOUT_FILENO);         
@@ -74,7 +79,7 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
         close(saved_stdout);                      
         return;
     }
-    pipe_executor(cmd, envp);
+
     //execute_external(cmd, envp);
 }
 
