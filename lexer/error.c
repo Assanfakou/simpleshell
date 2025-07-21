@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmaanane <rmaanane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:15:17 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/09 10:44:50 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/21 17:33:07 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print_error(char *pointer, size_t size)
 {
 	write(2, "minishell: syntax error near unexpeted token `", 47);
 	write(2, pointer, size);
-	write(2, "`\n", 2);
+	write(2, "'\n", 2);
 	g_exit_status = 2;
 }
 

@@ -34,7 +34,7 @@ char *get_cmd_path(char *cmd)
     return (full_path);
 }
 
-void execute_external(t_cmd *cmd, char **env)
+void execute_external(t_cmd *cmd, char **envp)
 {
     char *found_path = NULL;
     pid_t pid;
@@ -48,7 +48,7 @@ void execute_external(t_cmd *cmd, char **env)
         if (pid == 0) //child process success
         {
             find_redirection(cmd->redir);
-            execve(found_path, cmd->argv, env); //hna machi darori dir if statemnt because howa la kan match kaydkhel okaydir khdmto  (replaces the current process with a new program)
+            execve(found_path, cmd->argv, envp); //hna machi darori dir if statemnt because howa la kan match kaydkhel okaydir khdmto  (replaces the current process with a new program)
             perror("execve failed");
             exit(127);
         }

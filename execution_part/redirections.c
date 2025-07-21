@@ -1,10 +1,11 @@
 #include "execution/execution.h"
 
-void check_fd(int fd)
+void check_fd(int fd, t_redir *redir)
 {
     if (fd < 0)
     {
-        perror("open failed");
+        write(2, "minishell: ", 12);
+        perror(redir->filename);
         exit(1);
     }
 }
@@ -59,21 +60,21 @@ void find_redirection(t_redir *redir)
         if (redir->type == R_INPUT) //fach kandiro wc < main.c matalan rah hna kanchdo stdin kanbdloh bfd dyala main.c bach y9ra mno sf!!!!!!!!
         {   
             fd = open(redir->filename, O_RDONLY);
-            check_fd(fd);
+            check_fd(fd, redir);
             dup_fd_inp(fd); //kanbdlo stdin ywli y9ra mn fd li 7at lih
             close(fd);
         }
         else if (redir->type == R_OUTPUT)
         {
             fd = open(redir->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644); //trunc kat7iyd dakchi l9dim okatkteb jdid
-            check_fd(fd);
+            check_fd(fd, redir);
             dup_fd_out(fd); // stdout ywli yktb f fd li 3titi (ex: file)
             close(fd);
         }
         else if (redir->type == R_APPAND)
         {
             fd = open(redir->filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
-            check_fd(fd);
+            check_fd(fd, redir);
             dup_fd_out(fd); //stdout ywli yktb f fd (lfer9 bin hadi oR_output anaho hadi katzid ktabta fo9 l9idma lakhra la)
             close(fd);
         }

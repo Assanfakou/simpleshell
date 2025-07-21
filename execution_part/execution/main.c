@@ -52,31 +52,35 @@ int has_pipe(t_cmd *cmd)
 
 void executor(t_cmd *cmd, t_env **env, char **envp)
 {
+    int saved_stdout;
+
     if (!cmd)
         return;
 
-    if (has_pipe(cmd))
-        pipe_executor(cmd, envp);
-    else if (is_builtin(cmd))
+    if ((!cmd->argv || !cmd->argv[0]))  //secod mean allocated but set 1 in len (null)
     {
-        find_redirection(cmd->redir);
-
-        exec_builtin(cmd, env);
+        saved_stdout = dup(STDOUT_FILENO);         // 1. Save stdout
+        find_redirection(cmd->redir);              // 2. Apply redirection
+        dup2(saved_stdout, STDOUT_FILENO);         // 3. Restore stdout
+        close(saved_stdout);                       // 4. Clean up
+        return;
     }
-    else
+    if (is_builtin(cmd))
     {
-        execute_external(cmd, envp);
+        saved_stdout = dup(STDOUT_FILENO);         
+        find_redirection(cmd->redir);              // 2. Apply redirection (if any)
+        exec_builtin(cmd, env);                    
+        dup2(saved_stdout, STDOUT_FILENO);         
+        close(saved_stdout);                      
+        return;
     }
+    pipe_executor(cmd, envp);
+    //execute_external(cmd, envp);
 }
+
 
 void f_main(t_cmd *cmd, char **envp, t_env **env)
 {
-    // t_env *env = NULL;
-
-
-
-    // env = create_env(envp);
     executor(cmd, env, envp);
-    //print_env(env);
 }
 

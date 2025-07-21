@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "lexer.h": "c",
+        "parce.h": "c",
+        "execution.h": "c"
+    }
+}

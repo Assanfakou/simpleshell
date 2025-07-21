@@ -5,13 +5,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "../../libft/libft.h"
-
-
-typedef struct s_env {
-    char *name_of_variable;
-    char *value;    // contenu ex: "/Users/rida"
-    struct s_env *next;
-} t_env;
+#include "../../lexer/parce.h"
 
 
 //main.c
