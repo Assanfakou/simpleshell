@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/15 20:25:27 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/21 08:53:47 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	sigint_prompt(int sig)
 	//free t_env
 }
 
+void print_ast(t_cmd *ast);
+
 int	main(int ac, char **av, char **envp)
 {
 	(void) ac;
@@ -99,7 +101,10 @@ int	main(int ac, char **av, char **envp)
 			lexer = lexer_new(input);
 			head = build_cmd_list(&lexer, env);
 			if (head)
+				print_ast(head);
+/*
 				f_main(head, envp, &env); 
+*/
 		}
 		free(input);
 	}
