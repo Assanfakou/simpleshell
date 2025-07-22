@@ -5,12 +5,13 @@ LINKERS = -L ../libft -lft -lreadline
 SRC_FILES= $(wildcard *.c ast_print/*.c)
 SRC_OBJ= $(SRC_FILES:%.c=%.o)
 LIBFT_DIR= ../libft
+libft_rule = ../libft/libft.a
 
 NAME=minishell
 
 all: $(NAME)
 
-libft_rule:
+$(libft_rule):
 	$(MAKE) -C $(LIBFT_DIR)
 
 $(NAME): $(SRC_OBJ) $(libft_rule) 
