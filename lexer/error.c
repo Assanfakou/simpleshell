@@ -6,16 +6,25 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:15:17 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/09 10:44:50 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/22 10:47:38 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+#include "parce.h"
 #include "lexer.h"
+
 
 void	print_error(char *pointer, size_t size)
 {
 	write(2, "minishell: syntax error near unexpeted token `", 47);
 	write(2, pointer, size);
+	write(2, "`\n", 2);
+	g_exit_status = 2;
+}
+
+void	print_newline_error(void)
+{
+	write(2, "minishell: syntax error near unexpeted token `", 47);
+	write(2, "newline", 7);
 	write(2, "`\n", 2);
 	g_exit_status = 2;
 }
@@ -30,10 +39,14 @@ int	check_errors(t_lexer *lexer, t_token curr)
 		print_error(curr.literal, curr.len);
 		return (1);
 	}
-	else if (curr.type == TOK_HERDOC || curr.type == TOK_OUTPUT
-		|| curr.type == TOK_INPUT || curr.type == TOK_APPAND)
+	else if (check_for_red(curr))
 	{
-		if (n_tok.type != TOK_WORD && n_tok.type != TOK_SINGLE
+		if (n_tok.type == TOK_NULL)
+		{
+			print_newline_error();
+			return (1);
+		}
+		else if (n_tok.type != TOK_WORD && n_tok.type != TOK_SINGLE
 			&& n_tok.type != TOK_DOUBLE && n_tok.type != TOK_INVALID)
 		{
 			print_error(n_tok.literal, n_tok.len);
