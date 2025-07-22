@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:15:17 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/22 10:47:38 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/22 11:23:25 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "parce.h"
@@ -28,7 +28,7 @@ void	print_newline_error(void)
 	write(2, "`\n", 2);
 	g_exit_status = 2;
 }
-
+	
 int	check_errors(t_lexer *lexer, t_token curr)
 {
 	t_token	n_tok;
@@ -46,12 +46,8 @@ int	check_errors(t_lexer *lexer, t_token curr)
 			print_newline_error();
 			return (1);
 		}
-		else if (n_tok.type != TOK_WORD && n_tok.type != TOK_SINGLE
-			&& n_tok.type != TOK_DOUBLE && n_tok.type != TOK_INVALID)
-		{
-			print_error(n_tok.literal, n_tok.len);
+		else if (not_token(n_tok))
 			return (1);
-		}
 		else
 			return (0);
 	}

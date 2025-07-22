@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:08:53 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/30 17:05:10 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/22 11:19:56 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,18 @@ int	is_start_char(int c)
 int	is_var_char(int c)
 {
 	return (ft_isalnum(c) || c == '_');
+}
+
+int not_token(t_token n_tok)
+{
+	if (n_tok.type != TOK_WORD && n_tok.type != TOK_SINGLE
+	&& n_tok.type != TOK_DOUBLE && n_tok.type != TOK_INVALID)
+	{
+		print_error(n_tok.literal, n_tok.len);
+		return (1);
+	}
+	else
+		return (0);
 }
 
 /*
