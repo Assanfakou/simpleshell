@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -ggdb3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -ggdb3 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 

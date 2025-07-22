@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/25 17:39:50 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/22 11:19:08 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void				read_char(t_lexer *lexer);
 // error
 
 int					check_errors(t_lexer *lexer, t_token curr);
+int not_token(t_token n_tok);
+
 int					check_first_tok(t_token *token);
 int					find_error(t_lexer lexer, char *input);
 void				print_error(char *pointer, size_t size);
