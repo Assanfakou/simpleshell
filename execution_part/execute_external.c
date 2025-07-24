@@ -36,32 +36,32 @@ char *get_cmd_path(char *cmd)
 
 void execute_external(t_cmd *cmd, char **envp)
 {
-    char *found_path = NULL;
+    char *path = NULL;
     pid_t pid;
 
-    found_path = get_cmd_path(cmd->argv[0]);
-    free(cmd->argv[0]);
-    cmd->argv[0] = found_path;
-    if (found_path)
+    if (path != NULL)
     {
         pid = fork();
-        if (pid == 0) //child process success
+        if (pid == 0)
         {
             find_redirection(cmd->redir);
-            execve(found_path, cmd->argv, envp); //hna machi darori dir if statemnt because howa la kan match kaydkhel okaydir khdmto  (replaces the current process with a new program)
+            execve(path, cmd->argv, envp);
             perror("execve failed");
             exit(127);
         }
         else if (pid > 0)
-            waitpid(pid, NULL, 0); //bghinah ytsena child osf without specifie chi haaja
+        {
+            waitpid(pid, NULL, 0);
+        }
         else
             perror("fork failed");
-        free(found_path);  
+        free(path);
     }
     else
-        printf("%s: command not found\n", cmd->argv[0]);
+    {
+        if (cmd->argv && cmd->argv[0])
+            printf("%s: command not found\n", cmd->argv[0]);
+        else
+            printf("unknown: command not found\n");
+    }
 }
-
-
-
-

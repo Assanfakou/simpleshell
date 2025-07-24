@@ -56,7 +56,7 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
 
     if (!cmd)
         return;
-
+    
     if ((!cmd->argv || !cmd->argv[0]))  //secod mean allocated but set 1 in len (null)
     {
         saved_stdout = dup(STDOUT_FILENO);         // 1. Save stdout
@@ -65,27 +65,40 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
         close(saved_stdout);                       // 4. Clean up
         return;
     }
-    if (has_pipe(cmd))
-    {
-        pipe_executor(cmd, envp);
-        return;
-    }
+
+
     if (is_builtin(cmd))
     {
-        saved_stdout = dup(STDOUT_FILENO);         
-        find_redirection(cmd->redir);              // 2. Apply redirection (if any)
-        exec_builtin(cmd, env);                    
-        dup2(saved_stdout, STDOUT_FILENO);         
-        close(saved_stdout);                      
-        return;
+        if (has_pipe(cmd))
+        {
+            pid_t pid = fork();
+            if (pid == 0)
+            {
+                pipe_executor(cmd, env, envp);
+                return;
+            }
+            else
+                waitpid(pid, NULL, 0);
+        }
+        else
+        {
+            saved_stdout = dup(STDOUT_FILENO);         
+            find_redirection(cmd->redir);              // 2. Apply redirection (if any)
+            exec_builtin(cmd, env);                    
+            dup2(saved_stdout, STDOUT_FILENO);         
+            close(saved_stdout);                      
+            return;
+        }
     }
-
-    //execute_external(cmd, envp);
+    else
+        execute_external(cmd, envp);
 }
 
 
 void f_main(t_cmd *cmd, char **envp, t_env **env)
 {
+    //printf("DEBUG: argv[0] = [%s]\n", cmd->argv[0]);
+
     executor(cmd, env, envp);
 }
 
