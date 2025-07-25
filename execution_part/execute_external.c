@@ -60,7 +60,7 @@ void execute_external(t_cmd *cmd, char **envp)
         if (cmd->argv && cmd->argv[0])
         {
             printf("%s: command not found\n", cmd->argv[0]);
-            g_exit_status = 127000;
+            g_exit_status = 127;
         }
 
     }

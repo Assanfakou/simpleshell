@@ -66,8 +66,6 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
         return;
     }
 
-// Ex: for each command or just before calling exec_cmd
-
     if (is_builtin(cmd))
     {
         if (has_pipe(cmd))
@@ -112,8 +110,6 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
 
 void f_main(t_cmd *cmd, char **envp, t_env **env)
 {
-    //printf("DEBUG: argv[0] = [%s]\n", cmd->argv[0]);
-    // g_exit_status = 1999;
     
     executor(cmd, env, envp);
 }
