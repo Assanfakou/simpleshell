@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parce.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmaanane <rmaanane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/09 18:33:48 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/21 16:03:22 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include <signal.h>
 # include "lexer.h"
+
+
 
 typedef enum s_redir_type
 {

@@ -33,7 +33,7 @@ void exec_builtin(t_cmd *cmd, t_env **env)
     else if (ft_strcmp(cmd->argv[0], "pwd") == 0)
         do_pwd(cmd->argv, *env);
     else if (ft_strcmp(cmd->argv[0], "exit") == 0)
-        do_exit(cmd->argv, &g_exit_status);
+        do_exit(cmd->argv);
     else if (ft_strcmp(cmd->argv[0], "env") == 0)
         do_env(cmd->argv, env);
     else if (ft_strcmp(cmd->argv[0], "export") == 0)
@@ -52,31 +52,65 @@ int has_pipe(t_cmd *cmd)
 
 void executor(t_cmd *cmd, t_env **env, char **envp)
 {
+    int saved_stdout;
+
     if (!cmd)
         return;
-
-    if (has_pipe(cmd))
-        pipe_executor(cmd, envp);
-    else if (is_builtin(cmd))
+    
+    if ((!cmd->argv || !cmd->argv[0]))  //secod mean allocated but set 1 in len (null)
     {
-        find_redirection(cmd->redir);
+        saved_stdout = dup(STDOUT_FILENO);         // 1. Save stdout
+        find_redirection(cmd->redir);              // 2. Apply redirection
+        dup2(saved_stdout, STDOUT_FILENO);         // 3. Restore stdout
+        close(saved_stdout);                       // 4. Clean up
+        return;
+    }
 
-        exec_builtin(cmd, env);
+    if (is_builtin(cmd))
+    {
+        if (has_pipe(cmd))
+        {
+            pid_t pid = fork();
+            if (pid == 0)
+            {
+                pipe_executor(cmd, env, envp);
+                return;
+            }
+            else
+                waitpid(pid, NULL, 0);
+        }
+        else
+        {
+            saved_stdout = dup(STDOUT_FILENO);         
+            find_redirection(cmd->redir);              // 2. Apply redirection (if any)
+            exec_builtin(cmd, env);                    
+            dup2(saved_stdout, STDOUT_FILENO);         
+            close(saved_stdout);                      
+            return;
+        }
     }
     else
-    {
         execute_external(cmd, envp);
-    }
+
+    // char *path = get_cmd_path(cmd->argv[0]);
+    // if (!path)
+    // {
+    //     printf("❌ DEBUG: %s not found in PATH\n", cmd->argv[0]);
+    //     exit(127);
+    // }
+    // else
+    // {
+    //     printf("✅ DEBUG: %s resolved as: %s\n", cmd->argv[0], path);
+    //     execve(path, cmd->argv, envp);
+    //     perror("execve failed ❌");
+    //     exit(1);
+    // }
 }
+
 
 void f_main(t_cmd *cmd, char **envp, t_env **env)
 {
-    // t_env *env = NULL;
-
-
-
-    // env = create_env(envp);
+    
     executor(cmd, env, envp);
-    //print_env(env);
 }
 

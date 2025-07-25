@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmaanane <rmaanane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/22 11:57:25 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/25 23:08:43 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	main(int ac, char **av, char **envp)
 	signal(SIGINT, sigint_prompt); // ctr + C
 	while (1)
 	{
-		input = readline("JUST_TYPE# ");
+		input = readline("minishell: ");
 		if (!input)
 		{
 			write(1, "exit\n", 5);
