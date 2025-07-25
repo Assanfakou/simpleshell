@@ -33,7 +33,7 @@ void exec_builtin(t_cmd *cmd, t_env **env)
     else if (ft_strcmp(cmd->argv[0], "pwd") == 0)
         do_pwd(cmd->argv, *env);
     else if (ft_strcmp(cmd->argv[0], "exit") == 0)
-        do_exit(cmd->argv, &g_exit_status);
+        do_exit(cmd->argv);
     else if (ft_strcmp(cmd->argv[0], "env") == 0)
         do_env(cmd->argv, env);
     else if (ft_strcmp(cmd->argv[0], "export") == 0)
@@ -66,6 +66,7 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
         return;
     }
 
+// Ex: for each command or just before calling exec_cmd
 
     if (is_builtin(cmd))
     {
@@ -92,13 +93,28 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
     }
     else
         execute_external(cmd, envp);
+
+    // char *path = get_cmd_path(cmd->argv[0]);
+    // if (!path)
+    // {
+    //     printf("❌ DEBUG: %s not found in PATH\n", cmd->argv[0]);
+    //     exit(127);
+    // }
+    // else
+    // {
+    //     printf("✅ DEBUG: %s resolved as: %s\n", cmd->argv[0], path);
+    //     execve(path, cmd->argv, envp);
+    //     perror("execve failed ❌");
+    //     exit(1);
+    // }
 }
 
 
 void f_main(t_cmd *cmd, char **envp, t_env **env)
 {
     //printf("DEBUG: argv[0] = [%s]\n", cmd->argv[0]);
-
+    // g_exit_status = 1999;
+    
     executor(cmd, env, envp);
 }
 

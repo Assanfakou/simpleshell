@@ -12,7 +12,7 @@
 #include "../../lexer/parce.h"
 
 
-extern int g_exit_status; //bach tlinka fga3 files li m7tajinha 
+// extern int g_exit_status; //bach tlinka fga3 files li m7tajinha 
 
 
 //execute_external

@@ -84,6 +84,7 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
                 close(pipes[j++]);
             if (is_builtin(temp))
             {
+                printf("⚙️ Builtin detected: %s\n", cmd->argv[0]);
                 exec_builtin(temp, env);
                 exit(0); //ykhrej ghir child (kol child yexecute one cmd only)
             }
@@ -94,14 +95,16 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
                 path = ft_strdup(temp->argv[0]); //copy of path
             else
                 path = get_cmd_path(temp->argv[0]);  // search in PATH
+            printf("📂 DEBUG: PATH = %s\n", path);
             if (!path) // path b9a khawi
             {
                 if (temp->argv && temp->argv[0])
                     printf("%s: command not found\n", temp->argv[0]);
-                else
-                    printf("unknown: command not found\n");
+                g_exit_status = 127;
+                printf("%d\n", g_exit_status);
                 exit(127);
             }
+            printf("🚀 Exec path: %s\n", path);
             // Error: permission denied
             if (access(path, F_OK) == 0 && access(path, X_OK) != 0) //F_OK mean if exesist
             {

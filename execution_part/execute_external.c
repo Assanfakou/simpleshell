@@ -36,7 +36,7 @@ char *get_cmd_path(char *cmd)
 
 void execute_external(t_cmd *cmd, char **envp)
 {
-    char *path = NULL;
+    char *path = get_cmd_path(cmd->argv[0]);
     pid_t pid;
 
     if (path != NULL)
@@ -50,9 +50,7 @@ void execute_external(t_cmd *cmd, char **envp)
             exit(127);
         }
         else if (pid > 0)
-        {
             waitpid(pid, NULL, 0);
-        }
         else
             perror("fork failed");
         free(path);
@@ -60,8 +58,10 @@ void execute_external(t_cmd *cmd, char **envp)
     else
     {
         if (cmd->argv && cmd->argv[0])
+        {
             printf("%s: command not found\n", cmd->argv[0]);
-        else
-            printf("unknown: command not found\n");
+            g_exit_status = 127000;
+        }
+
     }
 }

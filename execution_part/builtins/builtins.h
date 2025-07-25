@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "../../libft/libft.h"
 #include "../../lexer/parce.h"
-
+#include "../../lexer/lexer.h"
 
 //main.c
 size_t	ft_strlen(const char *s);
@@ -37,7 +37,7 @@ int *do_unset(char **args, t_env *env);
 void print_env(t_env *env);
 
 //do_exit
-void	do_exit(char **args, int *exit_status);
+void	do_exit(char **args);
 
 //create_env
 t_env *create_env(char **envp);

@@ -16,12 +16,13 @@ int ft_isnumeric(char *str)
 	return (1);	
 }
 
-void	do_exit(char **args, int *exit_status)
+void	do_exit(char **args)
 {
 	printf("exit\n");
 	
 	if (!args[1])
-		exit(*exit_status);
+		exit(g_exit_status);
+	printf("%d\n", g_exit_status);
 	
 	if (!ft_isnumeric(args[1]))
 	{
@@ -32,7 +33,7 @@ void	do_exit(char **args, int *exit_status)
 	if (args[2])
 	{
 		printf("minishell: exit: too many arguments\n");
-		*exit_status = EXIT_FAILURE; //deja kaykon fstdlib dakchi 3lach ma7tajinach lih define
+		g_exit_status = EXIT_FAILURE; //deja kaykon fstdlib dakchi 3lach ma7tajinach lih define
 		return;
 	}
 
