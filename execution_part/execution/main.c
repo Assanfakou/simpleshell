@@ -2,6 +2,7 @@
 #include "main.h"
 
 
+
 int is_builtin(t_cmd *cmd)
 {
     if (!cmd || !cmd->argv || !cmd->argv[0])
@@ -21,7 +22,8 @@ int is_builtin(t_cmd *cmd)
         return 1;
     if (ft_strcmp(cmd->argv[0], "unset") == 0)
         return 1;
-
+    if (ft_strcmp(cmd->argv[0], "clear_env") == 0)  // reeeemove after use
+		return (1);
     return 0;
 }
 void exec_builtin(t_cmd *cmd, t_env **env)
@@ -40,6 +42,8 @@ void exec_builtin(t_cmd *cmd, t_env **env)
         do_export(cmd->argv, env);
     else if (ft_strcmp(cmd->argv[0], "unset") == 0)
         do_unset(cmd->argv, *env);
+    else if (ft_strcmp(cmd->argv[0], "clear_env") == 0) // reeeemove after use
+        free_env(env);
 }
 
 int has_pipe(t_cmd *cmd)
@@ -90,21 +94,7 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
         }
     }
     else
-        execute_external(cmd, envp);
-
-    // char *path = get_cmd_path(cmd->argv[0]);
-    // if (!path)
-    // {
-    //     printf("❌ DEBUG: %s not found in PATH\n", cmd->argv[0]);
-    //     exit(127);
-    // }
-    // else
-    // {
-    //     printf("✅ DEBUG: %s resolved as: %s\n", cmd->argv[0], path);
-    //     execve(path, cmd->argv, envp);
-    //     perror("execve failed ❌");
-    //     exit(1);
-    // }
+        execute_external(cmd, env);
 }
 
 

@@ -59,6 +59,7 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
     int nb_cmds = count_cmds(cmd);
     int nb_pipes = nb_cmds - 1;
     int *pipes = create_pipes(cmd);
+
     if (!pipes)
     {
         perror("failed to create pipes");
@@ -74,14 +75,15 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
         if (pid == 0)
         {
             int j = 0;
-
+            
             if (i != 0)
-                dup2(pipes[(i - 1) * 2], STDIN_FILENO);
+            dup2(pipes[(i - 1) * 2], STDIN_FILENO);
             if (temp->next)
-                dup2(pipes[i * 2 + 1], STDOUT_FILENO);
+            dup2(pipes[i * 2 + 1], STDOUT_FILENO);
             // Close all pipes
             while (j < nb_pipes * 2) //*2 mean read write
                 close(pipes[j++]);
+
             if (is_builtin(temp))
             {
                 printf("⚙️ Builtin detected: %s\n", cmd->argv[0]);
@@ -94,7 +96,7 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
                 (temp->argv[0][0] == '.' && temp->argv[0][1] == '/'))
                 path = ft_strdup(temp->argv[0]); //copy of path
             else
-                path = get_cmd_path(temp->argv[0]);  // search in PATH
+                path = get_cmd_path(temp->argv[0], *env);  // search in PATH
             printf("📂 DEBUG: PATH = %s\n", path);
             if (!path) // path b9a khawi
             {

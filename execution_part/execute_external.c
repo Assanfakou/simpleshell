@@ -9,14 +9,21 @@ void free_split_content(char **array)
         free(array[i++]);
     free(array);
 }
-char *get_cmd_path(char *cmd)
+
+char *get_cmd_path(char *cmd, t_env *env)
 {
     int i;
     char *chunk;
     char *full_path;
     char **paths;
-    
-    paths = ft_split(getenv("PATH"), ':');
+
+    char *path_env = ft_getenv("PATH", env);
+    if (!path_env || ft_strchr(cmd, '/')) //handle case ila 3titi ./minishell west minishell
+        return (ft_strdup(cmd));
+
+    paths = ft_split(path_env, ':');
+    if (!paths)
+        return NULL;
     full_path = NULL;
     i = 0;
     while (paths && paths[i])
@@ -34,9 +41,49 @@ char *get_cmd_path(char *cmd)
     return (full_path);
 }
 
-void execute_external(t_cmd *cmd, char **envp)
+char *ft_strjoin_3(char *s1, char *s2, char *s3)
 {
-    char *path = get_cmd_path(cmd->argv[0]);
+    char *tmp = ft_strjoin(s1, s2);
+    char *result = ft_strjoin(tmp, s3);
+    free(tmp);
+    return result;
+}
+
+char **env_to_envp(t_env *env)
+{
+    int i = 0;
+    char **envp;
+    t_env *tmp = env;
+
+    // Count
+    int count = 0;
+    while (tmp)
+    {
+        count++;
+        tmp = tmp->next;
+    }
+
+    envp = malloc(sizeof(char *) * (count + 1));
+    if (!envp)
+        return NULL;
+
+    tmp = env;
+    while (tmp)
+    {
+        envp[i] = ft_strjoin_3(tmp->name_of_variable, "=", tmp->value); // you need to write ft_strjoin_3
+        i++;
+        tmp = tmp->next;
+    }
+    envp[i] = NULL;
+    return envp;
+}
+
+
+
+void execute_external(t_cmd *cmd, t_env **env)
+{
+    char *path = get_cmd_path(cmd->argv[0], *env);
+    char **envp = env_to_envp(*env);
     pid_t pid;
 
     if (path != NULL)
@@ -62,6 +109,5 @@ void execute_external(t_cmd *cmd, char **envp)
             printf("%s: command not found\n", cmd->argv[0]);
             g_exit_status = 127;
         }
-
     }
 }
