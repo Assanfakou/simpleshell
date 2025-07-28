@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmaanane <rmaanane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/25 23:08:16 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/28 04:49:13 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 # include <unistd.h>
 
 extern int			g_exit_status;
+
+# define GET 0
+# define SET 1
 
 typedef struct s_lexer
 {
@@ -87,5 +90,11 @@ void				print_error(char *pointer, size_t size);
 
 int					is_var_char(int c);
 int					is_start_char(int c);
+
+
+
+int    status_get(void);
+void    status_set(int value);
+void    status_main(int action, int *value);
 
 #endif

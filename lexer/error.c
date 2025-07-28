@@ -6,11 +6,11 @@
 /*   By: rmaanane <rmaanane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:15:17 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/25 23:07:58 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/28 04:45:11 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "parce.h"
 #include "lexer.h"
+#include "parce.h"
 
 
 void	print_error(char *pointer, size_t size)
@@ -18,7 +18,7 @@ void	print_error(char *pointer, size_t size)
 	write(2, "minishell: syntax error near unexpeted token `", 47);
 	write(2, pointer, size);
 	write(2, "'\n", 2);
-	g_exit_status = 2;
+	status_set(2);
 }
 
 void	print_newline_error(void)
@@ -26,7 +26,7 @@ void	print_newline_error(void)
 	write(2, "minishell: syntax error near unexpeted token `", 47);
 	write(2, "newline", 7);
 	write(2, "`\n", 2);
-	g_exit_status = 2;
+	status_set(2);
 }
 	
 int	check_errors(t_lexer *lexer, t_token curr)
@@ -66,7 +66,7 @@ int	check_first_tok(t_token *token)
 		token->type = TOK_NULL;
 		write(2, "minishell: syntax error near unexpeted token `|`", 49);
 		write(2, "\n", 1);
-		g_exit_status = 2;
+		status_set(2);
 		return (1);
 	}
 	else
@@ -88,6 +88,7 @@ int	find_error(t_lexer lexer, char *input)
 		if (tok.type == TOK_INVALID)
 		{
 			write(2, "UNMATCHED QUOTE\n", 17);
+			status_set(2);
 			return (1);
 		}
 		else if (check_errors(&lexer, tok) == 1)
