@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:35:51 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/07/28 22:25:46 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/28 23:25:00 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	do_env(char **args, t_env **env)
 	walk = *env;
 	while (walk)
 	{
-		if (walk && walk->value)
+		if (walk)
 			printf("%s=%s\n", walk->name_of_variable, walk->value);
 		walk = walk->next;
 	}
