@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/09 10:04:14 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/28 06:52:14 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,23 @@ void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 	bool expand;
 
 	expand = false;
+	
+	*tok = lexer_next_token(lexer);
 	if (tok->type == TOK_HERDOC)
 	{
 		*tok = lexer_next_token(lexer);
+		char *del = ft_strndup(tok->literal, tok->len);
+		printf("%s\n", del);
+		char *result = ft_strdup("");
+		while (1)
+		{
+			char *line = readline("> ");
+			printf("[%s]\n", line);
+			printf("[%s]\n", del);
+			result = join_and_free_two(line, result);
+			if (ft_strcmp(line, del) == 0)
+				break;
+		}
 		add_redirection(cmd, type_redir(tok), parse_heredoc_delim(lexer, &expand), expand);
 	}
 	else
