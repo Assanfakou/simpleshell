@@ -56,51 +56,54 @@ int has_pipe(t_cmd *cmd)
 
 void executor(t_cmd *cmd, t_env **env, char **envp)
 {
-    int saved_stdout;
-
     if (!cmd)
         return;
     
-    if ((!cmd->argv || !cmd->argv[0]))  //secod mean allocated but set 1 in len (null)
+    // case: empty command with redirection only (like: > file)
+    if (!cmd->argv || !cmd->argv[0])
     {
-        saved_stdout = dup(STDOUT_FILENO);         // 1. Save stdout
-        find_redirection(cmd->redir);              // 2. Apply redirection
-        dup2(saved_stdout, STDOUT_FILENO);         // 3. Restore stdout
-        close(saved_stdout);                       // 4. Clean up
+        int saved_stdout = dup(STDOUT_FILENO);
+        find_redirection(cmd->redir);
+        dup2(saved_stdout, STDOUT_FILENO);
+        close(saved_stdout);
+        g_exit_status = 0; //7it t9der tkon ba9a chi value 9dima
+        return;
+    }
+    if (cmd->argv && cmd->argv[0] && !get_cmd_path(cmd->argv[0], *env)) //handle user give input ma3ndoch m3na
+    {
+        write(2, cmd->argv[0], ft_strlen(cmd->argv[0]));
+        write(2, ": command not found\n", 21);
+        g_exit_status = 127;
+        return;
+    }
+    
+    if (ft_strlen(cmd->argv[0]) == 0) //handle case ""
+    {
+        printf("Command '' not found\n");
+        g_exit_status = 127;
+        return;
+    }
+    
+
+//ask ali here 3lach kaykmel fchi case wkha kayna return darori khaso had order dyal if statemnt si non maykhdemch  
+
+    // case: single builtin without pipe
+    if (is_builtin(cmd) && !has_pipe(cmd))
+    {
+        int saved_stdout = dup(STDOUT_FILENO);
+        find_redirection(cmd->redir);
+        exec_builtin(cmd, env);
+        dup2(saved_stdout, STDOUT_FILENO);
+        close(saved_stdout);
         return;
     }
 
-    if (is_builtin(cmd))
-    {
-        if (has_pipe(cmd))
-        {
-            pid_t pid = fork();
-            if (pid == 0)
-            {
-                pipe_executor(cmd, env, envp);
-                return;
-            }
-            else
-                waitpid(pid, NULL, 0);
-        }
-        else
-        {
-            saved_stdout = dup(STDOUT_FILENO);         
-            find_redirection(cmd->redir);              // 2. Apply redirection (if any)
-            exec_builtin(cmd, env);                    
-            dup2(saved_stdout, STDOUT_FILENO);         
-            close(saved_stdout);                      
-            return;
-        }
-    }
-    else
-        execute_external(cmd, env);
+    // else: pipeline or external command
+    pipe_executor(cmd, env, envp);
 }
-
 
 void f_main(t_cmd *cmd, char **envp, t_env **env)
 {
-    
     executor(cmd, env, envp);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/26 17:49:55 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/07/28 10:55:44 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	main(int ac, char **av, char **envp)
 			//free t_env
 			break ;
 		}
+        
 		add_history(input);
 		if (!find_error(lexer, input))
 		{

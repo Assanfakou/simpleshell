@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parce.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/09 10:04:14 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/28 10:59:28 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,12 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 
 	head = create_cmd();
 	cmd = head;
+
+	
 	while (1)
 	{
 		tok = lexer_peek_next_token(lexer);
+		
 		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE || tok.type == TOK_SINGLE)
 			add_to_argv(cmd, collect_joined_words(lexer, env));
 		else if (check_for_red(tok))
