@@ -39,21 +39,21 @@ void close_pipe_and_wait(int nb_cmds, int nb_pipes, int *pipes)
     // parent: close pipes
     int i = 0;
     while (i < nb_pipes * 2)
-    {
-        close(pipes[i]);
-        i++;
-    }
+        close(pipes[i++]);
 
-    // wait all children
+    int status;
     int j = 0;
     while (j < nb_cmds)
     {
-        wait(NULL);
+        wait(&status);
+        if (WIFEXITED(status)) // hadi macro f C, katcheck wach dak child tsala normal (b exit(x)), mashi b signal (kill, segfault...).
+            g_exit_status = WEXITSTATUS(status); // ila hya true, n9adro njibo exit status dyal command.
         j++;
     }
 
-    free(pipes); //7it deja allocinahom fcreate pipes
+    free(pipes);
 }
+
 int has_output_redirection(t_cmd *cmd)
 {
     t_redir *r = cmd->redir;
@@ -112,10 +112,21 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
                 path = get_cmd_path(temp->argv[0], *env);  // search in PATH
             if (!path) // path b9a khawi
             {
+                if (temp->argv && temp->argv[1])
+                {
+                    printf("hereee\n");
+                    write(2, temp->argv[1], ft_strlen(temp->argv[1]));
+                    write(2, ": command not found\n", 21);
+                } 
                 if (temp->argv && temp->argv[0])
-                    printf("%s: command not found\n", temp->argv[0]);
+                {
+                    write(2, temp->argv[0], ft_strlen(temp->argv[0]));
+                    write(2, ": command not found\n", 21);
+                }
                 g_exit_status = 127;
+                
                 exit(127);
+
             }
             // Error: permission denied
             if (access(path, F_OK) == 0 && access(path, X_OK) != 0) //F_OK mean if exesist

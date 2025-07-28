@@ -69,7 +69,7 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
         g_exit_status = 0; //7it t9der tkon ba9a chi value 9dima
         return;
     }
-    if (cmd->argv && cmd->argv[0] && !get_cmd_path(cmd->argv[0], *env)) //handle user give input ma3ndoch m3na
+    if (cmd->argv && cmd->argv[0] && !get_cmd_path(cmd->argv[0], *env) && !is_builtin(cmd)) //handle user give input ma3ndoch m3na
     {
         write(2, cmd->argv[0], ft_strlen(cmd->argv[0]));
         write(2, ": command not found\n", 21);
@@ -104,6 +104,9 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
 
 void f_main(t_cmd *cmd, char **envp, t_env **env)
 {
+    for (int k = 0; cmd->argv && cmd->argv[k]; k++)
+            printf("count cmd : %s ", cmd->argv[k]);
+    printf("\n");
     executor(cmd, env, envp);
 }
 
