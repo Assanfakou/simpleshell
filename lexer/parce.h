@@ -6,7 +6,7 @@
 /*   By: rmaanane <rmaanane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/21 16:03:22 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/07/29 00:42:02 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ char				*join_and_free_two(char *s1, char *s2);
 void				handle_env_var(char **res, char *var, size_t *i, t_env *env);
 char				*parse_heredoc_delim(t_lexer *lexer, bool *expand);
 char				*collect_joined_words(t_lexer *lexer, t_env *env);
+char	*join_char(char c, char *res);
 
 char *_ft_getenv(char *name_of_variable, t_env *env);
 

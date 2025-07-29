@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/28 23:32:23 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/29 05:21:44 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,25 @@ char	*collect_joined_words(t_lexer *lexer, t_env *env)
 			break ;
 	}
 	return (word);
+}
+char	*expand_words(char *str, t_env *env, bool expand)
+{
+	char	*word;
+	char	*processed;
+
+	word = ft_strdup("");
+	printf("%dhere\n", expand);
+	if (ft_strchr(str, '$') && expand == false)
+	{
+		processed = expand_variable(str, env);
+		free(str);
+	}
+	else
+		processed = str;
+	word = join_and_free_two(word, processed);
+	
+	char *new = join_char('_', word);
+	return (new);
 }
 /*
 ** Parses and joins tokens that form the heredoc delimiter.
@@ -109,23 +128,25 @@ void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 	if (tok->type == TOK_HERDOC)
 	{
 		*tok = lexer_peek_next_token(lexer);
+		if (tok->type == TOK_DOUBLE || tok->type == TOK_SINGLE)
+			expand = true; 
 		char *del = ft_strndup(tok->literal, tok->len);
 		printf("%s\n", del);
-		// char *result = ft_strdup("");
+		char *result = ft_strdup("");
 		while (1)
 		{
 			char *line = readline("> ");
-			printf("[%s]\n", line);
-			printf("[%s]\n", del);
-			// result = join_and_free_two(line, result);
 			if (ft_strcmp(line, del) == 0)
 			{
 				free(line);
 				free(del);
 				break;
 			}
+			
+			char *new = expand_words(line , env, expand);
+			result = join_and_free_two(result, new);
 		}
-		add_redirection(cmd, type_redir(tok), parse_heredoc_delim(lexer, &expand), expand);
+		add_redirection(cmd, type_redir(tok), result, expand);
 	}
 	else
 	{
