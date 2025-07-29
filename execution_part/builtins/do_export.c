@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:36:08 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/07/27 19:59:31 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:55:12 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,19 @@ int	handle_export_argument(char *arg, t_env **env)
 }
 int is_valid_format(char *str)
 {
-    if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
+    int i = 0;
+
+    if (!str || !str[0])
         return (0);
-	else
-		return (1);
+    if (!(ft_isalpha(str[0]) || str[0] == '_'))
+        return (0);
+    while (str[i] && str[i] != '=')
+    {
+        if (!(ft_isalnum(str[i]) || str[i] == '_'))
+            return (0);
+        i++;
+    }
+    return (1);
 }
 
 int	do_export(char **argv, t_env **env)
@@ -112,7 +121,9 @@ int	do_export(char **argv, t_env **env)
 	{
 		if (!is_valid_format(argv[i]))
 		{
-			printf("minishell: export: `%s`: not a valid identifier\n", argv[i]);
+			write(2, "minishell: export: `", 21);
+			write(2, argv[i], ft_strlen(argv[i]));
+			write(2, "`: not a valid identifier\n", 27);
 			g_exit_status = 1;
 			i++; //go to next arg
 			continue; // kat3awd while mn lowel bla matkmel 7it khasna chechiw arg tani tahowa

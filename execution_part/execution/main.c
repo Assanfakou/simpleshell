@@ -104,9 +104,6 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
 
 void f_main(t_cmd *cmd, char **envp, t_env **env)
 {
-    for (int k = 0; cmd->argv && cmd->argv[k]; k++)
-            printf("count cmd : %s ", cmd->argv[k]);
-    printf("\n");
     executor(cmd, env, envp);
 }
 

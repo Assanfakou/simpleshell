@@ -69,6 +69,7 @@ int has_output_redirection(t_cmd *cmd)
 
 void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
 {
+    //printf("again/n");
     int nb_cmds = count_cmds(cmd);
     int nb_pipes = nb_cmds - 1;
     int *pipes = create_pipes(cmd);
@@ -96,7 +97,7 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
             while (j < nb_pipes * 2) //*2 mean read write
                 close(pipes[j++]);
 
-            //find_redirection(temp ->redir);
+            find_redirection(temp ->redir);
 
             if (is_builtin(temp))
             {
