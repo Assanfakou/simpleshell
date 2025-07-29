@@ -52,7 +52,7 @@ void handle_heardoc(char *filename)
     close(pipefd[0]);
 }
 
-void find_redirection(t_redir *redir)
+int find_redirection(t_redir *redir)
 {
     int fd;
 
@@ -62,10 +62,7 @@ void find_redirection(t_redir *redir)
         {   
             fd = open(redir->filename, O_RDONLY);
             if (check_fd(fd, redir))
-            {
-                g_exit_status = 1;
-                return ;
-            }
+                return (1);
             dup_fd_inp(fd); //kanbdlo stdin ywli y9ra mn fd li 7at lih
             close(fd);
         }
@@ -73,10 +70,7 @@ void find_redirection(t_redir *redir)
         {
             fd = open(redir->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644); //trunc kat7iyd dakchi l9dim okatkteb jdid
             if (check_fd(fd, redir))
-            {
-                g_exit_status = 1;
-                return ;
-            }
+                return (1);
             dup_fd_out(fd); // stdout ywli yktb f fd li 3titi (ex: file)
             close(fd);
         }
@@ -84,17 +78,15 @@ void find_redirection(t_redir *redir)
         {
             fd = open(redir->filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
             if (check_fd(fd, redir))
-            {
-                g_exit_status = 1;
-                return ;
-            }
+                return (1);
             dup_fd_out(fd); //stdout ywli yktb f fd (lfer9 bin hadi oR_output anaho hadi katzid ktabta fo9 l9idma lakhra la)
             close(fd);
         }
         else if (redir->type == R_HERDOC)
             handle_heardoc(redir->filename);
         redir = redir->next;
-    }   
+    }
+    return (0);   
 }
 
 

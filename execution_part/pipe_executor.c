@@ -69,7 +69,6 @@ int has_output_redirection(t_cmd *cmd)
 
 void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
 {
-    //printf("again/n");
     int nb_cmds = count_cmds(cmd);
     int nb_pipes = nb_cmds - 1;
     int *pipes = create_pipes(cmd);
@@ -87,6 +86,12 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
         pid_t pid = fork();
         if (pid == 0)
         {
+            if (!temp->argv || !temp->argv[0] || temp->argv[0][0] == '\0') //(handle case empty string) 
+            //, 1- cmd NULL like > file.txt (wkha hiya kathandla 9bel ms tafadiyan osf), 2- kayna liste argv, walakin ma fihach command 3- argv[0] kaybda b '\0'
+            {
+                write(2, "Command '' not found\n", 22);
+                exit(127);
+            }
             int j = 0;
             
             if (i != 0)
@@ -97,8 +102,14 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
             while (j < nb_pipes * 2) //*2 mean read write
                 close(pipes[j++]);
 
-            find_redirection(temp ->redir);
-
+            if (find_redirection(temp->redir))
+            {
+                //printf("find_redirection CALLED FROM PIPE\n");
+                if (!temp->next) //echo hello > /bad/path | echo bye , temp = echo hello > /bad/path,  temp->next = echo bye
+                    exit(1);
+                else //echo hello > /bad/path , temp = echo hello > /bad/path, temp->next = NULL
+                    exit(0);
+            }
             if (is_builtin(temp))
             {
                 exec_builtin(temp, env);
@@ -113,21 +124,12 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
                 path = get_cmd_path(temp->argv[0], *env);  // search in PATH
             if (!path) // path b9a khawi
             {
-                if (temp->argv && temp->argv[1])
-                {
-                    printf("hereee\n");
-                    write(2, temp->argv[1], ft_strlen(temp->argv[1]));
-                    write(2, ": command not found\n", 21);
-                } 
                 if (temp->argv && temp->argv[0])
                 {
                     write(2, temp->argv[0], ft_strlen(temp->argv[0]));
-                    write(2, ": command not found\n", 21);
+                    write(2, ": command not found\n", 21); //kaytexecuta f kol child:
                 }
-                g_exit_status = 127;
-                
                 exit(127);
-
             }
             // Error: permission denied
             if (access(path, F_OK) == 0 && access(path, X_OK) != 0) //F_OK mean if exesist

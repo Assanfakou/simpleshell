@@ -63,26 +63,35 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
     if (!cmd->argv || !cmd->argv[0])
     {
         int saved_stdout = dup(STDOUT_FILENO);
-        find_redirection(cmd->redir);
+        if (find_redirection(cmd->redir))
+        {
+            //printf("find_redirection CALLED inside !cmd\n");
+            dup2(saved_stdout, STDOUT_FILENO);
+            close(saved_stdout);
+            g_exit_status = 1;
+            return;
+        }        
         dup2(saved_stdout, STDOUT_FILENO);
         close(saved_stdout);
         g_exit_status = 0; //7it t9der tkon ba9a chi value 9dima
         return;
     }
-    if (cmd->argv && cmd->argv[0] && !get_cmd_path(cmd->argv[0], *env) && !is_builtin(cmd)) //handle user give input ma3ndoch m3na
-    {
-        write(2, cmd->argv[0], ft_strlen(cmd->argv[0]));
-        write(2, ": command not found\n", 21);
-        g_exit_status = 127;
-        return;
-    }
+
+    // if (cmd->argv && cmd->argv[0] && !get_cmd_path(cmd->argv[0], *env) && !is_builtin(cmd)) //handle user give input ma3ndoch m3na
+    // {
+    //     printf("find_redirection CALLED inside !cmd\n");
+    //     write(2, cmd->argv[0], ft_strlen(cmd->argv[0]));
+    //     write(2, ": command not found\n", 21);
+    //     g_exit_status = 127;
+    //     return;
+    // }
     
-    if (ft_strlen(cmd->argv[0]) == 0) //handle case ""
-    {
-        printf("Command '' not found\n");
-        g_exit_status = 127;
-        return;
-    }
+    // if (ft_strlen(cmd->argv[0]) == 0) //handle case ""
+    // {
+    //     printf("Command '' not found\n");
+    //     g_exit_status = 127;
+    //     return;
+    // }
     
 
 //ask ali here 3lach kaykmel fchi case wkha kayna return darori khaso had order dyal if statemnt si non maykhdemch  
@@ -91,7 +100,14 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
     if (is_builtin(cmd) && !has_pipe(cmd))
     {
         int saved_stdout = dup(STDOUT_FILENO);
-        find_redirection(cmd->redir);
+        if (find_redirection(cmd->redir)) // check if redir failed
+        {
+            //printf("find_redirection CALLED inside buitlins\n");
+            dup2(saved_stdout, STDOUT_FILENO);
+            close(saved_stdout);
+            g_exit_status = 1;
+            return;
+        }
         exec_builtin(cmd, env);
         dup2(saved_stdout, STDOUT_FILENO);
         close(saved_stdout);

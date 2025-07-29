@@ -80,34 +80,35 @@ char **env_to_envp(t_env *env)
 
 
 
-void execute_external(t_cmd *cmd, t_env **env)
-{
-    char *path = get_cmd_path(cmd->argv[0], *env);
-    char **envp = env_to_envp(*env);
-    pid_t pid;
+// void execute_external(t_cmd *cmd, t_env **env)
+// {
+//     char *path = get_cmd_path(cmd->argv[0], *env);
+//     char **envp = env_to_envp(*env);
+//     pid_t pid;
 
-    if (path != NULL)
-    {
-        pid = fork();
-        if (pid == 0)
-        {
-            find_redirection(cmd->redir);
-            execve(path, cmd->argv, envp);
-            perror("execve failed");
-            exit(127);
-        }
-        else if (pid > 0)
-            waitpid(pid, NULL, 0);
-        else
-            perror("fork failed");
-        free(path);
-    }
-    else
-    {
-        if (cmd->argv && cmd->argv[0])
-        {
-            printf("%s: command not found\n", cmd->argv[0]);
-            g_exit_status = 127;
-        }
-    }
-}
+//     if (path != NULL)
+//     {
+//         pid = fork();
+//         if (pid == 0)
+//         {
+//             //printf("agaain/n");
+//             find_redirection(cmd->redir);
+//             execve(path, cmd->argv, envp);
+//             perror("execve failed");
+//             exit(127);
+//         }
+//         else if (pid > 0)
+//             waitpid(pid, NULL, 0);
+//         else
+//             perror("fork failed");
+//         free(path);
+//     }
+//     else
+//     {
+//         if (cmd->argv && cmd->argv[0])
+//         {
+//             printf("%s: command not found\n", cmd->argv[0]);
+//             g_exit_status = 127;
+//         }
+//     }
+// }

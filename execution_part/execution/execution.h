@@ -23,7 +23,7 @@ char **env_to_envp(t_env *env);
 void pipe_executor(t_cmd *cmd, t_env **env, char **envp);
 
 //find_redirection
-void find_redirection(t_redir *redir);
+int find_redirection(t_redir *redir);
 
 //main
 int is_builtin(t_cmd *cmd);
