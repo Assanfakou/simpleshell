@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/29 05:21:44 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/29 07:36:54 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,35 @@ char	*collect_joined_words(t_lexer *lexer, t_env *env)
 	}
 	return (word);
 }
+
+char	*join_herdok_del(t_lexer *lexer, bool *expand)
+{
+	char	*word;
+	char	*processed;
+	t_token	next_tok;
+	t_token	tok;
+
+	word = ft_strdup("");
+	while (1)
+	{
+		tok = lexer_next_token(lexer);
+		if (tok.type == TOK_SINGLE || tok.type == TOK_DOUBLE)
+			*expand = true;	
+		processed = ft_strndup(tok.literal, tok.len);
+		word = join_and_free_two(word, processed);
+		next_tok = lexer_peek_next_token(lexer);
+		if ((next_tok.type != TOK_WORD && next_tok.type != TOK_SINGLE
+				&& next_tok.type != TOK_DOUBLE) || next_tok.space == true)
+			break ;
+	}
+	return (word);
+}
 char	*expand_words(char *str, t_env *env, bool expand)
 {
 	char	*word;
 	char	*processed;
 
 	word = ft_strdup("");
-	printf("%dhere\n", expand);
 	if (ft_strchr(str, '$') && expand == false)
 	{
 		processed = expand_variable(str, env);
@@ -74,7 +96,7 @@ char	*expand_words(char *str, t_env *env, bool expand)
 		processed = str;
 	word = join_and_free_two(word, processed);
 	
-	char *new = join_char('_', word);
+	char *new = join_char('\n', word);
 	return (new);
 }
 /*
@@ -130,7 +152,7 @@ void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 		*tok = lexer_peek_next_token(lexer);
 		if (tok->type == TOK_DOUBLE || tok->type == TOK_SINGLE)
 			expand = true; 
-		char *del = ft_strndup(tok->literal, tok->len);
+		char *del = join_herdok_del(lexer, &expand);
 		printf("%s\n", del);
 		char *result = ft_strdup("");
 		while (1)
