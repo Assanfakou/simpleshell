@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:36:47 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/07/25 19:45:19 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/07/30 17:57:38 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_env	*remove_node(t_env *env, char *key)
 	return (env);// rje3 liya head dyali
 }
 
-int	*do_unset(char **args, t_env *env)
+int	do_unset(char **args, t_env *env)
 {
 	int	i;
 

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/30 07:17:32 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/30 12:16:41 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parce.h"
 #include "../execution_part/execution/main.h"
 
-int	g_exit_status = 0;
+int	exit_status = 0;
 
 char *_ft_getenv(char *name_of_variable, t_env *env)
 {
@@ -87,16 +87,15 @@ int	main(int ac, char **av, char **envp)
 			//free t_env
 			break ;
 		}
+        
 		add_history(input);
 		if (!find_error(lexer, input))
 		{
 			lexer = lexer_new(input);
 			head = build_cmd_list(&lexer, env);
 			if (head)
-				print_ast(head);
-/*
-				f_main(head, envp, &env); 
-*/
+                f_main(head, envp, &env); 
+            // print_ast(head);
 		}
 		free(input);
 	}
