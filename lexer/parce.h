@@ -6,17 +6,15 @@
 /*   By: rmaanane <rmaanane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/21 16:03:22 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/07/30 07:03:02 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARCE_H
 # define PARCE_H
 
-#include <signal.h>
 # include "lexer.h"
-
-
+#include "signals.h"
 
 typedef enum s_redir_type
 {
@@ -30,7 +28,6 @@ typedef struct s_redir
 {
 	t_redir_type	type;
 	char			*filename;
-	bool expand;
 	struct s_redir	*next;
 }					t_redir;
 
@@ -60,7 +57,7 @@ void				free_t_cmd(t_cmd *cmd);
 void				print_cmd(t_cmd *cmd);
 t_cmd				*create_cmd(void);
 void				add_to_argv(t_cmd *cmd, char *arg);
-void				add_redirection(t_cmd *cmd, t_redir_type type, char *file, bool expanded);
+void				add_redirection(t_cmd *cmd, t_redir_type type, char *file);
 int				check_for_red(t_token tok);
 // expand
 
@@ -70,6 +67,7 @@ char				*join_and_free_two(char *s1, char *s2);
 void				handle_env_var(char **res, char *var, size_t *i, t_env *env);
 char				*parse_heredoc_delim(t_lexer *lexer, bool *expand);
 char				*collect_joined_words(t_lexer *lexer, t_env *env);
+char	*join_char(char c, char *res);
 
 char *_ft_getenv(char *name_of_variable, t_env *env);
 
