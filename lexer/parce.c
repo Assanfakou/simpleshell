@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/29 07:36:54 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/30 07:18:11 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*join_herdok_del(t_lexer *lexer, bool *expand)
 	}
 	return (word);
 }
-char	*expand_words(char *str, t_env *env, bool expand)
+char	*expand_herdoc_line(char *str, t_env *env, bool expand)
 {
 	char	*word;
 	char	*processed;
@@ -99,6 +99,7 @@ char	*expand_words(char *str, t_env *env, bool expand)
 	char *new = join_char('\n', word);
 	return (new);
 }
+
 /*
 ** Parses and joins tokens that form the heredoc delimiter.
 ** Sets the expand flag to true if any token is double-quoted,
@@ -143,37 +144,44 @@ int	check_for_red(t_token tok)
 void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 {
 	bool expand;
+	char *new;
+	char *line;
+	char *result;
+	char *del;
 
 	expand = false;
-	
 	*tok = lexer_next_token(lexer);
+	g_herdoc_stop = false;
 	if (tok->type == TOK_HERDOC)
 	{
 		*tok = lexer_peek_next_token(lexer);
 		if (tok->type == TOK_DOUBLE || tok->type == TOK_SINGLE)
 			expand = true; 
-		char *del = join_herdok_del(lexer, &expand);
+		del = join_herdok_del(lexer, &expand);
 		printf("%s\n", del);
-		char *result = ft_strdup("");
-		while (1)
+		result = ft_strdup("");
+		signal(SIGINT, ft_sigint_handler_herdoc);
+		while (!g_herdoc_stop)
 		{
-			char *line = readline("> ");
+			line = readline("> ");
 			if (ft_strcmp(line, del) == 0)
 			{
 				free(line);
 				free(del);
 				break;
 			}
-			
-			char *new = expand_words(line , env, expand);
+			new = expand_herdoc_line(line , env, expand);
 			result = join_and_free_two(result, new);
 		}
-		add_redirection(cmd, type_redir(tok), result, expand);
+		if (!g_herdoc_stop)
+			add_redirection(cmd, type_redir(tok), result);
+		else
+			return ;
 	}
 	else
 	{
 		*tok = lexer_next_token(lexer);
-		add_redirection(cmd, type_redir(tok), collect_joined_words(lexer, env), expand);
+		add_redirection(cmd, type_redir(tok), collect_joined_words(lexer, env));
 	}
 }
 

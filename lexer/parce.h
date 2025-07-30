@@ -28,7 +28,6 @@ typedef struct s_redir
 {
 	t_redir_type	type;
 	char			*filename;
-	bool expand;
 	struct s_redir	*next;
 }					t_redir;
 
@@ -58,7 +57,7 @@ void				free_t_cmd(t_cmd *cmd);
 void				print_cmd(t_cmd *cmd);
 t_cmd				*create_cmd(void);
 void				add_to_argv(t_cmd *cmd, char *arg);
-void				add_redirection(t_cmd *cmd, t_redir_type type, char *file, bool expanded);
+void				add_redirection(t_cmd *cmd, t_redir_type type, char *file);
 int				check_for_red(t_token tok);
 // expand
 
