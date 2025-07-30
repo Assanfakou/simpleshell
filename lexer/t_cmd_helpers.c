@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:31:18 by hfakou            #+#    #+#             */
-/*   Updated: 2025/06/27 22:51:34 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/29 08:44:32 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_cmd	*create_cmd(void)
 	return (cmd);
 }
 
-void	add_redirection(t_cmd *cmd, t_redir_type type, char *file, bool expand)
+void	add_redirection(t_cmd *cmd, t_redir_type type, char *file)
 {
 	t_redir	*walk;
 	t_redir	*redir;
@@ -61,7 +61,6 @@ void	add_redirection(t_cmd *cmd, t_redir_type type, char *file, bool expand)
 		return ;
 	redir->type = type;
 	redir->filename = file;
-	redir->expand = expand;
 	redir->next = NULL;
 	if (!cmd->redir)
 	{
@@ -109,7 +108,6 @@ void	print_cmd(t_cmd *cmd)
 		while (walk_redirect)
 		{
 			ft_red_printf(walk_redirect->type, walk_redirect->filename);
-			printf("herdok value : [%d]\n", walk_redirect->expand);
 			walk_redirect = walk_redirect->next;
 		}
 		walk = walk->next;

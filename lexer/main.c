@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/26 17:49:55 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/07/30 07:17:32 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ char *_ft_getenv(char *name_of_variable, t_env *env)
     }
     return (NULL);
 }
+
 t_env *_create_env(char **envp)
 {
     t_env *env = NULL;
     int i = 0;
     int j;
+
     while (envp[i])
     {
         j = 0;
@@ -58,16 +60,6 @@ t_env *_create_env(char **envp)
         i++;
     }
     return (env);
-}
-
-void	sigint_prompt(int sig)
-{
-	(void)sig;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	//free t_env
 }
 
 void print_ast(t_cmd *ast);
@@ -101,9 +93,9 @@ int	main(int ac, char **av, char **envp)
 			lexer = lexer_new(input);
 			head = build_cmd_list(&lexer, env);
 			if (head)
-				f_main(head, envp, &env); 
-/*
 				print_ast(head);
+/*
+				f_main(head, envp, &env); 
 */
 		}
 		free(input);
