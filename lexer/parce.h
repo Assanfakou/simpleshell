@@ -6,17 +6,15 @@
 /*   By: rmaanane <rmaanane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/29 00:42:02 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/30 07:03:02 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARCE_H
 # define PARCE_H
 
-#include <signal.h>
 # include "lexer.h"
-
-
+#include "signals.h"
 
 typedef enum s_redir_type
 {

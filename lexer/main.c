@@ -60,16 +60,6 @@ t_env *_create_env(char **envp)
     return (env);
 }
 
-void	sigint_prompt(int sig)
-{
-	(void)sig;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	//free t_env
-}
-
 void print_ast(t_cmd *ast);
 
 int	main(int ac, char **av, char **envp)
