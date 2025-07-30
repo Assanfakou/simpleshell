@@ -91,8 +91,8 @@ void find_redirection(t_redir *redir)
             dup_fd_out(fd); //stdout ywli yktb f fd (lfer9 bin hadi oR_output anaho hadi katzid ktabta fo9 l9idma lakhra la)
             close(fd);
         }
-        else if (redir->type == R_HERDOC)
-            handle_heardoc(redir->filename);
+        // else if (redir->type == R_HERDOC)
+        //     handle_heardoc(redir->filename);
         redir = redir->next;
     }   
 }
