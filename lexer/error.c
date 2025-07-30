@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:15:17 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/30 09:04:17 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/30 09:20:48 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	print_newline_error(void)
 int	check_errors(t_lexer *lexer, t_token curr)
 {
 	t_token	n_tok;
-
 	n_tok = lexer_peek_next_token(lexer);
 	if (curr.type == TOK_PIPE && n_tok.type == TOK_NULL)
 	{

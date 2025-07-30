@@ -93,8 +93,8 @@ int	main(int ac, char **av, char **envp)
 			lexer = lexer_new(input);
 			head = build_cmd_list(&lexer, env);
 			if (head)
-                print_ast(head);
-            // f_main(head, envp, &env); 
+             			f_main(head, envp, &env); 
+                //print_ast(head);
 		}
 		free(input);
 	}
