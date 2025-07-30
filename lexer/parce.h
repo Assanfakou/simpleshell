@@ -71,4 +71,8 @@ char	*join_char(char c, char *res);
 
 char *_ft_getenv(char *name_of_variable, t_env *env);
 
+char *herdoc_handler(t_env *env, t_lexer *lexer);
+char	*expand_herdoc_line(char *str, t_env *env, bool expand);
+char	*join_herdok_del(t_lexer *lexer, bool *expand);
+
 #endif
