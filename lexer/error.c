@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmaanane <rmaanane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:15:17 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/28 04:45:11 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/30 09:04:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "lexer.h"
-#include "parce.h"
 
+#include "parce.h"
 
 void	print_error(char *pointer, size_t size)
 {
@@ -28,7 +27,20 @@ void	print_newline_error(void)
 	write(2, "`\n", 2);
 	status_set(2);
 }
-	
+/**
+ ** check_errors - Validate token sequence for basic syntax errors.
+ ** @lexer: Active lexer (used to peek the next token).
+ ** @curr:  Current token already read/consumed.
+ **
+ ** Flags errors for:
+ **  - '|' followed by end of input.
+ **  - A redirection token without a following valid target.
+ **  - '|' followed by another '|'.
+ ** Prints an error (print_error/print_newline_error) when applicable.
+ **
+ ** Return: 1 if an error is detected, 0 otherwise.
+ */
+
 int	check_errors(t_lexer *lexer, t_token curr)
 {
 	t_token	n_tok;
@@ -72,6 +84,23 @@ int	check_first_tok(t_token *token)
 	else
 		return (0);
 }
+/**
+ * find_error - Run lexical and syntax checks on the input line.
+ * @lexer: Lexer value (reinitialized internally with @input).
+ * @input: Command line to validate.
+ *
+ * Behavior:
+ *  - Returns 1 for empty input.
+ *  - Initializes a lexer from @input and checks the first token
+ *    with check_first_tok().
+ *  - Iterates tokens; if a TOK_INVALID is found, prints
+ *    "UNMATCHED QUOTE\n" to stderr and sets status to 2.
+ *  - Delegates sequence validation to check_errors().
+ *
+ * Side effects: writes to stderr; calls status_set(2) on unmatched quotes.
+ *
+ * Return: 1 if any error is detected; 0 if the input is syntactically valid.
+ */
 
 int	find_error(t_lexer lexer, char *input)
 {

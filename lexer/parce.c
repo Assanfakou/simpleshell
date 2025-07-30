@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/30 08:37:39 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/30 08:59:58 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,15 @@ char	*join_and_free_two(char *s1, char *s2)
 }
 
 /*
- ** Collects and joins consecutive word-like tokens that are not separated by spaces.
- ** Expands environment variables when appropriate, except inside single-quoted tokens.
+ ** Collects and joins consecutive word-like tokens that are 
+ **			not separated by spaces.
+ ** Expands environment variables when appropriate,
+ **			 except inside single-quoted tokens.
  **
  ** @param lexer - pointer to the current lexer state
  ** @param env 	 - the enviriment linked liste for expanding
- ** @return      - new allocated string representing the joined and processed word
+ ** @return      - new allocated string representing the
+ **			joined and processed word
  */
 
 char	*collect_joined_words(t_lexer *lexer, t_env *env)
@@ -87,7 +90,8 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 	while (1)
 	{
 		tok = lexer_peek_next_token(lexer);
-		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE || tok.type == TOK_SINGLE)
+		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE 
+				|| tok.type == TOK_SINGLE)
 			add_to_argv(cmd, collect_joined_words(lexer, env));
 		else if (check_for_red(tok))
 			redirect_del(&tok, cmd, lexer, env);
