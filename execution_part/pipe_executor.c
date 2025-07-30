@@ -86,12 +86,7 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
         pid_t pid = fork();
         if (pid == 0)
         {
-            if (!temp->argv || !temp->argv[0] || temp->argv[0][0] == '\0') //(handle case empty string) 
-            //, 1- cmd NULL like > file.txt (wkha hiya kathandla 9bel ms tafadiyan osf), 2- kayna liste argv, walakin ma fihach command 3- argv[0] kaybda b '\0'
-            {
-                write(2, "Command '' not found\n", 22);
-                exit(127);
-            }
+
             int j = 0;
             
             if (i != 0)
@@ -109,6 +104,12 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
                     exit(1);
                 else //echo hello > /bad/path , temp = echo hello > /bad/path, temp->next = NULL
                     exit(0);
+            }
+            if (!temp->argv[0] || temp->argv[0][0] == '\0') //(handle case empty string) 
+            //, 1- kayna liste argv, walakin ma fihach command 2- argv[0] kaybda b '\0'
+            {
+                write(2, "Command '' not found\n", 22);
+                exit(127);
             }
             if (is_builtin(temp))
             {
