@@ -6,14 +6,14 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/28 19:26:13 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/07/30 17:50:00 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parce.h"
 #include "../execution_part/execution/main.h"
 
-int	g_exit_status = 0;
+int	exit_status = 0;
 
 char *_ft_getenv(char *name_of_variable, t_env *env)
 {

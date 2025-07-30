@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:36:08 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/07/29 13:55:12 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/07/30 19:06:59 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int is_valid_format(char *str)
 int	do_export(char **argv, t_env **env)
 {
 	int	i;
+	int flag = 1;
 
 	if (!argv[1])
 	{
@@ -124,13 +125,17 @@ int	do_export(char **argv, t_env **env)
 			write(2, "minishell: export: `", 21);
 			write(2, argv[i], ft_strlen(argv[i]));
 			write(2, "`: not a valid identifier\n", 27);
-			g_exit_status = 1;
-			i++; //go to next arg
+			flag = 0;
+			i++;//go to next arg
 			continue; // kat3awd while mn lowel bla matkmel 7it khasna chechiw arg tani tahowa
 		}
 		if (handle_export_argument(argv[i], env))
 			return (1);
 		i++;
-	}
-	return (0);
+	}	
+	if (flag == 0)
+		status_set(1);
+	else
+		status_set(0);
+	return (status_get());
 }

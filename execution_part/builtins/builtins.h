@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:35:11 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/07/27 23:13:07 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/07/30 18:37:05 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ t_env	*name_already_exist(t_env *env, char *name_of_variable);
 int		do_export(char **args, t_env **env);
 
 // do_unset
-int		*do_unset(char **args, t_env *env);
+int		do_unset(char **args, t_env *env);
 
 // print_env
 void	print_env(t_env *env);
 
 // do_exit
-void	do_exit(char **args);
+int	do_exit(char **args);
 
 // create_env
 t_env	*create_env(char **envp);

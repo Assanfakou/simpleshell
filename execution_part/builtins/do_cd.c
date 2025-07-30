@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:35:33 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/07/28 18:39:33 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/07/30 15:57:33 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	do_cd(char **args, t_env *env)
 	else if (args[2])
 	{
 		write(2, "minishell: cd: too many arguments\n", 34);
-		g_exit_status = 1;
-		return (1);	
+		status_set(1);
+		return (status_get());	
 	}
 	else
 		path = args[1];
@@ -54,8 +54,8 @@ int	do_cd(char **args, t_env *env)
 		write(2, path, ft_strlen(path));
 		write(2, ": ", 2);
 		perror("");
-		g_exit_status = 1;
-		return (1);
+		status_set(1);
+		return (status_get());	
 	}
 	return (0);
 }

@@ -47,7 +47,7 @@ void close_pipe_and_wait(int nb_cmds, int nb_pipes, int *pipes)
     {
         wait(&status);
         if (WIFEXITED(status)) // hadi macro f C, katcheck wach dak child tsala normal (b exit(x)), mashi b signal (kill, segfault...).
-            g_exit_status = WEXITSTATUS(status); // ila hya true, n9adro njibo exit status dyal command.
+            status_set(WEXITSTATUS(status)); // ila hya true, n9adro njibo exit status dyal command.
         j++;
     }
 
