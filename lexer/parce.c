@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/30 07:14:23 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/30 08:37:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char	*join_and_free_two(char *s1, char *s2)
  ** Expands environment variables when appropriate, except inside single-quoted tokens.
  **
  ** @param lexer - pointer to the current lexer state
+ ** @param env 	 - the enviriment linked liste for expanding
  ** @return      - new allocated string representing the joined and processed word
  */
 
@@ -59,41 +60,6 @@ char	*collect_joined_words(t_lexer *lexer, t_env *env)
 	return (word);
 }
 
-
-
-/*
-** Parses and joins tokens that form the heredoc delimiter.
-** Sets the expand flag to true if any token is double-quoted,
-** which means variable expansion should be allowed in the heredoc.
-**
-** @param lexer  - pointer to the current lexer state
-** @param expand - pointer to a flag set to true if expansion is needed
-** @return       - new allocated string representing the heredoc delimiter
-*/
-
-// char	*parse_heredoc_delim(t_lexer *lexer, bool *expand)
-// {
-// 	char	*word;
-// 	char	*processed;
-// 	t_token	next_tok;
-// 	t_token	tok;
-
-// 	word = ft_strdup("");
-// 	while (1)
-// 	{
-// 		tok = lexer_next_token(lexer);
-// 		processed = ft_strndup(tok.literal, tok.len);
-// 		if (tok.type == TOK_DOUBLE)
-// 			*expand = true;
-// 		word = join_and_free_two(word, processed);
-// 		next_tok = lexer_peek_next_token(lexer);
-// 		if ((next_tok.type != TOK_WORD && next_tok.type != TOK_SINGLE
-// 				&& next_tok.type != TOK_DOUBLE) || next_tok.space == true)
-// 			break ;
-// 	}
-// 	return (word);
-// }
-
 int	check_for_red(t_token tok)
 {
 	if (tok.type == TOK_APPAND || tok.type == TOK_OUTPUT
@@ -101,8 +67,6 @@ int	check_for_red(t_token tok)
 		return (1);
 	return (0);
 }
-
-
 
 /*
  ** Parses the input from the lexer and builds a linked list of commands.
