@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/30 17:26:51 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/07/30 09:00:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,11 @@ void				read_char(t_lexer *lexer);
 
 int					check_errors(t_lexer *lexer, t_token curr);
 int not_token(t_token n_tok);
+void	print_error(char *pointer, size_t size);
+void	print_newline_error(void);
+int	check_first_tok(t_token *token);
+int	find_error(t_lexer lexer, char *input);
+
 
 int					check_first_tok(t_token *token);
 int					find_error(t_lexer lexer, char *input);
