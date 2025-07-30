@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:35:57 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/07/25 19:43:15 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/07/30 18:39:11 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,27 @@ int	ft_isnumeric(char *str)
 	return (1);
 }
 
-void	do_exit(char **args)
+int	do_exit(char **args)
 {
 	int	n;
 
 	printf("exit\n");
 	if (!args[1])
-		exit(g_exit_status);
+		exit(status_get());
 	if (!ft_isnumeric(args[1]))
 	{
 		printf("minishell: exit: %s: numeric argument required\n", args[1]);
 		exit(2);
+		return (status_get());
 	}
 	if (args[2])
 	{
 		printf("minishell: exit: too many arguments\n");
-		g_exit_status = EXIT_FAILURE;// deja kaykon fstdlib dakchi 3lach ma7tajinach lih define
-		return ;
+		status_set(1);
+		return (status_get());
 	}
 	n = ft_atoi(args[1]);
 	exit((unsigned char)n);
+	
+	return (0);
 }

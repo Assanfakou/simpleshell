@@ -1,4 +1,5 @@
 #include "execution/execution.h"
+#include <errno.h>
 
 int count_cmds(t_cmd *cmd)
 {
@@ -38,19 +39,31 @@ void close_pipe_and_wait(int nb_cmds, int nb_pipes, int *pipes)
     // parent: close pipes
     int i = 0;
     while (i < nb_pipes * 2)
-    {
-        close(pipes[i]);
-        i++;
-    }
+        close(pipes[i++]);
 
-    // wait all children
+    int status;
     int j = 0;
     while (j < nb_cmds)
     {
-        wait(NULL);
+        wait(&status);
+        if (WIFEXITED(status)) // hadi macro f C, katcheck wach dak child tsala normal (b exit(x)), mashi b signal (kill, segfault...).
+            status_set(WEXITSTATUS(status)); // ila hya true, n9adro njibo exit status dyal command.
         j++;
     }
-    free(pipes); //7it deja allocinahom fcreate pipes
+
+    free(pipes);
+}
+
+int has_output_redirection(t_cmd *cmd)
+{
+    t_redir *r = cmd->redir;
+    while (r)
+    {
+        if (r->type == R_OUTPUT || r->type == R_APPAND)
+            return 1;
+        r = r->next;
+    }
+    return 0;
 }
 
 
@@ -59,7 +72,6 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
     int nb_cmds = count_cmds(cmd);
     int nb_pipes = nb_cmds - 1;
     int *pipes = create_pipes(cmd);
-
     if (!pipes)
     {
         perror("failed to create pipes");
@@ -74,19 +86,33 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
         pid_t pid = fork();
         if (pid == 0)
         {
+
             int j = 0;
             
             if (i != 0)
-            dup2(pipes[(i - 1) * 2], STDIN_FILENO);
-            if (temp->next)
-            dup2(pipes[i * 2 + 1], STDOUT_FILENO);
+                dup2(pipes[(i - 1) * 2], STDIN_FILENO);
+            if (temp->next && !has_output_redirection(temp))
+                dup2(pipes[i * 2 + 1], STDOUT_FILENO);
             // Close all pipes
             while (j < nb_pipes * 2) //*2 mean read write
                 close(pipes[j++]);
 
+            if (find_redirection(temp->redir))
+            {
+                //printf("find_redirection CALLED FROM PIPE\n");
+                if (!temp->next) //echo hello > /bad/path | echo bye , temp = echo hello > /bad/path,  temp->next = echo bye
+                    exit(1);
+                else //echo hello > /bad/path , temp = echo hello > /bad/path, temp->next = NULL
+                    exit(0);
+            }
+            if (!temp->argv[0] || temp->argv[0][0] == '\0') //(handle case empty string) 
+            //, 1- kayna liste argv, walakin ma fihach command 2- argv[0] kaybda b '\0'
+            {
+                write(2, "Command '' not found\n", 22);
+                exit(127);
+            }
             if (is_builtin(temp))
             {
-                printf("⚙️ Builtin detected: %s\n", cmd->argv[0]);
                 exec_builtin(temp, env);
                 exit(0); //ykhrej ghir child (kol child yexecute one cmd only)
             }
@@ -97,16 +123,15 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
                 path = ft_strdup(temp->argv[0]); //copy of path
             else
                 path = get_cmd_path(temp->argv[0], *env);  // search in PATH
-            printf("📂 DEBUG: PATH = %s\n", path);
             if (!path) // path b9a khawi
             {
                 if (temp->argv && temp->argv[0])
-                    printf("%s: command not found\n", temp->argv[0]);
-                g_exit_status = 127;
-                printf("%d\n", g_exit_status);
+                {
+                    write(2, temp->argv[0], ft_strlen(temp->argv[0]));
+                    write(2, ": command not found\n", 21); //kaytexecuta f kol child:
+                }
                 exit(127);
             }
-            printf("🚀 Exec path: %s\n", path);
             // Error: permission denied
             if (access(path, F_OK) == 0 && access(path, X_OK) != 0) //F_OK mean if exesist
             {
@@ -117,9 +142,33 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
             // Exec external command
             execve(path, temp->argv, envp); //execve katbdlk process kaml b chi command (par exemple ls). 
             // argv → tableau li fih: argv[0] = "ls" ,argv[1] = "-l", argv[2] = NULL
-            perror("execve failed");
-            free(path);
-            exit(127);
+            if (execve(path, temp->argv, envp) == -1) //check that in linux
+            {
+                printf("errno = %d\n", errno);
+                if (errno == ENOEXEC)
+                {
+                    write(2, "minishell: ", 11);
+                    write(2, path, ft_strlen(path));
+                    write(2, ": Exec format error\n", 21);
+                    free(path);
+                    exit(126);
+                }
+                else if (errno == EACCES)
+                {
+                    write(2, "minishell: ", 11);
+                    write(2, path, ft_strlen(path));
+                    write(2, ": Permission denied\n", 21);
+                    free(path);
+                    exit(126);
+                }
+                else
+                {
+                    write(2, "minishell: ", 11);
+                    perror(path);
+                    free(path);
+                    exit(127);
+                }
+            }
         }
         else if (pid < 0)
         {
@@ -131,5 +180,4 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
     }
     close_pipe_and_wait(nb_cmds, nb_pipes, pipes); //close 3la hsab parent wkha closina fchild khasna nzido hna
 }
-
 

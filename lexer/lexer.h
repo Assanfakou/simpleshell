@@ -23,7 +23,6 @@
 # include <stdio.h>
 # include <unistd.h>
 
-extern int			g_exit_status;
 
 # define GET 0
 # define SET 1
@@ -97,7 +96,7 @@ int					is_var_char(int c);
 int					is_start_char(int c);
 
 
-
+//exit_status
 int    status_get(void);
 void    status_set(int value);
 void    status_main(int action, int *value);

@@ -87,6 +87,8 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 
 	head = create_cmd();
 	cmd = head;
+
+	
 	while (1)
 	{
 		tok = lexer_peek_next_token(lexer);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 16:05:50 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/09 10:01:42 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/30 15:46:21 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*expand_variable(char *var, t_env *env)
 	{
 		if (var[i] == '$' && var[i + 1] == '?')
 		{
-			tmp = ft_itoa(g_exit_status);
+			tmp = ft_itoa(status_get());
 			res = join_and_free_two(res, tmp);
 			i += 2;
 		}
