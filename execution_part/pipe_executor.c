@@ -69,6 +69,7 @@ int has_output_redirection(t_cmd *cmd)
 
 void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
 {
+    (void) envp;
     int nb_cmds = count_cmds(cmd);
     int nb_pipes = nb_cmds - 1;
     int *pipes = create_pipes(cmd);
@@ -139,10 +140,11 @@ void pipe_executor(t_cmd *cmd, t_env **env, char **envp)
                 free(path);
                 exit(126);
             }
+            char    **envp2 = env_to_envp(*env);
             // Exec external command
-            execve(path, temp->argv, envp); //execve katbdlk process kaml b chi command (par exemple ls). 
+            execve(path, temp->argv, envp2); //execve katbdlk process kaml b chi command (par exemple ls). 
             // argv → tableau li fih: argv[0] = "ls" ,argv[1] = "-l", argv[2] = NULL
-            if (execve(path, temp->argv, envp) == -1) //check that in linux
+            if (execve(path, temp->argv, envp2) == -1) //check that in linux
             {
                 printf("errno = %d\n", errno);
                 if (errno == ENOEXEC)
