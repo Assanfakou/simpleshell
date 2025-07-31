@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/30 08:53:23 by marvin           ###   ########.fr       */
+/*   Updated: 2025/07/31 12:23:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,8 @@ char *_ft_getenv(char *name_of_variable, t_env *env);
 char *herdoc_handler(t_env *env, t_lexer *lexer);
 char	*expand_herdoc_line(char *str, t_env *env, bool expand);
 char	*join_herdok_del(t_lexer *lexer, bool *expand);
+
+void print_ast(t_cmd *ast);
+
 
 #endif
