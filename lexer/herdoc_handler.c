@@ -121,7 +121,7 @@ void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 	}
 	else
 	{
-		*tok = lexer_next_token(lexer);
+		// *tok = lexer_next_token(lexer);
 		add_redirection(cmd, type_redir(tok), collect_joined_words(lexer, env));
 	}
 }

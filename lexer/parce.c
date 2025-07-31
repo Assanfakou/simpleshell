@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parce.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/30 07:18:11 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/07/31 15:36:16 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,15 @@ char	*join_and_free_two(char *s1, char *s2)
 }
 
 /*
- ** Collects and joins consecutive word-like tokens that are not separated by spaces.
- ** Expands environment variables when appropriate, except inside single-quoted tokens.
+ ** Collects and joins consecutive word-like tokens that are 
+ **			not separated by spaces.
+ ** Expands environment variables when appropriate,
+ **			 except inside single-quoted tokens.
  **
  ** @param lexer - pointer to the current lexer state
- ** @return      - new allocated string representing the joined and processed word
+ ** @param env 	 - the enviriment linked liste for expanding
+ ** @return      - new allocated string representing the
+ **			joined and processed word
  */
 
 char	*collect_joined_words(t_lexer *lexer, t_env *env)
@@ -59,130 +63,12 @@ char	*collect_joined_words(t_lexer *lexer, t_env *env)
 	return (word);
 }
 
-char	*join_herdok_del(t_lexer *lexer, bool *expand)
-{
-	char	*word;
-	char	*processed;
-	t_token	next_tok;
-	t_token	tok;
-
-	word = ft_strdup("");
-	while (1)
-	{
-		tok = lexer_next_token(lexer);
-		if (tok.type == TOK_SINGLE || tok.type == TOK_DOUBLE)
-			*expand = true;	
-		processed = ft_strndup(tok.literal, tok.len);
-		word = join_and_free_two(word, processed);
-		next_tok = lexer_peek_next_token(lexer);
-		if ((next_tok.type != TOK_WORD && next_tok.type != TOK_SINGLE
-				&& next_tok.type != TOK_DOUBLE) || next_tok.space == true)
-			break ;
-	}
-	return (word);
-}
-char	*expand_herdoc_line(char *str, t_env *env, bool expand)
-{
-	char	*word;
-	char	*processed;
-
-	word = ft_strdup("");
-	if (ft_strchr(str, '$') && expand == false)
-	{
-		processed = expand_variable(str, env);
-		free(str);
-	}
-	else
-		processed = str;
-	word = join_and_free_two(word, processed);
-	
-	char *new = join_char('\n', word);
-	return (new);
-}
-
-/*
-** Parses and joins tokens that form the heredoc delimiter.
-** Sets the expand flag to true if any token is double-quoted,
-** which means variable expansion should be allowed in the heredoc.
-**
-** @param lexer  - pointer to the current lexer state
-** @param expand - pointer to a flag set to true if expansion is needed
-** @return       - new allocated string representing the heredoc delimiter
-*/
-
-char	*parse_heredoc_delim(t_lexer *lexer, bool *expand)
-{
-	char	*word;
-	char	*processed;
-	t_token	next_tok;
-	t_token	tok;
-
-	word = ft_strdup("");
-	while (1)
-	{
-		tok = lexer_next_token(lexer);
-		processed = ft_strndup(tok.literal, tok.len);
-		if (tok.type == TOK_DOUBLE)
-			*expand = true;
-		word = join_and_free_two(word, processed);
-		next_tok = lexer_peek_next_token(lexer);
-		if ((next_tok.type != TOK_WORD && next_tok.type != TOK_SINGLE
-				&& next_tok.type != TOK_DOUBLE) || next_tok.space == true)
-			break ;
-	}
-	return (word);
-}
-
 int	check_for_red(t_token tok)
 {
 	if (tok.type == TOK_APPAND || tok.type == TOK_OUTPUT
 		|| tok.type == TOK_INPUT || tok.type == TOK_HERDOC)
 		return (1);
 	return (0);
-}
-
-void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
-{
-	bool expand;
-	char *new;
-	char *line;
-	char *result;
-	char *del;
-
-	expand = false;
-	*tok = lexer_next_token(lexer);
-	g_herdoc_stop = false;
-	if (tok->type == TOK_HERDOC)
-	{
-		*tok = lexer_peek_next_token(lexer);
-		if (tok->type == TOK_DOUBLE || tok->type == TOK_SINGLE)
-			expand = true; 
-		del = join_herdok_del(lexer, &expand);
-		printf("%s\n", del);
-		result = ft_strdup("");
-		signal(SIGINT, ft_sigint_handler_herdoc);
-		while (!g_herdoc_stop)
-		{
-			line = readline("> ");
-			if (ft_strcmp(line, del) == 0)
-			{
-				free(line);
-				free(del);
-				break;
-			}
-			new = expand_herdoc_line(line , env, expand);
-			result = join_and_free_two(result, new);
-		}
-		if (!g_herdoc_stop)
-			add_redirection(cmd, type_redir(tok), result);
-		else
-			return ;
-	}
-	else
-	{
-		*tok = lexer_next_token(lexer);
-		add_redirection(cmd, type_redir(tok), collect_joined_words(lexer, env));
-	}
 }
 
 /*
@@ -201,6 +87,8 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 
 	head = create_cmd();
 	cmd = head;
+
+	
 	while (1)
 	{
 		tok = lexer_peek_next_token(lexer);
