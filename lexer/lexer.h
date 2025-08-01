@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/31 12:23:26 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/01 10:56:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,4 @@ int    status_get(void);
 void    status_set(int value);
 void    status_main(int action, int *value);
 
-void    sub_set_status(int value);
-int    sub_get_status(void);
-void    status_sub_main(int action, int *value);
 #endif

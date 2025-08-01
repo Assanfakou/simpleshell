@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/01 11:34:04 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/01 10:45:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ t_env *_create_env(char **envp)
     return (env);
 }
 
-
 void free_t_env(t_env *env)
 {
     t_env *tmp;
@@ -93,7 +92,7 @@ int	main(int ac, char **av, char **envp)
 		input = readline("minishell: ");
 		if (!input)
 		{
-			write(1, "exit\n", 5);
+			write(1, "exit 1\n", 7);
 			free(input);
             free_t_env(env);
 			break ;
