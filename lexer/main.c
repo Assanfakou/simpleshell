@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/01 10:45:07 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/01 11:40:54 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,28 @@ char *_ft_getenv(char *name_of_variable, t_env *env)
     }
     return (NULL);
 }
+int add_back_env(t_env **env, char **envp, int i, int j)
+{
+    t_env *new;
+    t_env *tmp;
+
+    new = malloc(sizeof(t_env));
+    if (!new)
+        return (1);
+    new->value = ft_substr(envp[i], j + 1, ft_strlen(envp[i]) - j - 1);
+    new->name_of_variable = ft_substr(envp[i], 0, j);
+    new->next = NULL;
+    if (!*env)
+        *env = new;
+    else
+    {
+        tmp = *env;
+        while (tmp->next)
+            tmp = tmp->next;
+        tmp->next = new;
+    }
+    return (0);
+}
 
 t_env *_create_env(char **envp)
 {
@@ -37,24 +59,8 @@ t_env *_create_env(char **envp)
         while (envp[i][j] && envp[i][j] != '=')
             j++;
         if (envp[i][j] == '=')
-        {
-            t_env *new = malloc(sizeof(t_env));
-            if (!new)
+            if (add_back_env(&env, envp, i, j))
                 return (NULL);
-            
-            new->name_of_variable = ft_substr(envp[i], 0, j);
-            new->value = ft_substr(envp[i], j + 1, ft_strlen(envp[i]) - j - 1);
-            new->next = NULL;
-            if (!env)
-                env = new;
-            else
-            {
-                t_env *tmp = env;
-                while (tmp->next)
-                    tmp = tmp->next;
-                tmp->next = new;
-            }
-        }
         i++;
     }
     return (env);
