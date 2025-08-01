@@ -29,18 +29,19 @@ void dup_fd_inp(int fd)
     }
 }
 
-void handle_heardoc(char *filename)
+void handle_heardoc(char *delemeter)
 {
 	int fd;
-	char *file = "assan";
+	char *filename;
 
-	fd = open(file, O_WRONLY | O_CREAT, 0644);
-	write(fd, filename, ft_strlen(filename));
+	filename = "1945";
+	fd = open(filename, O_WRONLY | O_CREAT, 0644);
+	write(fd, delemeter, ft_strlen(delemeter));
 	close(fd);
-	fd = open(file, O_RDONLY, 0644);
-	dup_fd_inp(fd); //kanbdlo stdin bpipefd[0] ywli y9ra mn pipe
+	fd = open(filename, O_RDONLY, 0644);
+	dup_fd_inp(fd);
 	close(fd);
-	unlink(file);
+	unlink(filename);
 }
 
 int find_redirection(t_redir *redir)
