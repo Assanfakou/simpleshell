@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/31 12:23:07 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/01 12:01:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define PARCE_H
 
 # include "lexer.h"
-#include "signals.h"
+#include "../signals.h"
 
 typedef enum s_redir_type
 {

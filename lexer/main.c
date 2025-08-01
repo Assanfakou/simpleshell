@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/01 11:40:54 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/01 11:59:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,12 @@ int add_back_env(t_env **env, char **envp, int i, int j)
 
 t_env *_create_env(char **envp)
 {
-    t_env *env = NULL;
-    int i = 0;
+    t_env *env;
+    int i;
     int j;
 
+    env = NULL;
+    i = 0;
     while (envp[i])
     {
         j = 0;
