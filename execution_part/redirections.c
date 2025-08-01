@@ -31,25 +31,16 @@ void dup_fd_inp(int fd)
 
 void handle_heardoc(char *filename)
 {
-    int pipefd[2];
-    pipe(pipefd);
+	int fd;
+	char *file = "assan";
 
-    while (1)
-    {
-        char *line = readline("> ");
-        if (ft_strcmp(line, filename) == 0)
-        {
-            free(line);
-            break;
-        }
-        write(pipefd[1], line, ft_strlen(line));
-        write(pipefd[1], "\n", 1);
-        free(line);
-    }
-    close(pipefd[1]);
-
-    dup_fd_inp(pipefd[0]); //kanbdlo stdin bpipefd[0] ywli y9ra mn pipe
-    close(pipefd[0]);
+	fd = open(file, O_WRONLY | O_CREAT, 0644);
+	write(fd, filename, ft_strlen(filename));
+	close(fd);
+	fd = open(file, O_RDONLY, 0644);
+	dup_fd_inp(fd); //kanbdlo stdin bpipefd[0] ywli y9ra mn pipe
+	close(fd);
+	unlink(file);
 }
 
 int find_redirection(t_redir *redir)
@@ -82,8 +73,8 @@ int find_redirection(t_redir *redir)
             dup_fd_out(fd); //stdout ywli yktb f fd (lfer9 bin hadi oR_output anaho hadi katzid ktabta fo9 l9idma lakhra la)
             close(fd);
         }
-        // else if (redir->type == R_HERDOC)
-        //     handle_heardoc(redir->filename);
+        else if (redir->type == R_HERDOC)
+            handle_heardoc(redir->filename);
         redir = redir->next;
     }
     return (0);   

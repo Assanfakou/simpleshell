@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/31 12:03:53 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/01 11:34:04 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,17 @@ int	main(int ac, char **av, char **envp)
 		{
 			lexer = lexer_new(input);
 			head = build_cmd_list(&lexer, env);
-			if (head)
-            {
-                free(input);
-                f_main(head, envp, &env);
-                // print_ast(head);
-            } 
+			if (!g_herdoc_stop && head)
+			{
+				free(input);
+				f_main(head, envp, &env);
+				// print_ast(head);
+			} 
+			else
+			{
+				free(input);
+				free_t_cmd(head);
+			}
 		}
 	}
 }
