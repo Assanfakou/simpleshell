@@ -79,29 +79,29 @@ char	*expand_herdoc_line(char *str, t_env *env, bool expand)
 
 char *herdoc_handler(t_env *env, t_lexer *lexer)
 {
-    bool expand;
-    char *del;
-    char *result;
-    char *line;
+	bool expand;
+	char *del;
+	char *result;
+	char *line;
 
-    expand = false;
-    del = join_herdok_del(lexer, &expand);
-    result = ft_strdup("");
-    signal(SIGINT, ft_sigint_handler_herdoc);
-    while (!g_herdoc_stop)
-    {
-        line = readline("> ");
-        if (ft_strcmp(line, del) == 0)
-        {
-            free(line);
-            free(del);
-            break;
-        }
-        result = join_and_free_two(result, expand_herdoc_line(line , env, expand));
+	expand = false;
+	del = join_herdok_del(lexer, &expand);
+	result = ft_strdup("");
+	signal(SIGINT, ft_sigint_handler_herdoc);
+	while (!g_herdoc_stop)
+	{
+		line = readline("> ");
+		if (ft_strcmp(line, del) == 0)
+		{
+			free(line);
+			free(del);
+			break;
+		}
+		result = join_and_free_two(result, expand_herdoc_line(line , env, expand));
 	}
-    if (!g_herdoc_stop)
-        return (result);
-    return (NULL);
+	if (!g_herdoc_stop)
+		return (result);
+	return (NULL);
 }
 
 void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
@@ -109,11 +109,10 @@ void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
     char *final_del;
 
 	*tok = lexer_next_token(lexer);
-	g_herdoc_stop = false;
 	if (tok->type == TOK_HERDOC)
 	{
 		*tok = lexer_peek_next_token(lexer);
-        final_del = herdoc_handler(env, lexer);
+		final_del = herdoc_handler(env, lexer);
 		if (final_del)
 			add_redirection(cmd, type_redir(tok), final_del);
 		else
