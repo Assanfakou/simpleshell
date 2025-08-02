@@ -6,9 +6,10 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/31 15:36:16 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/02 15:15:23 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include <dirent.h>
 
 #include "parce.h"
 
@@ -78,22 +79,46 @@ int	check_for_red(t_token tok)
  ** @param lexer - pointer to the lexer containing the token stream
  ** @return      - pointer to the head t_cmd list
  */
+void	join_current_dir(t_cmd *cmd)
+{
+	DIR *dir_files;
+	struct dirent *dir;
+	
+	dir_files = opendir(".");
+	while (dir_files)
+	{
+		dir = readdir(dir_files);
+		if (!dir)
+			break;
+	//	printf("%s\n", dir->d_name);
+		add_to_argv(cmd, dir->d_name);
+	}
+	
+	closedir(dir_files);
+}
 
 t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 {
 	t_cmd	*head;
 	t_cmd	*cmd;
 	t_token	tok;
+	char *arg;
 
 	head = create_cmd();
 	cmd = head;
-
-	
 	while (1)
 	{
 		tok = lexer_peek_next_token(lexer);
 		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE || tok.type == TOK_SINGLE)
-			add_to_argv(cmd, collect_joined_words(lexer, env));
+		{
+			arg = collect_joined_words(lexer, env);
+			if (arg[0] == '*')
+			{
+				join_current_dir(cmd);
+			}
+			else
+				add_to_argv(cmd, arg);
+		}
 		else if (check_for_red(tok))
 			redirect_del(&tok, cmd, lexer, env);
 		else if (tok.type == TOK_PIPE)
