@@ -1,4 +1,5 @@
 #include "signals.h"
+#include "lexer/lexer.h"
 
 bool	g_herdoc_stop = false;
 
@@ -6,6 +7,7 @@ void	ft_sigint_handler_herdoc(int signal)
 {
 	(void) signal;
 	g_herdoc_stop = true;
+	status_set(130);	
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
@@ -19,6 +21,5 @@ void	sigint_prompt(int sig)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
-	//free t_env
 }
 
