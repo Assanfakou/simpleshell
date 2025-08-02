@@ -9,4 +9,4 @@ extern bool g_herdoc_stop;
 
 void	sigint_prompt(int sig);
 void	ft_sigint_handler_herdoc(int signal);
-
+void handle_signals_interactive(void);

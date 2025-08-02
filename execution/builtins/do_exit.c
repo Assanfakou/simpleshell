@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:35:57 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/07/30 18:39:11 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/07/31 17:28:23 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,14 @@ int	do_exit(char **args)
 	{
 		printf("minishell: exit: %s: numeric argument required\n", args[1]);
 		exit(2);
-		return (status_get());
+		// return (status_get());
 	}
 	if (args[2])
 	{
 		printf("minishell: exit: too many arguments\n");
+		
 		status_set(1);
-		return (status_get());
+		// return (status_get());
 	}
 	n = ft_atoi(args[1]);
 	exit((unsigned char)n);

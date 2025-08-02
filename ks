@@ -1,9 +1,0 @@
-Makefile
-README.md
-en.subject.pdf
-execution_part
-ks
-lexer
-libft
-minishell
-minishell_tester
