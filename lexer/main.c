@@ -3,18 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/02 15:50:05 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/02 20:56:39 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "parce.h"
 #include "../execution/main.h"
-
-int	exit_status = 0;
 
 char *_ft_getenv(char *name_of_variable, t_env *env)
 {
@@ -27,43 +24,63 @@ char *_ft_getenv(char *name_of_variable, t_env *env)
     }
     return (NULL);
 }
+int add_back_env(t_env **env, char **envp, int i, int j)
+{
+    t_env *new;
+    t_env *tmp;
+
+    new = malloc(sizeof(t_env));
+    if (!new)
+        return (1);
+    new->value = ft_substr(envp[i], j + 1, ft_strlen(envp[i]) - j - 1);
+    new->name_of_variable = ft_substr(envp[i], 0, j);
+    new->next = NULL;
+    if (!*env)
+        *env = new;
+    else
+    {
+        tmp = *env;
+        while (tmp->next)
+            tmp = tmp->next;
+        tmp->next = new;
+    }
+    return (0);
+}
 
 t_env *_create_env(char **envp)
 {
-    t_env *env = NULL;
-    int i = 0;
+    t_env *env;
+    int i;
     int j;
 
+    env = NULL;
+    i = 0;
     while (envp[i])
     {
         j = 0;
         while (envp[i][j] && envp[i][j] != '=')
             j++;
         if (envp[i][j] == '=')
-        {
-            t_env *new = malloc(sizeof(t_env));
-            if (!new)
+            if (add_back_env(&env, envp, i, j))
                 return (NULL);
-            
-            new->name_of_variable = ft_substr(envp[i], 0, j);
-            new->value = ft_substr(envp[i], j + 1, ft_strlen(envp[i]) - j - 1);
-            new->next = NULL;
-            if (!env)
-                env = new;
-            else
-            {
-                t_env *tmp = env;
-                while (tmp->next)
-                    tmp = tmp->next;
-                tmp->next = new;
-            }
-        }
         i++;
     }
     return (env);
 }
 
-void print_ast(t_cmd *ast);
+void free_t_env(t_env *env)
+{
+    t_env *tmp;
+
+    while (env)
+    {
+        tmp = env->next;
+        free(env->name_of_variable);
+        free(env->value);
+        free(env);
+        env = tmp;
+    }
+}
 
 int	main(int ac, char **av, char **envp)
 {
@@ -83,21 +100,28 @@ int	main(int ac, char **av, char **envp)
 		input = readline("minishell: ");
 		if (!input)
 		{
-			write(1, "exit\n", 5);
+			write(1, "exit 1\n", 7);
 			free(input);
-			//free t_env
+			free_t_env(env);
 			break ;
 		}
-        
 		add_history(input);
+		g_herdoc_stop = false;
 		if (!find_error(lexer, input))
 		{
 			lexer = lexer_new(input);
 			head = build_cmd_list(&lexer, env);
-			if (head)
-                f_main(head, &env); 
-            // print_ast(head);
+			if (!g_herdoc_stop && head)
+			{
+				free(input);
+				f_main(head, &env);
+				// print_ast(head);
+			} 
+			else
+			{
+				free(input);
+				free_t_cmd(head);
+			}
 		}
-		free(input);
 	}
 }

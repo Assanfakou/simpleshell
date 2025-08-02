@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/30 09:00:55 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/01 11:50:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,12 @@
 # include <stdio.h>
 # include <unistd.h>
 
-
+# ifndef GET
 # define GET 0
+# endif
+# ifndef SET
 # define SET 1
+# endif
 
 typedef struct s_lexer
 {
