@@ -33,14 +33,12 @@ void handle_heardoc(char *delemeter)
 {
 	int fd;
 	char *filename;
-    // int read_fd;
+	int read_fd;
 
-    // read_fd = open("/dev/random", O_RDONLY, 0644);
-    // filename = malloc(10);
-    // read(read_fd, filename, 10);
-    // close(read_fd);
-    // printf("name : %s", filename);
-	filename = "1945";
+	read_fd = open("/dev/random", O_RDONLY, 0644);
+	filename = malloc(10);
+	read(read_fd, filename, 10);
+	close(read_fd);
 	fd = open(filename, O_WRONLY | O_CREAT, 0644);
 	write(fd, delemeter, ft_strlen(delemeter));
 	close(fd);

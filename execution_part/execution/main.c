@@ -66,16 +66,21 @@ void executor(t_cmd *cmd, t_env **env, char **envp)
     if (!cmd->argv || !cmd->argv[0])
     {
         int saved_stdout = dup(STDOUT_FILENO);
+	int saved_in = dup(STDIN_FILENO);
         if (find_redirection(cmd->redir))
         {
             //printf("find_redirection CALLED inside !cmd\n");
             dup2(saved_stdout, STDOUT_FILENO);
+            dup2(saved_in, STDIN_FILENO);
             close(saved_stdout);
+            close(saved_in);
             // g_exit_status = 1;
             return;
         }        
         dup2(saved_stdout, STDOUT_FILENO);
+	dup2(saved_in, STDIN_FILENO);
         close(saved_stdout);
+	close(saved_in);
         // g_exit_status = 0; //7it t9der tkon ba9a chi value 9dima
         return;
     }
