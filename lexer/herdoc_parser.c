@@ -109,7 +109,6 @@ void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
     char *final_del;
 
 	*tok = lexer_next_token(lexer);
-	g_herdoc_stop = false;
 	if (tok->type == TOK_HERDOC)
 	{
 		*tok = lexer_peek_next_token(lexer);

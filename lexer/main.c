@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/01 11:59:20 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/02 11:56:40 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,11 @@ int	main(int ac, char **av, char **envp)
 		{
 			write(1, "exit 1\n", 7);
 			free(input);
-            free_t_env(env);
+			free_t_env(env);
 			break ;
 		}
 		add_history(input);
+		g_herdoc_stop = false;
 		if (!find_error(lexer, input))
 		{
 			lexer = lexer_new(input);
