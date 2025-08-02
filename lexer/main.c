@@ -6,13 +6,13 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/31 15:37:19 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/02 15:50:05 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "parce.h"
-#include "../execution_part/execution/main.h"
+#include "../execution/main.h"
 
 int	exit_status = 0;
 
@@ -77,9 +77,9 @@ int	main(int ac, char **av, char **envp)
 
 	head = NULL;
 	env = _create_env(envp);
-	signal(SIGINT, sigint_prompt); // ctr + C
 	while (1)
 	{
+        handle_signals_interactive();
 		input = readline("minishell: ");
 		if (!input)
 		{
@@ -95,8 +95,8 @@ int	main(int ac, char **av, char **envp)
 			lexer = lexer_new(input);
 			head = build_cmd_list(&lexer, env);
 			if (head)
-                f_main(head, envp, &env); 
-                // print_ast(head);
+                f_main(head, &env); 
+            // print_ast(head);
 		}
 		free(input);
 	}

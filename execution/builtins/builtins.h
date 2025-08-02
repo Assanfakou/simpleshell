@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:35:11 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/07/30 18:37:05 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/07/31 16:50:16 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,5 @@ void	print_env(t_env *env);
 
 // do_exit
 int	do_exit(char **args);
-
-// create_env
-t_env	*create_env(char **envp);
 
 #endif

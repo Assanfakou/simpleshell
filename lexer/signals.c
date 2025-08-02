@@ -21,4 +21,9 @@ void	sigint_prompt(int sig)
 	rl_redisplay();
 	//free t_env
 }
+void handle_signals_interactive(void)
+{
+    signal(SIGINT, sigint_prompt);    // ctrl-C
+    signal(SIGQUIT, SIG_IGN);         // ctrl-\ → does nothing.
+}
 
