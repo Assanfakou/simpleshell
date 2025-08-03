@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/02 20:56:39 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/03 10:14:18 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ char *_ft_getenv(char *name_of_variable, t_env *env)
     }
     return (NULL);
 }
+
 int add_back_env(t_env **env, char **envp, int i, int j)
 {
     t_env *new;
@@ -100,7 +101,7 @@ int	main(int ac, char **av, char **envp)
 		input = readline("minishell: ");
 		if (!input)
 		{
-			write(1, "exit 1\n", 7);
+			write(1, "exit\n", 5);
 			free(input);
 			free_t_env(env);
 			break ;
