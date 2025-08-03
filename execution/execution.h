@@ -17,7 +17,6 @@
 #include "../lexer/parce.h"
 #include "../lexer/lexer.h"
 #include "builtins/builtins.h"
-#include <errno.h>
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <readline/readline.h>
@@ -63,6 +62,8 @@ int	has_pipe(t_cmd *cmd);
 void	skip_empty_cmd(t_cmd *cmd);
 int	handle_redirect_only(t_cmd *cmd);
 int	handle_builtin(t_cmd *cmd, t_env **env);
+
+
 
 
 #endif

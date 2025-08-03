@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:35:41 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/07/30 18:05:46 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/03 17:52:43 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ int	do_echo(char **args, t_env *env)
 	int	new_line;
 
 	(void)env;
-
-	i = 1; //skip echo,  like haka args = {"echo", "ridamaanane", NULL}
+	i = 1; // skip echo,  like args = {"echo", "ridamaanane", NULL}
 	new_line = 1;
 	while (args[i] && ft_strcmp(args[i], "-n") == 0)
 	{

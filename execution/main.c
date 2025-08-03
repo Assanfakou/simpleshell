@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
+/*   By: rmaanane <rmaanane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:53:00 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/02 18:53:01 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/03 15:55:32 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	exec_builtin(t_cmd *cmd, t_env **env)
 	else if (ft_strcmp(cmd->argv[0], "pwd") == 0)
 		exit = do_pwd(cmd->argv, *env);
 	else if (ft_strcmp(cmd->argv[0], "exit") == 0)
-		exit = do_exit(cmd->argv);
+		exit = do_exit(cmd->argv, env);
 	else if (ft_strcmp(cmd->argv[0], "env") == 0)
 		exit = do_env(cmd->argv, env);
 	else if (ft_strcmp(cmd->argv[0], "export") == 0)

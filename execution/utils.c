@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:53:32 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/02 18:53:33 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/03 19:06:56 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,12 @@ void	free_split_content(char **array)
 		free(array[i++]);
 	free(array);
 }
-
-char	*get_cmd_path(char *cmd, t_env *env)
+char	*get_cmd_path_loop(char **paths, char *cmd)
 {
 	int		i;
 	char	*chunk;
 	char	*full_path;
-	char	**paths;
-	char	*path_env;
 
-	path_env = ft_getenv("PATH", env);
-	if (!path_env || ft_strchr(cmd, '/')) // handle case ila 3titi ./minishell west minishell
-		return (ft_strdup(cmd));
-	paths = ft_split(path_env, ':');
-	if (!paths)
-		return (NULL);
-	full_path = NULL;
 	i = 0;
 	while (paths && paths[i])
 	{
@@ -49,6 +39,19 @@ char	*get_cmd_path(char *cmd, t_env *env)
 		full_path = NULL;
 		i++;
 	}
+	return (full_path);
+}
+char	*get_cmd_path(char *cmd, t_env *env)
+{
+	char	*full_path;
+	char	**paths;
+	char	*path_env;
+
+	path_env = ft_getenv("PATH", env);
+	paths = ft_split(path_env, ':');
+	if (!paths)
+		return (NULL);
+	full_path = get_cmd_path_loop(paths, cmd);
 	free_split_content(paths);
 	return (full_path);
 }
