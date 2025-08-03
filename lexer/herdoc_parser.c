@@ -34,6 +34,7 @@ char	*join_herdok_del(t_lexer *lexer, bool *expand)
 	}
 	return (word);
 }
+
 /**
  ** expand_herdoc_line - Process one heredoc input line.
  ** @str: Line read from input (may be freed inside).
@@ -80,10 +81,8 @@ char	*expand_herdoc_line(char *str, t_env *env, bool expand)
 char *herdoc_handler(t_env *env, t_lexer *lexer)
 {
 	bool expand;
-	char *del;
-	char *result;
-	char *line;
-
+	
+	char (*line), (*del), (*result);
 	expand = false;
 	del = join_herdok_del(lexer, &expand);
 	result = ft_strdup("");
