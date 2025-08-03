@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/03 10:42:03 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/03 17:43:35 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,10 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE || tok.type == TOK_SINGLE)
 		{
 			arg = collect_joined_words(lexer, env);
-			add_to_argv(cmd, arg);
+			if (ft_strchr(arg, '*'))
+				handle_astrisk(cmd ,arg);
+			else
+				add_to_argv(cmd, arg);
 		}	
 		else if (check_for_red(tok))
 			redirect_del(&tok, cmd, lexer, env);
