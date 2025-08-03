@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "execution.h"
+#include "main.h"
 
 void	handle_child_process(t_cmd *temp, int i, int *pipes, int nb_pipes)
 {
@@ -31,8 +32,15 @@ void	handle_child_helper(t_cmd *temp, int *pipes, t_env **env)
 		handle_redirection_error(temp);
 	if (is_builtin(temp))
 	{
-		exec_builtin(temp, env);
+		if (ft_strcmp(temp->argv[0], "exit") == 0)
+		{
+			free(pipes);
+			do_exit(temp->argv, env);
+		}
 		free(pipes);
+		exec_builtin(temp, env);
+		free_t_cmd(cmd_getter(GET, NULL));
+		free_t_env(*env);
 		exit(0);
 	}
 	prepare_path_and_exec(temp, env, pipes);

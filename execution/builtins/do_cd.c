@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:35:33 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/07/30 15:57:33 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/03 17:46:54 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,31 @@ char	*ft_getenv(char *name_of_variable, t_env *env)
 	return (NULL);
 }
 
-int check_path(char *path)
+int	check_path(char *path)
 {
 	if (!path)
 		return (1);
 	return (0);
 }
 
+int	change_dir_and_check(char *path)
+{
+	if (chdir(path) == -1)
+	{
+		write(2, "minishell: cd: ", 15);
+		write(2, path, ft_strlen(path));
+		write(2, ": ", 2);
+		perror("");
+		status_set(1);
+		return (status_get());
+	}
+	return (0);
+}
+
 int	do_cd(char **args, t_env *env)
 {
 	char	*path;
+
 	if (!args[1])
 	{
 		path = ft_getenv("HOME", env);
@@ -44,18 +59,10 @@ int	do_cd(char **args, t_env *env)
 	{
 		write(2, "minishell: cd: too many arguments\n", 34);
 		status_set(1);
-		return (status_get());	
+		return (status_get());
 	}
 	else
 		path = args[1];
-	if (chdir(path) == -1)
-	{
-		write(2, "minishell: cd: ", 15);
-		write(2, path, ft_strlen(path));
-		write(2, ": ", 2);
-		perror("");
-		status_set(1);
-		return (status_get());	
-	}
+	change_dir_and_check(path);
 	return (0);
 }

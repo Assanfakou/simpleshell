@@ -53,8 +53,8 @@ int	*create_pipes(t_cmd *cmd)
 void	close_pipe_and_wait(int nb_cmds, int nb_pipes, int *pipes)
 {
 	int	i;
-	int	status;
 	int	j;
+	int	status;
 
 	// parent: close pipes
 	i = 0;
