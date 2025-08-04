@@ -25,7 +25,52 @@ void	handle_child_process(t_cmd *temp, int i, int *pipes, int nb_pipes)
 	while (j < nb_pipes * 2)
 		close(pipes[j++]);
 }
+void	handle_redirection_error(t_cmd *temp)
+{
+	if (!temp->next)
+		exit(1);
+	else
+		exit(0);
+}
+void check_path_is_null(t_cmd *temp , char *path, t_env **env, int *pipes)
+{
+	if (!path)
+	{
+		if (temp->argv && temp->argv[0])
+		{
+			write(2, "minishell: ", 11);
+			write(2, temp->argv[0], ft_strlen(temp->argv[0]));
+			write(2, ": command not found\n", 21);
+		}
+		cleaning_cmd_and_pipes(pipes, env);
+		exit(127);
+	}
+}
 
+void	prepare_path_and_exec(t_cmd *temp, t_env **env, int *pipes)
+{
+	char	*path;
+	char	**envp;
+
+	if (temp->argv[0][0] == '/' || (temp->argv[0][0] == '.'
+			&& temp->argv[0][1] == '/'))
+		path = ft_strdup(temp->argv[0]);
+	else
+		path = get_cmd_path(temp->argv[0], *env);
+	check_path_is_null(temp , path, env, pipes);
+	check_file(temp, path, env, pipes);
+	envp = env_to_envp(*env);
+	if (execve(path, temp->argv, envp) == -1)
+	{
+		write(2, "minishell: ", 11);
+		perror(temp->argv[0]);
+		write(2, temp->argv[0], ft_strlen(temp->argv[0]));
+		cleaning_cmd_and_pipes(pipes, env);
+		free(path);
+		free_envp(envp);
+		exit(126);
+	}
+}
 void	handle_child_helper(t_cmd *temp, int *pipes, t_env **env)
 {
 	if (find_redirection(temp->redir))
@@ -45,3 +90,4 @@ void	handle_child_helper(t_cmd *temp, int *pipes, t_env **env)
 	}
 	prepare_path_and_exec(temp, env, pipes);
 }
+
