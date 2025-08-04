@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/03 17:43:35 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/04 16:46:22 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 	t_cmd	*head;
 	t_cmd	*cmd;
 	t_token	tok;
-	char *arg;
 
 	head = create_cmd();
 	cmd = head;
@@ -92,13 +91,7 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 	{
 		tok = lexer_peek_next_token(lexer);
 		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE || tok.type == TOK_SINGLE)
-		{
-			arg = collect_joined_words(lexer, env);
-			if (ft_strchr(arg, '*'))
-				handle_astrisk(cmd ,arg);
-			else
-				add_to_argv(cmd, arg);
-		}	
+			add_to_argv(cmd , collect_joined_words(lexer, env));
 		else if (check_for_red(tok))
 			redirect_del(&tok, cmd, lexer, env);
 		else if (tok.type == TOK_PIPE)
