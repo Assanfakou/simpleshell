@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/03 10:14:18 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/04 17:19:40 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int	main(int ac, char **av, char **envp)
 			if (!g_herdoc_stop && head)
 			{
 				free(input);
+                cmd_getter(SET, head);
 				f_main(head, &env);
 				// print_ast(head);
 			} 

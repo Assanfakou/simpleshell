@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:35:11 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/07/31 16:50:16 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/03 18:09:08 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-
 
 // do_echo
 int		do_echo(char **args, t_env *env);
@@ -38,6 +37,13 @@ int		do_env(char **args, t_env **env);
 t_env	*name_already_exist(t_env *env, char *name_of_variable);
 int		do_export(char **args, t_env **env);
 
+// do_export_helpers
+t_env	*name_already_exist(t_env *env, char *name_of_variable);
+int		display_export(t_env *env);
+int		add_new_env_variable(t_env **env, char *key, char *value);
+int		handle_export_argument(char *arg, t_env **env);
+int		is_valid_format(char *str);
+
 // do_unset
 int		do_unset(char **args, t_env *env);
 
@@ -45,6 +51,6 @@ int		do_unset(char **args, t_env *env);
 void	print_env(t_env *env);
 
 // do_exit
-int	do_exit(char **args);
+int		do_exit(char **args, t_env **env);
 
 #endif
