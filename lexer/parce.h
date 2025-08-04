@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parce.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/01 12:01:39 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/03 17:42:47 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,6 @@ char	*join_herdok_del(t_lexer *lexer, bool *expand);
 
 void print_ast(t_cmd *ast);
 
+void handle_astrisk(t_cmd *cmd, char *patern);
 
 #endif
