@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:53:25 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/02 21:11:10 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/05 18:07:52 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,32 @@ void handle_heardoc(char *delemeter)
 	int read_fd;
 
 	read_fd = open("/dev/random", O_RDONLY, 0642);
+	if (read_fd < 0)
+		return ;
 	filename = malloc(8);
-	read(read_fd, filename, 8);
+	if (read(read_fd, filename, 8) == -1)
+	{
+		free(filename);
+		return ;
+	}
 	close(read_fd);
 	fd = open(filename, O_WRONLY | O_CREAT, 0642);
+	if (fd < 0)
+	{
+		free(filename);
+		return;
+	}
 	write(fd, delemeter, ft_strlen(delemeter));
 	close(fd);
 	fd = open(filename, O_RDONLY, 0642);
+	if (fd < 0)
+	{
+		free(filename);
+		return;
+	}
 	dup_fd_inp(fd);
-	// close(fd);
 	unlink(filename);
+	free(filename);
 }
 
 int	find_redirection(t_redir *redir)
