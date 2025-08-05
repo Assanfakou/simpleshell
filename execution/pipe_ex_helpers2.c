@@ -64,7 +64,6 @@ void	prepare_path_and_exec(t_cmd *temp, t_env **env, int *pipes)
 	{
 		write(2, "minishell: ", 11);
 		perror(temp->argv[0]);
-		write(2, temp->argv[0], ft_strlen(temp->argv[0]));
 		cleaning_cmd_and_pipes(pipes, env);
 		free(path);
 		free_envp(envp);

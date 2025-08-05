@@ -6,13 +6,14 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 17:24:56 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/04 21:28:41 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:53:16 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "main.h"
 #include "../signals.h"
+
 
 
 void	setup_signals_and_pipes(t_cmd *cmd, int *nb_cmds, int *nb_pipes, int **pipes)
@@ -26,36 +27,50 @@ void	setup_signals_and_pipes(t_cmd *cmd, int *nb_cmds, int *nb_pipes, int **pipe
 		free_t_cmd(cmd);
 		exit(1);
 	}
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
 }
+void handler(int sig)
+{
+	(void) sig;
 
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+
+}
+void handle_fork_failed(t_cmd *temp, t_env **env)
+{
+	perror("fork failed");
+	free_t_cmd(temp);
+	free_t_env(*env);
+	exit(1);
+}
 void	handle_fork_and_execution(t_cmd *cmd, t_env **env, int *pipes, int nb_pipes)
 {
-	t_cmd	*temp = cmd;
+	t_cmd	*temp;
 	pid_t	pid;
-	int		i = 0;
-
+	int		i;
+	
+	temp = cmd;
+	i = 0;
+	signal(SIGINT, SIG_IGN);
 	while (temp)
 	{
 		pid = fork();
 		if (pid == 0)
 		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			handle_child_process(temp, i, pipes, nb_pipes);
 			handle_child_helper(temp, pipes, env);
 			free_t_cmd(cmd);
 		}
 		else if (pid < 0)
-		{
-			perror("fork failed");
-			free_t_cmd(temp);
-			free_t_env(*env);
-			exit(1);
-		}
+			handle_fork_failed(temp, env);
 		temp = temp->next;
 		i++;
 	}
 }
+
 
 void	pipe_executor(t_cmd *cmd, t_env **env)
 {
