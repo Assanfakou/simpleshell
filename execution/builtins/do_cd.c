@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:35:33 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/03 17:46:54 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/05 12:04:07 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	change_dir_and_check(char *path)
 		status_set(1);
 		return (status_get());
 	}
-	return (0);
+	return (status_get());
 }
 
 int	do_cd(char **args, t_env *env)
@@ -64,5 +64,5 @@ int	do_cd(char **args, t_env *env)
 	else
 		path = args[1];
 	change_dir_and_check(path);
-	return (0);
+	return (status_get());
 }

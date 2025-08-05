@@ -3,6 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
@@ -97,7 +98,7 @@ int	main(int ac, char **av, char **envp)
 	env = _create_env(envp);
 	while (1)
 	{
-        handle_signals_interactive();
+		handle_signals_interactive();
 		input = readline("minishell: ");
 		if (!input)
 		{
@@ -115,7 +116,7 @@ int	main(int ac, char **av, char **envp)
 			if (!g_herdoc_stop && head)
 			{
 				free(input);
-                cmd_getter(SET, head);
+				cmd_getter(SET, head);
 				f_main(head, &env);
 				// print_ast(head);
 			} 
