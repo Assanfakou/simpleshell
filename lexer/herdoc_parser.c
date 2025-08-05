@@ -1,5 +1,10 @@
 #include "parce.h"
 
+int write_herr(void)
+{
+	write(2, "minishell: readline got NULL\n", 29);
+	return (1);
+}
 /**
  ** join_herdok_del - Build the heredoc delimiter from lexer tokens.
  ** @lexer:  Data structure dat holds the line.
@@ -91,10 +96,8 @@ char *herdoc_handler(t_env *env, t_lexer *lexer)
 	{
 		line = readline("> ");
 		if (!line)
-		{
-			write(2, "minishell: readline got NULL\n", 29);
-			break;
-		}
+			if (write_herr())
+				break;
 		if (ft_strcmp(line, del) == 0)
 		{
 			free(line);
@@ -108,7 +111,6 @@ char *herdoc_handler(t_env *env, t_lexer *lexer)
 	free(result);
 	return (NULL);
 }
-
 
 void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 {
