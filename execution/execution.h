@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 12:15:36 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/02 12:15:36 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/05 18:35:37 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,10 @@ int		has_pipe(t_cmd *cmd);
 void	skip_empty_cmd(t_cmd *cmd);
 int		handle_redirect_only(t_cmd *cmd);
 int		handle_builtin(t_cmd *cmd, t_env **env);
+
+//herdoc
+
+int read_dev_random(char **file);
+void handle_heardoc(char *delemeter);
 
 #endif
