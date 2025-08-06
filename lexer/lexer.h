@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:22:41 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/06 13:22:44 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/06 14:44:32 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_lexer
 	char			c;
 	size_t			pos;	// index of c
 	size_t			len;	// length of input
-	size_t			read_pos;	// next char index
+	size_t			read_pos; // next char index
 }					t_lexer;
 
 typedef enum s_token_type

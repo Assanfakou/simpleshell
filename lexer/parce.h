@@ -68,7 +68,7 @@ char				*collect_joined_words(t_lexer *lexer, t_env *env);
 char				*join_char(char c, char *res);
 //env
 char				*_ft_getenv(char *name_of_variable, t_env *env);
-int				add_back_env(t_env **env, char **envp, int i, int j);
+int					add_back_env(t_env **env, char **envp, int i, int j);
 t_env				*_create_env(char **envp);
 
 char				*herdoc_handler(t_env *env, t_lexer *lexer);

@@ -13,13 +13,13 @@
 #include "../execution/main.h"
 #include "parce.h"
 
-int free_exit(char *input, t_env *env)
+int	free_exit(char *input, t_env *env)
 {
 	write(1, "exit\n", 5);
 	free(input);
 	free_t_env(env);
 	return (1);
-}	
+}
 
 int	main(int ac, char **av, char **envp)
 {
