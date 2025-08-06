@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*                                                +#+#+#+#+#+   +#+           */
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/04 17:19:40 by hfakou           ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/08/06 13:34:17 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../execution/main.h"
 #include "parce.h"
@@ -117,7 +117,7 @@ int	main(int ac, char **av, char **envp)
 				free(input);
 				cmd_getter(SET, head);
 				f_main(head, &env);
-				 print_ast(head);
+				//print_ast(head);
 			}
 			else
 			{

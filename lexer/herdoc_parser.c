@@ -1,4 +1,15 @@
-#include "parce.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   herdoc_parser.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 13:22:27 by hfakou            #+#    #+#             */
+/*   Updated: 2025/08/06 13:28:58 by hfakou           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 int	write_herr(void)
 {
@@ -87,7 +98,7 @@ char	*herdoc_handler(t_env *env, t_lexer *lexer)
 {
 	bool	expd;
 
-	char(*line), (*del), (*result);
+	char	(*line),(*del),(*result);
 	expd = false;
 	del = join_herdok_del(lexer, &expd);
 	result = ft_strdup("");
