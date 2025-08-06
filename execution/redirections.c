@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:53:25 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/02 21:11:10 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/06 23:33:44 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void handle_heardoc(char *delemeter)
 	close(fd);
 	fd = open(filename, O_RDONLY, 0642);
 	dup_fd_inp(fd);
-	// close(fd);
 	unlink(filename);
 }
 
