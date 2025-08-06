@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/06 12:02:39 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/06 13:52:31 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,10 @@ void				handle_env_var(char **res, char *var, size_t *i,
 char				*parse_heredoc_delim(t_lexer *lexer, bool *expand);
 char				*collect_joined_words(t_lexer *lexer, t_env *env);
 char				*join_char(char c, char *res);
-
+//env
 char				*_ft_getenv(char *name_of_variable, t_env *env);
+int				add_back_env(t_env **env, char **envp, int i, int j);
+t_env				*_create_env(char **envp);
 
 char				*herdoc_handler(t_env *env, t_lexer *lexer);
 char				*expand_herdoc_line(char *str, t_env *env, bool expand);
