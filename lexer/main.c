@@ -11,89 +11,88 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parce.h"
 #include "../execution/main.h"
+#include "parce.h"
 
-char *_ft_getenv(char *name_of_variable, t_env *env)
+char	*_ft_getenv(char *name_of_variable, t_env *env)
 {
-    while (env)
-    {
-        if (ft_strcmp(env->name_of_variable, name_of_variable) == 0)
-            return (env->value);
-        else
-            env = env->next;
-    }
-    return (NULL);
+	while (env)
+	{
+		if (ft_strcmp(env->name_of_variable, name_of_variable) == 0)
+			return (env->value);
+		else
+			env = env->next;
+	}
+	return (NULL);
 }
 
-int add_back_env(t_env **env, char **envp, int i, int j)
+int	add_back_env(t_env **env, char **envp, int i, int j)
 {
-    t_env *new;
-    t_env *tmp;
+	t_env	*new;
+	t_env	*tmp;
 
-    new = malloc(sizeof(t_env));
-    if (!new)
-        return (1);
-    new->value = ft_substr(envp[i], j + 1, ft_strlen(envp[i]) - j - 1);
-    new->name_of_variable = ft_substr(envp[i], 0, j);
-    new->next = NULL;
-    if (!*env)
-        *env = new;
-    else
-    {
-        tmp = *env;
-        while (tmp->next)
-            tmp = tmp->next;
-        tmp->next = new;
-    }
-    return (0);
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (1);
+	new->value = ft_substr(envp[i], j + 1, ft_strlen(envp[i]) - j - 1);
+	new->name_of_variable = ft_substr(envp[i], 0, j);
+	new->next = NULL;
+	if (!*env)
+		*env = new;
+	else
+	{
+		tmp = *env;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+	return (0);
 }
 
-t_env *_create_env(char **envp)
+t_env	*_create_env(char **envp)
 {
-    t_env *env;
-    int i;
-    int j;
+	t_env	*env;
+	int		i;
+	int		j;
 
-    env = NULL;
-    i = 0;
-    while (envp[i])
-    {
-        j = 0;
-        while (envp[i][j] && envp[i][j] != '=')
-            j++;
-        if (envp[i][j] == '=')
-            if (add_back_env(&env, envp, i, j))
-                return (NULL);
-        i++;
-    }
-    return (env);
+	env = NULL;
+	i = 0;
+	while (envp[i])
+	{
+		j = 0;
+		while (envp[i][j] && envp[i][j] != '=')
+			j++;
+		if (envp[i][j] == '=')
+			if (add_back_env(&env, envp, i, j))
+				return (NULL);
+		i++;
+	}
+	return (env);
 }
 
-void free_t_env(t_env *env)
+void	free_t_env(t_env *env)
 {
-    t_env *tmp;
+	t_env	*tmp;
 
-    while (env)
-    {
-        tmp = env->next;
-        free(env->name_of_variable);
-        free(env->value);
-        free(env);
-        env = tmp;
-    }
+	while (env)
+	{
+		tmp = env->next;
+		free(env->name_of_variable);
+		free(env->value);
+		free(env);
+		env = tmp;
+	}
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	(void) ac;
-	(void) av;
-
 	t_env	*env;
 	t_lexer	lexer;
 	char	*input;
 	t_cmd	*head;
 
+	(void)ac;
+	(void)av;
 	head = NULL;
 	env = _create_env(envp);
 	while (1)
@@ -118,8 +117,8 @@ int	main(int ac, char **av, char **envp)
 				free(input);
 				cmd_getter(SET, head);
 				f_main(head, &env);
-				// print_ast(head);
-			} 
+				 print_ast(head);
+			}
 			else
 			{
 				free(input);

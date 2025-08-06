@@ -88,7 +88,8 @@ t_token	token_redir(t_lexer *lexer)
  ** Skips any whitespace and define the token type
  ** based on the current character in the input.
  **
- ** @param lexer - pointer to the lexer structure tracking the input from readline
+ ** @param lexer
+	- pointer to the lexer structure tracking the input from readline
  ** @return      - the next token
  */
 

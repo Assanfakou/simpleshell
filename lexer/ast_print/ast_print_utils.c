@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ast_print_utils.c                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aljbari <jbariali002@gmail.com>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 19:03:57 by aljbari           #+#    #+#             */
-/*   Updated: 2025/07/21 08:59:25 by hfakou           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "ast_print.h"
 
 /**
@@ -21,6 +9,8 @@
  * @ast: first ast node of the tree
  * Return: Nothing
  */
+
+/*
 void	_print_ast_helper(t_cmd *ast, int indent)
 {
 	while (ast)
@@ -29,6 +19,7 @@ void	_print_ast_helper(t_cmd *ast, int indent)
 		ast = ast->next;
 	}
 }
+*/
 
 /**
  * _tree_line_prefix - print the line prefixes (tree lines), meant only to be
@@ -38,6 +29,8 @@ void	_print_ast_helper(t_cmd *ast, int indent)
  * @is_empty_line: is there something to be added before this line ended or not
  * Return: Nothing
  */
+
+/*
 void	_tree_line_prefix(int indent, bool is_empty_line)
 {
 	int	i;
@@ -54,6 +47,7 @@ void	_tree_line_prefix(int indent, bool is_empty_line)
 	if (is_empty_line)
 		printf("\n");
 }
+*/
 
 /**
  * _print_tree_end_root - prints the end root of ended node tree, meant only to
@@ -62,6 +56,8 @@ void	_tree_line_prefix(int indent, bool is_empty_line)
  * @indent: current indentation
  * Return: Nothing
  */
+
+/*
 void	_print_tree_end_root(int indent)
 {
 	int	i;
@@ -75,3 +71,4 @@ void	_print_tree_end_root(int indent)
 	printf("%*s╰", INDENT_SIZE, "");
 	printf("\n");
 }
+*/
