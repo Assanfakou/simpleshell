@@ -107,6 +107,7 @@ char *herdoc_handler(t_env *env, t_lexer *lexer)
 void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 {
     char *final_del;
+	char *target;
 
 	*tok = lexer_next_token(lexer);
 	if (tok->type == TOK_HERDOC)
@@ -121,6 +122,9 @@ void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 	else
 	{
 		// *tok = lexer_next_token(lexer);
-		add_redirection(cmd, type_redir(tok), collect_joined_words(lexer, env));
+		target =  collect_joined_words(lexer, env);
+		if (!target)
+			target = ft_strdup("");
+		add_redirection(cmd, type_redir(tok), target);
 	}
 }
