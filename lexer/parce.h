@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/06 13:52:31 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/07 22:12:19 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,7 @@ void				print_cmd(t_cmd *cmd);
 void				ft_red_printf(t_redir_type type, char *name);
 
 void				handle_astrisk(t_cmd *cmd, char *patern);
+
+int free_two(char *s1, char *s2);
 
 #endif

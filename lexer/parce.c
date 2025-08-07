@@ -41,7 +41,7 @@ char	*collect_joined_words(t_lexer *lexer, t_env *env)
 	char	*processed;
 	t_token	next_tok;
 	t_token	tok;
-	bool quoted;
+	bool	quoted;
 
 	quoted = false;
 	word = ft_strdup("");
@@ -65,7 +65,7 @@ char	*collect_joined_words(t_lexer *lexer, t_env *env)
 			break ;
 	}
 	if (quoted == false && ft_strlen(word) == 0)
-		return (NULL); 	
+		return (NULL);
 	return (word);
 }
 
@@ -90,15 +90,17 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 	t_cmd	*head;
 	t_cmd	*cmd;
 	t_token	tok;
+	char	*arg;
 
 	head = create_cmd();
 	cmd = head;
 	while (1)
 	{
 		tok = lexer_peek_next_token(lexer);
-		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE || tok.type == TOK_SINGLE)
+		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE
+			|| tok.type == TOK_SINGLE)
 		{
-			char *arg = collect_joined_words(lexer, env);
+			arg = collect_joined_words(lexer, env);
 			if (arg)
 				add_to_argv(cmd, arg);
 		}

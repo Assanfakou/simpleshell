@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:23:18 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/06 13:32:05 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/07 22:14:35 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,11 @@ t_token_type	toke_type(char c)
 		return (TOK_SINGLE);
 	else
 		return (TOK_DOUBLE);
+}
+
+int free_two(char *s1, char *s2)
+{
+	free(s1);
+	free(s2);
+	return (1);
 }
