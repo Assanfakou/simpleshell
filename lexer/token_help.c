@@ -51,7 +51,7 @@ t_token_type	toke_type(char c)
 		return (TOK_DOUBLE);
 }
 
-int free_two(char *s1, char *s2)
+int	free_two(char *s1, char *s2)
 {
 	free(s1);
 	free(s2);

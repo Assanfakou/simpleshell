@@ -100,7 +100,7 @@ char	*herdoc_handler(t_env *env, t_lexer *lexer)
 {
 	bool	expand;
 	char	*line;
-	char 	*del;
+	char	*del;
 	char	*result;
 
 	expand = false;
@@ -112,11 +112,12 @@ char	*herdoc_handler(t_env *env, t_lexer *lexer)
 		line = readline("> ");
 		if (!line)
 			if (write_herr())
-				break;
+				break ;
 		if (ft_strcmp(line, del) == 0)
 			if (free_two(line, del))
 				break ;
-		result = join_and_free_two(result, expand_herdoc_line(line , env, expand));
+		result = join_and_free_two(result, expand_herdoc_line(line, env,
+					expand));
 	}
 	if (!g_herdoc_stop)
 		return (result);
@@ -124,10 +125,10 @@ char	*herdoc_handler(t_env *env, t_lexer *lexer)
 	return (NULL);
 }
 
-void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
+void	redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 {
-    char *final_del;
-	char *target;
+	char	*final_del;
+	char	*target;
 
 	*tok = lexer_next_token(lexer);
 	if (tok->type == TOK_HERDOC)
@@ -141,10 +142,9 @@ void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 	}
 	else
 	{
-		target =  collect_joined_words(lexer, env);
+		target = collect_joined_words(lexer, env);
 		if (!target)
 			target = ft_strdup("");
 		add_redirection(cmd, type_redir(tok), target);
 	}
 }
-
