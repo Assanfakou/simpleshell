@@ -1,5 +1,10 @@
 #include "parce.h"
 
+int write_herr(void)
+{
+	write(2, "minishell: readline got NULL\n", 29);
+	return (1);
+}
 /**
  ** join_herdok_del - Build the heredoc delimiter from lexer tokens.
  ** @lexer:  Data structure dat holds the line.
@@ -34,6 +39,7 @@ char	*join_herdok_del(t_lexer *lexer, bool *expand)
 	}
 	return (word);
 }
+
 /**
  ** expand_herdoc_line - Process one heredoc input line.
  ** @str: Line read from input (may be freed inside).
@@ -80,10 +86,8 @@ char	*expand_herdoc_line(char *str, t_env *env, bool expand)
 char *herdoc_handler(t_env *env, t_lexer *lexer)
 {
 	bool expand;
-	char *del;
-	char *result;
-	char *line;
-
+	
+	char (*line), (*del), (*result);
 	expand = false;
 	del = join_herdok_del(lexer, &expand);
 	result = ft_strdup("");
@@ -91,6 +95,9 @@ char *herdoc_handler(t_env *env, t_lexer *lexer)
 	while (!g_herdoc_stop)
 	{
 		line = readline("> ");
+		if (!line)
+			if (write_herr())
+				break;
 		if (ft_strcmp(line, del) == 0)
 		{
 			free(line);
@@ -101,6 +108,7 @@ char *herdoc_handler(t_env *env, t_lexer *lexer)
 	}
 	if (!g_herdoc_stop)
 		return (result);
+	free(result);
 	return (NULL);
 }
 
@@ -121,7 +129,6 @@ void redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 	}
 	else
 	{
-		// *tok = lexer_next_token(lexer);
 		target =  collect_joined_words(lexer, env);
 		if (!target)
 			target = ft_strdup("");

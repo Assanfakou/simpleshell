@@ -58,4 +58,9 @@ int		has_pipe(t_cmd *cmd);
 int		handle_redirect_only(t_cmd *cmd);
 int		handle_builtin(t_cmd *cmd, t_env **env);
 
+//herdoc
+
+int read_dev_random(char **file);
+void handle_heardoc(char *delemeter);
+
 #endif

@@ -3,10 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:31:35 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/05 13:49:42 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/04 17:19:40 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +25,7 @@ char *_ft_getenv(char *name_of_variable, t_env *env)
     }
     return (NULL);
 }
+
 int add_back_env(t_env **env, char **envp, int i, int j)
 {
     t_env *new;
@@ -96,11 +98,11 @@ int	main(int ac, char **av, char **envp)
 	env = _create_env(envp);
 	while (1)
 	{
-        handle_signals_interactive();
+		handle_signals_interactive();
 		input = readline("minishell: ");
 		if (!input)
 		{
-			write(1, "exit 1\n", 7);
+			write(1, "exit\n", 5);
 			free(input);
 			free_t_env(env);
 			break ;
@@ -114,7 +116,7 @@ int	main(int ac, char **av, char **envp)
 			if (!g_herdoc_stop && head)
 			{
 				free(input);
-                cmd_getter(SET, head);
+				cmd_getter(SET, head);
 				f_main(head, &env);
 				// print_ast(head);
 			} 

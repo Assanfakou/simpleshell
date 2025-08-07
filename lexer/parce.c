@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parce.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/06 23:15:23 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:46:22 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 
 	head = create_cmd();
 	cmd = head;
-
-	
 	while (1)
 	{
 		tok = lexer_peek_next_token(lexer);
