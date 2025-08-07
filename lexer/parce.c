@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/04 16:46:22 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/07 20:42:13 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ char	*join_and_free_two(char *s1, char *s2)
  ** Collects and joins consecutive word-like tokens that are 
  **			not separated by spaces.
  ** Expands environment variables when appropriate,
- **			 except inside single-quoted tokens.
+ **				except inside single-quoted tokens.
  **
  ** @param lexer - pointer to the current lexer state
- ** @param env 	 - the enviriment linked liste for expanding
+ ** @param env 		- the enviriment linked liste for expanding
  ** @return      - new allocated string representing the
  **			joined and processed word
  */
@@ -41,7 +41,7 @@ char	*collect_joined_words(t_lexer *lexer, t_env *env)
 	char	*processed;
 	t_token	next_tok;
 	t_token	tok;
-	bool quoted;
+	bool	quoted;
 
 	quoted = false;
 	word = ft_strdup("");
@@ -65,7 +65,7 @@ char	*collect_joined_words(t_lexer *lexer, t_env *env)
 			break ;
 	}
 	if (quoted == false && ft_strlen(word) == 0)
-		return (NULL); 	
+		return (NULL);
 	return (word);
 }
 
@@ -90,15 +90,17 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 	t_cmd	*head;
 	t_cmd	*cmd;
 	t_token	tok;
+	char	*arg;
 
 	head = create_cmd();
 	cmd = head;
 	while (1)
 	{
 		tok = lexer_peek_next_token(lexer);
-		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE || tok.type == TOK_SINGLE)
+		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE
+			|| tok.type == TOK_SINGLE)
 		{
-			char *arg = collect_joined_words(lexer, env);
+			arg = collect_joined_words(lexer, env);
 			if (arg)
 				add_to_argv(cmd, arg);
 		}

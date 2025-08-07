@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/01 11:50:52 by marvin           ###   ########.fr       */
+/*   Created: 2025/08/06 13:22:41 by hfakou            #+#    #+#             */
+/*   Updated: 2025/08/06 14:44:32 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@
 # include <unistd.h>
 
 # ifndef GET
-# define GET 0
+#  define GET 0
 # endif
 # ifndef SET
-# define SET 1
+#  define SET 1
 # endif
 
 typedef struct s_lexer
 {
 	char			*input;
 	char			c;
-	size_t pos;      // index of c
-	size_t len;      // length of input
-	size_t read_pos; // next char index
+	size_t			pos;	// index of c
+	size_t			len;	// length of input
+	size_t			read_pos; // next char index
 }					t_lexer;
 
 typedef enum s_token_type
@@ -82,12 +82,11 @@ void				read_char(t_lexer *lexer);
 // error
 
 int					check_errors(t_lexer *lexer, t_token curr);
-int not_token(t_token n_tok);
-void	print_error(char *pointer, size_t size);
-void	print_newline_error(void);
-int	check_first_tok(t_token *token);
-int	find_error(t_lexer lexer, char *input);
-
+int					not_token(t_token n_tok);
+void				print_error(char *pointer, size_t size);
+void				print_newline_error(void);
+int					check_first_tok(t_token *token);
+int					find_error(t_lexer lexer, char *input);
 
 int					check_first_tok(t_token *token);
 int					find_error(t_lexer lexer, char *input);
@@ -98,10 +97,9 @@ void				print_error(char *pointer, size_t size);
 int					is_var_char(int c);
 int					is_start_char(int c);
 
-
 //exit_status
-int    status_get(void);
-void    status_set(int value);
-void    status_main(int action, int *value);
+int					status_get(void);
+void				status_set(int value);
+void				status_main(int action, int *value);
 
 #endif
