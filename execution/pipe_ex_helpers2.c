@@ -67,7 +67,7 @@ void	prepare_path_and_exec(t_cmd *temp, t_env **env, int *pipes)
 		cleaning_cmd_and_pipes(pipes, env);
 		free(path);
 		free_envp(envp);
-		exit(126);
+		exit(127);
 	}
 }
 void	handle_child_helper(t_cmd *temp, int *pipes, t_env **env)
@@ -82,7 +82,7 @@ void	handle_child_helper(t_cmd *temp, int *pipes, t_env **env)
 			do_exit(temp->argv, env);
 		}
 		free(pipes);
-		exec_builtin(temp, env);
+		status_set(exec_builtin(temp, env));
 		free_t_cmd(cmd_getter(GET, NULL));
 		free_t_env(*env);
 		exit(0);

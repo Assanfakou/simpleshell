@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:35:11 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/04 21:31:44 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/06 11:41:39 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,6 @@ int		is_valid_format(char *str);
 
 // do_unset
 int		do_unset(char **args, t_env *env);
-
-// print_env
-void	print_env(t_env *env);
 
 // do_exit
 int		do_exit(char **args, t_env **env);

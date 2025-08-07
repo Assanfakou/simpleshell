@@ -50,7 +50,7 @@ int	*create_pipes(t_cmd *cmd)
 	return (pipes);
 }
 
-void	close_pipe_and_wait(int nb_cmds, int nb_pipes, int *pipes)
+void	close_pipe_and_wait(int nb_cmds, int nb_pipes, int *pipes, pid_t last_pid)
 {
 	int	i;
 	int	j;
@@ -63,16 +63,21 @@ void	close_pipe_and_wait(int nb_cmds, int nb_pipes, int *pipes)
 	j = 0;
 	while (j < nb_cmds)
 	{
-		wait(&status);
-		if (WIFEXITED(status)) // hadi macro f C,katcheck wach dak child tsala normal (b exit(x)), mashi b signal (kill, segfault...).
-			status_set(WEXITSTATUS(status)); // ila hya true, n9adro njibo exit status dyal command.
-		else 
+		pid_t child_pid = wait(&status);
+		if (child_pid == last_pid)
 		{
-			if (WTERMSIG(status) == SIGQUIT)
-				ft_putendl_fd("Quit (core dumped)", 1);
-			else if (WTERMSIG(status) == SIGINT)
-				ft_putendl_fd("", 1);
-			status_set(128 + WTERMSIG(status));
+			if (WIFEXITED(status))
+				status_set(WEXITSTATUS(status)); // ila hya true, n9adro njibo exit status dyal command.
+		// hadi macro f C,katcheck wach dak child tsala normal (b exit(x)), mashi b signal (kill, segfault...).
+	
+			else 
+			{
+				if (WTERMSIG(status) == SIGQUIT)
+					ft_putendl_fd("Quit (core dumped)", 2);
+				else if (WTERMSIG(status) == SIGINT)
+					ft_putendl_fd("", 2);
+				status_set(128 + WTERMSIG(status));
+			}
 		}
 		j++;
 	}

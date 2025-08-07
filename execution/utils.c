@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:53:32 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/03 19:06:56 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/06 23:09:34 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ char	*get_cmd_path(char *cmd, t_env *env)
 	char	**paths;
 	char	*path_env;
 
+	if (cmd && ft_strlen(cmd) == 0)
+		return (ft_strdup(cmd)); 
 	path_env = ft_getenv("PATH", env);
 	paths = ft_split(path_env, ':');
 	if (!paths)

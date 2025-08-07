@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 15:58:52 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/03 17:32:18 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/06 23:16:40 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void cleaning_cmd_and_pipes(int *pipes, t_env **env)
 	free_t_env(*env);
 }
 
-int is_directory(const char *path)
+int is_directory(char *path)
 {
 	DIR *dir;
 	

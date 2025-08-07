@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:53:00 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/05 11:58:00 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/06 23:23:28 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,21 +62,11 @@ void	executor(t_cmd *cmd, t_env **env)
 	if (!cmd->argv || !cmd->argv[0])
 		if (handle_redirect_only(cmd))
 			return ;
-
-	skip_empty_cmd(cmd);
-
 	if (is_builtin(cmd) && !has_pipe(cmd))
 		if (handle_builtin(cmd, env))
 			return ;
-	if (!cmd->argv || !cmd->argv[0] || cmd->argv[0][0] == '\0')
-	{
-		write(2, "Command '' not found\n", 22);
-		status_set(127);
-		return ;
-	}
 	pipe_executor(cmd, env);
 }
-
 
 void	f_main(t_cmd *cmd, t_env **env)
 {

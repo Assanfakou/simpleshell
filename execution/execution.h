@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 12:15:36 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/05 18:35:37 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/06 23:23:46 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	pipe_executor(t_cmd *cmd, t_env **env);
 // pipe_ex_helpers
 int		count_cmds(t_cmd *cmd);
 int		*create_pipes(t_cmd *cmd);
-void	close_pipe_and_wait(int nb_cmds, int nb_pipes, int *pipes);
+void	close_pipe_and_wait(int nb_cmds, int nb_pipes, int *pipes, pid_t last_pid);
 int		has_output_redirection(t_cmd *cmd);
 
 // pipe_ex_helpers2
@@ -55,7 +55,6 @@ int		exec_builtin(t_cmd *cmd, t_env **env);
 
 // main_helpers
 int		has_pipe(t_cmd *cmd);
-void	skip_empty_cmd(t_cmd *cmd);
 int		handle_redirect_only(t_cmd *cmd);
 int		handle_builtin(t_cmd *cmd, t_env **env);
 

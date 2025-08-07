@@ -3,9 +3,9 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/02 18:53:25 by rmaanane          #+#    #+#             */
+/*   Created: 2025/08/02 18:53:25 by rmaanane          #+#    #+#             */      
 /*   Updated: 2025/08/05 18:30:45 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -38,7 +38,6 @@ int handle_append(t_redir *redir)
 	dup_fd_out(fd);
 	return (0);
 }
-
 
 int	find_redirection(t_redir *redir)
 {

@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/04 16:46:22 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/07 20:42:13 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,15 @@ char	*collect_joined_words(t_lexer *lexer, t_env *env)
 	char	*processed;
 	t_token	next_tok;
 	t_token	tok;
+	bool quoted;
 
+	quoted = false;
 	word = ft_strdup("");
 	while (1)
 	{
 		tok = lexer_next_token(lexer);
+		if (tok.type == TOK_SINGLE || tok.type == TOK_DOUBLE)
+			quoted = true;
 		if_var = ft_strndup(tok.literal, tok.len);
 		if (tok.type == TOK_SINGLE || !ft_strchr(if_var, '$'))
 			processed = if_var;
@@ -60,6 +64,8 @@ char	*collect_joined_words(t_lexer *lexer, t_env *env)
 				&& next_tok.type != TOK_DOUBLE) || next_tok.space == true)
 			break ;
 	}
+	if (quoted == false && ft_strlen(word) == 0)
+		return (NULL); 	
 	return (word);
 }
 
@@ -90,9 +96,12 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 	while (1)
 	{
 		tok = lexer_peek_next_token(lexer);
-		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE
-			|| tok.type == TOK_SINGLE)
-			add_to_argv(cmd, collect_joined_words(lexer, env));
+		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE || tok.type == TOK_SINGLE)
+		{
+			char *arg = collect_joined_words(lexer, env);
+			if (arg)
+				add_to_argv(cmd, arg);
+		}
 		else if (check_for_red(tok))
 			redirect_del(&tok, cmd, lexer, env);
 		else if (tok.type == TOK_PIPE)
