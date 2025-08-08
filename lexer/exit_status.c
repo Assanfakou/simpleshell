@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit_status.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 13:21:56 by hfakou            #+#    #+#             */
+/*   Updated: 2025/08/06 13:22:00 by hfakou           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lexer.h"
 
 /**
@@ -12,14 +24,15 @@
  ** Return: void.
  */
 
-void    status_main(int action, int *value)
+void	status_main(int action, int *value)
 {
-    static int    last_status = 0;
+	static int	last_status;
 
-    if (action == GET)
-        *value = last_status;
-    else if (action == SET)
-        last_status = *value;
+	last_status = 0;
+	if (action == GET)
+		*value = last_status;
+	else if (action == SET)
+		last_status = *value;
 }
 /**
  ** status_get - Get the current last exit status.
@@ -27,12 +40,12 @@ void    status_main(int action, int *value)
  ** Return: The stored status value.
  */
 
-int    status_get(void)
+int	status_get(void)
 {
-    int    value;
+	int	value;
 
-    status_main(GET, &value);
-    return (value);
+	status_main(GET, &value);
+	return (value);
 }
 /**
  ** status_set - Update the last exit status.
@@ -41,7 +54,7 @@ int    status_get(void)
  ** Return: void.
  */
 
-void    status_set(int value)
+void	status_set(int value)
 {
-    status_main(SET, &value);
+	status_main(SET, &value);
 }

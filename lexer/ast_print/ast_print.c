@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ast_print.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aljbari <jbariali002@gmail.com>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 19:03:51 by aljbari           #+#    #+#             */
-/*   Updated: 2025/07/21 09:06:10 by hfakou           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "ast_print.h"
 
 void	print_ast_redirection(t_cmd *ast, int indent);
@@ -20,6 +8,7 @@ void	print_ast_type(t_cmd *ast, int indent);
  * @indent: give it 0 if you're not printing a tree
  * Return: Noting
  */
+/*
 void	print_ast_simple_cmd(t_cmd *ast, int indent)
 {
 	size_t	i;
@@ -44,6 +33,7 @@ void	print_ast_simple_cmd(t_cmd *ast, int indent)
 	print_ast_redirection(ast, indent);
 	_tree_line_prefix(indent, true);
 }
+*/
 
 /**
  * print_ast_type - print type of an ast node
@@ -52,6 +42,8 @@ void	print_ast_simple_cmd(t_cmd *ast, int indent)
  * @indent: give it 0 if your not printing a tree
  * Return: Noting
  */
+
+/*
 void	print_ast_type(t_cmd *ast, int indent)
 {
 	(void) ast;
@@ -60,7 +52,7 @@ void	print_ast_type(t_cmd *ast, int indent)
 	printf("◯───── %s\n", "COMMAND");
 	printf("%s", TEXT_RESET);
 }
-
+*/
 
 /**
  * print_ast_redirection - print ast I/O redirections
@@ -69,6 +61,8 @@ void	print_ast_type(t_cmd *ast, int indent)
  * @indent: give it 0 if your not printing a tree
  * Return: Nothing
  */
+/*
+
 void	print_ast_redirection(t_cmd *ast, int indent)
 {
 	t_redir *walk;
@@ -85,13 +79,14 @@ void	print_ast_redirection(t_cmd *ast, int indent)
 			printf("%s", TEXT_RED);
 		else
 			printf("%s", TEXT_BBLUE);
-		printf("%s '%s'%s ", redir_type_to_str(walk->type), walk->filename, TEXT_RESET);
+		printf("%s '%s'%s ", redir_type_to_str(walk->type),
+			walk->filename, TEXT_RESET);
 		walk = walk->next;
 		i++;
 	}
 	printf("\n");
 }
-
+*/
 
 /**
  * print_ast - Enjoy a nice view of your beautiful ast
@@ -99,6 +94,8 @@ void	print_ast_redirection(t_cmd *ast, int indent)
  * @ast: Pointer to none-null ast node
  * Return: Nothing
  */
+
+/*
 void	print_ast(t_cmd *cmd)
 {
 	if (!cmd)
@@ -109,3 +106,4 @@ void	print_ast(t_cmd *cmd)
 	_print_ast_helper(cmd, 0);
 	_print_tree_end_root(0);
 }
+*/

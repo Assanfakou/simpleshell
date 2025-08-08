@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/02 18:53:25 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/06 23:33:44 by rmaanane         ###   ########.fr       */
+/*   Created: 2025/08/02 18:53:25 by rmaanane          #+#    #+#             */      
+/*   Updated: 2025/08/05 18:30:45 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,6 @@ int handle_append(t_redir *redir)
 		return (1);
 	dup_fd_out(fd);
 	return (0);
-}
-
-void handle_heardoc(char *delemeter)
-{
-	int fd;
-	char *filename;
-	int read_fd;
-
-	read_fd = open("/dev/random", O_RDONLY, 0642);
-	filename = malloc(8);
-	read(read_fd, filename, 8);
-	close(read_fd);
-	fd = open(filename, O_WRONLY | O_CREAT, 0642);
-	write(fd, delemeter, ft_strlen(delemeter));
-	close(fd);
-	fd = open(filename, O_RDONLY, 0642);
-	dup_fd_inp(fd);
-	unlink(filename);
 }
 
 int	find_redirection(t_redir *redir)

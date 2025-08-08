@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 13:15:17 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/30 09:20:48 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/06 11:50:05 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	print_newline_error(void)
 	write(2, "`\n", 2);
 	status_set(2);
 }
+
 /**
  ** check_errors - Validate token sequence for basic syntax errors.
  ** @lexer: Active lexer (used to peek the next token).
@@ -44,12 +45,10 @@ void	print_newline_error(void)
 int	check_errors(t_lexer *lexer, t_token curr)
 {
 	t_token	n_tok;
+
 	n_tok = lexer_peek_next_token(lexer);
 	if (curr.type == TOK_PIPE && n_tok.type == TOK_NULL)
-	{
-		print_error(curr.literal, curr.len);
-		return (1);
-	}
+		return (print_error(curr.literal, curr.len), 1);
 	else if (check_for_red(curr))
 	{
 		if (n_tok.type == TOK_NULL)
@@ -83,6 +82,7 @@ int	check_first_tok(t_token *token)
 	else
 		return (0);
 }
+
 /**
  * find_error - Run lexical and syntax checks on the input line.
  * @lexer: Lexer value (reinitialized internally with @input).

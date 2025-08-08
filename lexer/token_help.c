@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_help.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmaanane <rmaanane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 13:40:39 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/21 16:22:15 by rmaanane         ###   ########.fr       */
+/*   Created: 2025/08/06 13:23:18 by hfakou            #+#    #+#             */
+/*   Updated: 2025/08/07 22:14:35 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,11 @@ t_token_type	toke_type(char c)
 		return (TOK_SINGLE);
 	else
 		return (TOK_DOUBLE);
+}
+
+int	free_two(char *s1, char *s2)
+{
+	free(s1);
+	free(s2);
+	return (1);
 }

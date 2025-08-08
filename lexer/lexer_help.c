@@ -22,10 +22,10 @@ int	is_var_char(int c)
 	return (ft_isalnum(c) || c == '_');
 }
 
-int not_token(t_token n_tok)
+int	not_token(t_token n_tok)
 {
 	if (n_tok.type != TOK_WORD && n_tok.type != TOK_SINGLE
-	&& n_tok.type != TOK_DOUBLE && n_tok.type != TOK_INVALID)
+		&& n_tok.type != TOK_DOUBLE && n_tok.type != TOK_INVALID)
 	{
 		print_error(n_tok.literal, n_tok.len);
 		return (1);
@@ -36,7 +36,8 @@ int not_token(t_token n_tok)
 
 /*
  ** Advances the lexer to the next character in the input line.
- ** Updates the current character (`c`), position (`pos`), and read position (`read_pos`).
+ ** Updates the current character (`c`), position (`pos`),
+	and read position (`read_pos`).
  **
  ** @param lexer - pointer to the lexer structure
  */

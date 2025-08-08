@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_cmd_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmaanane <rmaanane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:31:18 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/03 14:59:42 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/06 12:18:00 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	add_to_argv(t_cmd *cmd, char *arg)
 {
-	int	count;
+	int		count;
 	char	**new_argv;
-	int	i;
+	int		i;
 
 	if (!arg)
 		return ;
@@ -71,50 +71,6 @@ void	add_redirection(t_cmd *cmd, t_redir_type type, char *file)
 	while (walk->next)
 		walk = walk->next;
 	walk->next = redir;
-}
-
-void ft_red_printf(t_redir_type type, char *name)
-{
-	if (type == R_HERDOC)
-		printf("R_HERDOC {%s}\n", name);
-	else if (type == R_OUTPUT)
-		printf("R_OUTPUT {%s}\n", name);
-	else if (type == R_INPUT)
-		printf("R_INPUT {%s}\n", name);
-	else if (type == R_APPAND)
-		printf("R_APPAND {%s}\n", name);
-}
-
-void	print_cmd(t_cmd *cmd)
-{
-	t_cmd	*walk;
-	int		i;
-
-	walk = cmd;
-	printf("-------------------\n");
-	while (walk)
-	{
-		i = 0;
-		if (walk->argv)
-		{
-			while (walk->argv[i])
-			{
-				printf("%s\n", walk->argv[i]);
-				i++;
-			}
-		}
-		t_redir *walk_redirect;
-		walk_redirect = walk->redir;
-		while (walk_redirect)
-		{
-			ft_red_printf(walk_redirect->type, walk_redirect->filename);
-			walk_redirect = walk_redirect->next;
-		}
-		walk = walk->next;
-		if (walk)
-			printf("\n  --- PIPE -------------------\n\n");
-	}
-	printf("-------------------\n");
 }
 
 void	free_t_cmd(t_cmd *cmd)
