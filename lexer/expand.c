@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:22:10 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/06 13:31:14 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/08 15:09:49 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ char	*expand_variable(char *var, t_env *env)
 			i++;
 		}
 	}
+	free(var);
 	return (res);
 }
