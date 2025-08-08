@@ -26,9 +26,8 @@
 
 void	status_main(int action, int *value)
 {
-	static int	last_status;
+	static int	last_status = 0;
 
-	last_status = 0;
 	if (action == GET)
 		*value = last_status;
 	else if (action == SET)
