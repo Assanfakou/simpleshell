@@ -6,20 +6,24 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/07 20:42:13 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/08 16:12:47 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parce.h"
 
-char	*join_and_free_two(char *s1, char *s2)
+char	*join_in_exp(t_token tok, char *if_var, t_env *env, char *word)
 {
-	char	*res;
+	char	*processed;
+	char	*final;
 
-	res = ft_strjoin(s1, s2);
-	free(s1);
-	free(s2);
-	return (res);
+	processed = NULL;
+	if (tok.type == TOK_SINGLE || !ft_strchr(if_var, '$'))
+		processed = if_var;
+	else if (ft_strchr(if_var, '$'))
+		processed = expand_variable(if_var, env);
+	final = join_and_free_two(word, processed);
+	return (final);
 }
 
 /*
@@ -38,7 +42,6 @@ char	*collect_joined_words(t_lexer *lexer, t_env *env)
 {
 	char	*word;
 	char	*if_var;
-	char	*processed;
 	t_token	next_tok;
 	t_token	tok;
 	bool	quoted;
@@ -51,14 +54,7 @@ char	*collect_joined_words(t_lexer *lexer, t_env *env)
 		if (tok.type == TOK_SINGLE || tok.type == TOK_DOUBLE)
 			quoted = true;
 		if_var = ft_strndup(tok.literal, tok.len);
-		if (tok.type == TOK_SINGLE || !ft_strchr(if_var, '$'))
-			processed = if_var;
-		else if (ft_strchr(if_var, '$'))
-		{
-			processed = expand_variable(if_var, env);
-			free(if_var);
-		}
-		word = join_and_free_two(word, processed);
+		word = join_in_exp(tok, if_var, env, word);
 		next_tok = lexer_peek_next_token(lexer);
 		if ((next_tok.type != TOK_WORD && next_tok.type != TOK_SINGLE
 				&& next_tok.type != TOK_DOUBLE) || next_tok.space == true)
@@ -75,6 +71,16 @@ int	check_for_red(t_token tok)
 		|| tok.type == TOK_INPUT || tok.type == TOK_HERDOC)
 		return (1);
 	return (0);
+}
+
+void	add_back_cmd(t_lexer *lexer, t_token *tok, t_cmd **cmd)
+{
+	t_cmd	*next;
+
+	next = create_cmd();
+	(*cmd)->next = next;
+	*cmd = next;
+	*tok = lexer_next_token(lexer);
 }
 
 /*
@@ -107,11 +113,7 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 		else if (check_for_red(tok))
 			redirect_del(&tok, cmd, lexer, env);
 		else if (tok.type == TOK_PIPE)
-		{
-			cmd->next = create_cmd();
-			cmd = cmd->next;
-			tok = lexer_next_token(lexer);
-		}
+			add_back_cmd(lexer, &tok, &cmd);
 		else if (tok.type == TOK_NULL)
 			break ;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:53:00 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/06 23:23:28 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/08 16:27:55 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,10 @@ void	executor(t_cmd *cmd, t_env **env)
 	pipe_executor(cmd, env);
 }
 
-void	f_main(t_cmd *cmd, t_env **env)
+void	f_main(t_cmd *cmd, t_env **env, char *input)
 {
+	free(input);
+	cmd_getter(SET, cmd);
 	executor(cmd, env);
 	free_t_cmd(cmd);
 }

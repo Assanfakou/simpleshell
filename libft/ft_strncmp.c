@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:25:46 by hfakou            #+#    #+#             */
-/*   Updated: 2025/07/09 09:42:05 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/08 16:50:24 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
-	size_t	i;
+	size_t		i;
 
 	i = 0;
 	while (s1[i] == s2[i] && s1[i] && s2[i])
