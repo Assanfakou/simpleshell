@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 15:58:52 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/06 23:16:40 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:11:09 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,41 +15,41 @@
 #include <dirent.h>
 #include <errno.h>
 
-t_cmd *cmd_getter(int action, t_cmd *_cmd)
+t_cmd	*cmd_getter(int action, t_cmd *_cmd)
 {
-	static t_cmd *cmd; 
+	static t_cmd	*cmd;
 
 	if (action == GET)
-		return cmd;
+		return (cmd);
 	if (action == SET)
 		cmd = _cmd;
-	return cmd;
+	return (cmd);
 }
 
-void cleaning_cmd_and_pipes(int *pipes, t_env **env)
+void	cleaning_cmd_and_pipes(int *pipes, t_env **env)
 {
 	free(pipes);
 	free_t_cmd(cmd_getter(GET, NULL));
 	free_t_env(*env);
 }
 
-int is_directory(char *path)
+int	is_directory(char *path)
 {
-	DIR *dir;
-	
+	DIR	*dir;
+
 	dir = opendir(path);
 	if (dir)
 	{
 		closedir(dir);
-		return 1;
+		return (1);
 	}
 	else if (errno == ENOTDIR)
-		return 0;
+		return (0);
 	else
-		return 0;
+		return (0);
 }
 
-void check_file(t_cmd *temp, char *path, t_env **env, int *pipes)
+void	check_file(t_cmd *temp, char *path, t_env **env, int *pipes)
 {
 	if (access(path, F_OK) == 0 && access(path, X_OK) != 0)
 	{
@@ -69,4 +69,19 @@ void check_file(t_cmd *temp, char *path, t_env **env, int *pipes)
 		cleaning_cmd_and_pipes(pipes, env);
 		exit(126);
 	}
+}
+
+void	free_envp(char **envp)
+{
+	int	i;
+
+	if (!envp)
+		return ;
+	i = 0;
+	while (envp[i])
+	{
+		free(envp[i]);
+		i++;
+	}
+	free(envp);
 }

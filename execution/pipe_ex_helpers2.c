@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:48:03 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/02 18:48:03 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:07:36 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,16 @@ void	handle_child_process(t_cmd *temp, int i, int *pipes, int nb_pipes)
 	while (j < nb_pipes * 2)
 		close(pipes[j++]);
 }
-void	handle_redirection_error(t_cmd *temp, int *pipes, t_env **env)
+
+void	handle_redirection_error(t_cmd *temp)
 {
 	if (!temp->next)
-	{
-		cleaning_cmd_and_pipes(pipes, env);
 		exit(1);
-	}
 	else
-	{
-		cleaning_cmd_and_pipes(pipes, env);
 		exit(0);
-	}
 }
-void check_path_is_null(t_cmd *temp , char *path, t_env **env, int *pipes)
+
+void	check_path_is_null(t_cmd *temp, char *path, t_env **env, int *pipes)
 {
 	if (!path)
 	{
@@ -63,7 +59,7 @@ void	prepare_path_and_exec(t_cmd *temp, t_env **env, int *pipes)
 		path = ft_strdup(temp->argv[0]);
 	else
 		path = get_cmd_path(temp->argv[0], *env);
-	check_path_is_null(temp , path, env, pipes);
+	check_path_is_null(temp, path, env, pipes);
 	check_file(temp, path, env, pipes);
 	envp = env_to_envp(*env);
 	if (execve(path, temp->argv, envp) == -1)
@@ -76,10 +72,11 @@ void	prepare_path_and_exec(t_cmd *temp, t_env **env, int *pipes)
 		exit(127);
 	}
 }
+
 void	handle_child_helper(t_cmd *temp, int *pipes, t_env **env)
 {
 	if (find_redirection(temp->redir))
-		handle_redirection_error(temp, pipes, env);
+		handle_redirection_error(temp);
 	if (is_builtin(temp))
 	{
 		if (ft_strcmp(temp->argv[0], "exit") == 0)
@@ -95,4 +92,3 @@ void	handle_child_helper(t_cmd *temp, int *pipes, t_env **env)
 	}
 	prepare_path_and_exec(temp, env, pipes);
 }
-

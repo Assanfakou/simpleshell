@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:35:57 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/06 13:49:43 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/09 22:53:38 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ void	cleaning_env_and_cmd(t_env **env)
 
 int	do_exit(char **args, t_env **env)
 {
-	int	n;
-
+	int (n);
 	write(2, "exit\n", 5);
 	if (!args[1])
 	{

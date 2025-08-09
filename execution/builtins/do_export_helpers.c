@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:07:16 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/03 18:07:18 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/09 22:53:18 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,10 @@ int	handle_export_argument(char *arg, t_env **env)
 	}
 	return (0);
 }
+
 int	is_valid_format(char *str)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	if (!str || !str[0])

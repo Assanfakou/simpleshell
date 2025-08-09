@@ -19,6 +19,3 @@ void	free_t_env(t_env *env);
 t_cmd	*cmd_getter(int action, t_cmd *_cmd);
 void	cleaning_cmd_and_pipes(int *pipes, t_env **env);
 void	check_file(t_cmd *temp, char *path, t_env **env, int *pipes);
-
-
-

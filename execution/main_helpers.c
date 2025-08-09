@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:52:53 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/02 18:52:53 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/09 22:56:59 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	has_pipe(t_cmd *cmd)
 int	handle_redirect_only(t_cmd *cmd)
 {
 	int	saved_stdout;
-	int save_stdinp;
+	int	save_stdinp;
 
 	saved_stdout = safe_dup(STDOUT_FILENO);
 	save_stdinp = safe_dup(STDIN_FILENO);
@@ -42,8 +42,8 @@ int	handle_redirect_only(t_cmd *cmd)
 
 int	handle_builtin(t_cmd *cmd, t_env **env)
 {
-	int	saved_stdout;
-	int saved_input;
+	int		saved_stdout;
+	int		saved_input;
 
 	saved_stdout = safe_dup(STDOUT_FILENO);
 	saved_input = safe_dup(STDIN_FILENO);
