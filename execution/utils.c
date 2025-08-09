@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:53:32 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/06 23:09:34 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:11:19 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	free_split_content(char **array)
 		free(array[i++]);
 	free(array);
 }
+
 char	*get_cmd_path_loop(char **paths, char *cmd)
 {
 	int		i;
@@ -41,6 +42,7 @@ char	*get_cmd_path_loop(char **paths, char *cmd)
 	}
 	return (full_path);
 }
+
 char	*get_cmd_path(char *cmd, t_env *env)
 {
 	char	*full_path;
@@ -48,7 +50,7 @@ char	*get_cmd_path(char *cmd, t_env *env)
 	char	*path_env;
 
 	if (cmd && ft_strlen(cmd) == 0)
-		return (ft_strdup(cmd)); 
+		return (ft_strdup(cmd));
 	path_env = ft_getenv("PATH", env);
 	paths = ft_split(path_env, ':');
 	if (!paths)
@@ -96,19 +98,4 @@ char	**env_to_envp(t_env *env)
 	}
 	envp[i] = NULL;
 	return (envp);
-}
-
-void	free_envp(char **envp)
-{
-	int	i;
-
-	if (!envp)
-		return ;
-	i = 0;
-	while (envp[i])
-	{
-		free(envp[i]);
-		i++;
-	}
-	free(envp);
 }

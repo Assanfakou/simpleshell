@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_status.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:21:56 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/06 13:22:00 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/09 00:00:14 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,8 @@
 
 void	status_main(int action, int *value)
 {
-	static int	last_status;
+	static int	last_status = 0;
 
-	last_status = 0;
 	if (action == GET)
 		*value = last_status;
 	else if (action == SET)

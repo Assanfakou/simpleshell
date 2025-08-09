@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:52:40 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/02 18:52:40 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/09 22:55:56 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	check_fd(int fd, t_redir *redir)
 	}
 	return (0);
 }
+
 void	dup_fd_out(int fd)
 {
 	if (dup2(fd, STDOUT_FILENO) < 0)
@@ -32,6 +33,7 @@ void	dup_fd_out(int fd)
 	}
 	close(fd);
 }
+
 void	dup_fd_inp(int fd)
 {
 	if (dup2(fd, STDIN_FILENO) < 0)
@@ -43,9 +45,11 @@ void	dup_fd_inp(int fd)
 	close(fd);
 }
 
-int safe_dup(int oldfd)
+int	safe_dup(int oldfd)
 {
-	int newfd = dup(oldfd);
+	int		newfd;
+
+	newfd = dup(oldfd);
 	if (newfd == -1)
 	{
 		perror("safe_dup failed");

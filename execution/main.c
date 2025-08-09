@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:53:00 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/06 23:23:28 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/09 22:56:15 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	is_builtin(t_cmd *cmd)
 		return (1);
 	return (0);
 }
+
 int	exec_builtin(t_cmd *cmd, t_env **env)
 {
 	int	exit;
@@ -51,7 +52,7 @@ int	exec_builtin(t_cmd *cmd, t_env **env)
 	else if (ft_strcmp(cmd->argv[0], "export") == 0)
 		exit = do_export(cmd->argv, env);
 	else if (ft_strcmp(cmd->argv[0], "unset") == 0)
-		exit = do_unset(cmd->argv, *env);
+		exit = do_unset(cmd->argv, env);
 	return (exit);
 }
 

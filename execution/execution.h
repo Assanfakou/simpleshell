@@ -33,7 +33,8 @@ void	pipe_executor(t_cmd *cmd, t_env **env);
 // pipe_ex_helpers
 int		count_cmds(t_cmd *cmd);
 int		*create_pipes(t_cmd *cmd);
-void	close_pipe_and_wait(int nb_cmds, int nb_pipes, int *pipes, pid_t last_pid);
+void	close_pipe_and_wait(int nb_cmds, int nb_pipes, int *pipes,
+			pid_t last_pid);
 int		has_output_redirection(t_cmd *cmd);
 
 // pipe_ex_helpers2
@@ -58,9 +59,9 @@ int		has_pipe(t_cmd *cmd);
 int		handle_redirect_only(t_cmd *cmd);
 int		handle_builtin(t_cmd *cmd, t_env **env);
 
-//herdoc
+// herdoc
 
-int read_dev_random(char **file);
-void handle_heardoc(char *delemeter);
+int		read_dev_random(char **file);
+void	handle_heardoc(char *delemeter);
 
 #endif

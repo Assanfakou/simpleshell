@@ -1,8 +1,8 @@
 #include "execution.h"
 
-int read_dev_random(char **file)
+int	read_dev_random(char **file)
 {
-	int read_fd;	
+	int	read_fd;
 
 	read_fd = open("/dev/random", O_RDONLY, 0642);
 	if (read_fd < 0)
@@ -17,10 +17,10 @@ int read_dev_random(char **file)
 	return (0);
 }
 
-void handle_heardoc(char *delemeter)
+void	handle_heardoc(char *delemeter)
 {
-	int fd;
-	char *filename;
+	int		fd;
+	char	*filename;
 
 	if (read_dev_random(&filename))
 		return ;
@@ -28,7 +28,7 @@ void handle_heardoc(char *delemeter)
 	if (fd < 0)
 	{
 		free(filename);
-		return;
+		return ;
 	}
 	write(fd, delemeter, ft_strlen(delemeter));
 	close(fd);
@@ -36,7 +36,7 @@ void handle_heardoc(char *delemeter)
 	if (fd < 0)
 	{
 		free(filename);
-		return;
+		return ;
 	}
 	dup_fd_inp(fd);
 	unlink(filename);

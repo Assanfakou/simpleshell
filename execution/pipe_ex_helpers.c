@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:53:11 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/02 18:53:11 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:06:57 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,17 @@ int	*create_pipes(t_cmd *cmd)
 	int	nb_cmd;
 	int	nb_pipes;
 	int	i;
+	int	*pipes;
 
 	nb_cmd = count_cmds(cmd);
 	nb_pipes = nb_cmd - 1;
-	int *pipes = malloc(sizeof(int) * nb_pipes * 2); // 2 mean read and write
+	pipes = malloc(sizeof(int) * nb_pipes * 2);
 	if (!pipes)
 		return (NULL);
 	i = 0;
 	while (i < nb_pipes)
 	{
-		if (pipe(&pipes[i * 2]) < 0) // pipe() → katsayb file descriptors-> Katkhlli lfd (file descriptors) f array omakadir walo
+		if (pipe(&pipes[i * 2]) < 0)
 		{
 			perror("pipe failed");
 			free(pipes);
@@ -50,34 +51,34 @@ int	*create_pipes(t_cmd *cmd)
 	return (pipes);
 }
 
-void	close_pipe_and_wait(int nb_cmds, int nb_pipes, int *pipes, pid_t last_pid)
+void	exit_with_signals(int status)
 {
-	int	i;
-	int	j;
-	int	status;
+	if (WTERMSIG(status) == SIGQUIT)
+		ft_putendl_fd("Quit (core dumped)", 2);
+	else if (WTERMSIG(status) == SIGINT)
+		ft_putendl_fd("", 2);
+	status_set(128 + WTERMSIG(status));
+}
 
-	// parent: close pipes
+void	close_pipe_and_wait(int nb_cmds, int nb_pipes, int *pipes,
+		pid_t last_pid)
+{
+	pid_t	child_pid;
+
+	int (i), (j), (status);
 	i = 0;
 	while (i < nb_pipes * 2)
 		close(pipes[i++]);
 	j = 0;
 	while (j < nb_cmds)
 	{
-		pid_t child_pid = wait(&status);
+		child_pid = wait(&status);
 		if (child_pid == last_pid)
 		{
 			if (WIFEXITED(status))
-				status_set(WEXITSTATUS(status)); // ila hya true, n9adro njibo exit status dyal command.
-		// hadi macro f C,katcheck wach dak child tsala normal (b exit(x)), mashi b signal (kill, segfault...).
-	
-			else 
-			{
-				if (WTERMSIG(status) == SIGQUIT)
-					ft_putendl_fd("Quit (core dumped)", 2);
-				else if (WTERMSIG(status) == SIGINT)
-					ft_putendl_fd("", 2);
-				status_set(128 + WTERMSIG(status));
-			}
+				status_set(WEXITSTATUS(status));
+			else
+				exit_with_signals(status);
 		}
 		j++;
 	}

@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:36:08 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/03 18:09:43 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/09 22:50:15 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,3 @@ int	do_export(char **argv, t_env **env)
 	}
 	return (export_loop(argv, env));
 }
-

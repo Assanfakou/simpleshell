@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:35:33 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/07 18:21:50 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/08 23:53:38 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,11 @@ int	do_cd(char **args, t_env *env)
 	{
 		path = ft_getenv("HOME", env);
 		if (check_path(path))
-			return (ft_putendl_fd("cd: HOME not set", 2), 1);
+		{
+			status_set(1);
+			ft_putendl_fd("cd: HOME not set", 2);
+			return (status_get());
+		}
 	}
 	else if (args[2])
 	{
