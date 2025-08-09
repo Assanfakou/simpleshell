@@ -25,12 +25,18 @@ void	handle_child_process(t_cmd *temp, int i, int *pipes, int nb_pipes)
 	while (j < nb_pipes * 2)
 		close(pipes[j++]);
 }
-void	handle_redirection_error(t_cmd *temp)
+void	handle_redirection_error(t_cmd *temp, int *pipes, t_env **env)
 {
 	if (!temp->next)
+	{
+		cleaning_cmd_and_pipes(pipes, env);
 		exit(1);
+	}
 	else
+	{
+		cleaning_cmd_and_pipes(pipes, env);
 		exit(0);
+	}
 }
 void check_path_is_null(t_cmd *temp , char *path, t_env **env, int *pipes)
 {
@@ -73,7 +79,7 @@ void	prepare_path_and_exec(t_cmd *temp, t_env **env, int *pipes)
 void	handle_child_helper(t_cmd *temp, int *pipes, t_env **env)
 {
 	if (find_redirection(temp->redir))
-		handle_redirection_error(temp);
+		handle_redirection_error(temp, pipes, env);
 	if (is_builtin(temp))
 	{
 		if (ft_strcmp(temp->argv[0], "exit") == 0)

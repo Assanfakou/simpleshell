@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:07:44 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/08 16:47:22 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/09 22:13:12 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ void	check_bofore_execute(t_lexer *lex, t_env *env, char *input)
 	if (!g_herdoc_stop && head)
 		f_main(head, &env, input);
 	else
+	{
+		free(input);
 		free_t_cmd(head);
+	}
 }
 
 int	main(int ac, char **av, char **envp)
