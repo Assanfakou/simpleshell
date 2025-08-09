@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:53:00 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/09 22:56:15 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:21:51 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,10 @@ void	executor(t_cmd *cmd, t_env **env)
 	pipe_executor(cmd, env);
 }
 
-void	f_main(t_cmd *cmd, t_env **env)
+void	f_main(t_cmd *cmd, t_env **env, char *input)
 {
+	free(input);
+	cmd_getter(SET, cmd);
 	executor(cmd, env);
 	free_t_cmd(cmd);
 }

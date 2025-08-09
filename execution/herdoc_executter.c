@@ -1,44 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   herdoc_executter.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/09 23:21:19 by rmaanane          #+#    #+#             */
+/*   Updated: 2025/08/09 23:39:51 by rmaanane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
-
-int	read_dev_random(char **file)
-{
-	int	read_fd;
-
-	read_fd = open("/dev/random", O_RDONLY, 0642);
-	if (read_fd < 0)
-		return (1);
-	*file = malloc(8);
-	if (read(read_fd, *file, 8) == -1)
-	{
-		free(*file);
-		return (1);
-	}
-	close(read_fd);
-	return (0);
-}
 
 void	handle_heardoc(char *delemeter)
 {
 	int		fd;
 	char	*filename;
 
-	if (read_dev_random(&filename))
-		return ;
+	filename = "42";
 	fd = open(filename, O_WRONLY | O_CREAT, 0642);
 	if (fd < 0)
-	{
-		free(filename);
 		return ;
-	}
 	write(fd, delemeter, ft_strlen(delemeter));
 	close(fd);
 	fd = open(filename, O_RDONLY, 0642);
 	if (fd < 0)
-	{
-		free(filename);
 		return ;
-	}
 	dup_fd_inp(fd);
 	unlink(filename);
-	free(filename);
 }

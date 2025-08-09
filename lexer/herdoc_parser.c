@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:22:27 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/07 22:12:50 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/09 22:33:54 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,18 +110,17 @@ char	*herdoc_handler(t_env *env, t_lexer *lexer)
 	while (!g_herdoc_stop)
 	{
 		line = readline("> ");
-		if (!line)
-			if (write_herr())
-				break ;
-		if (ft_strcmp(line, del) == 0)
-			if (free_two(line, del))
-				break ;
+		if (!line && write_herr() && free_two(line, del))
+			break ;
+		if (ft_strcmp(line, del) == 0 && free_two(line, del))
+			break ;
 		result = join_and_free_two(result, expand_herdoc_line(line, env,
 					expand));
 	}
 	if (!g_herdoc_stop)
 		return (result);
-	free(result);
+	else
+		free_two(del, result);
 	return (NULL);
 }
 

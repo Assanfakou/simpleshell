@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/08 16:52:10 by hfakou            #+#    #+#             */
+/*   Updated: 2025/08/09 23:23:56 by rmaanane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lexer/lexer.h"
 #include "signals.h"
 
@@ -23,8 +35,9 @@ void	sigint_prompt(int sig)
 	rl_on_new_line();
 	rl_redisplay();
 }
+
 void	handle_signals_interactive(void)
 {
-	signal(SIGINT, sigint_prompt); // ctrl-C
-	signal(SIGQUIT, SIG_IGN);      // ctrl-\ → does nothing.
+	signal(SIGINT, sigint_prompt);
+	signal(SIGQUIT, SIG_IGN);
 }

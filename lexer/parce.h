@@ -81,6 +81,6 @@ void				ft_red_printf(t_redir_type type, char *name);
 
 void				handle_astrisk(t_cmd *cmd, char *patern);
 
-int free_two(char *s1, char *s2);
+int					free_two(char *s1, char *s2);
 
 #endif
