@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:07:44 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/09 22:13:12 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/10 01:01:36 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ void	free_exit(char *input, t_env *env)
 	free_t_env(env);
 }
 
-void	check_bofore_execute(t_lexer *lex, t_env *env, char *input)
+void	check_bofore_execute(t_lexer *lex, t_env **env, char *input)
 {
 	t_cmd	*head;
 
 	head = NULL;
 	*lex = lexer_new(input);
-	head = build_cmd_list(lex, env);
+	head = build_cmd_list(lex, *env);
 	if (!g_herdoc_stop && head)
-		f_main(head, &env, input);
+		f_main(head, env, input);
 	else
 	{
 		free(input);
@@ -66,7 +66,7 @@ int	main(int ac, char **av, char **envp)
 		add_history(input);
 		g_herdoc_stop = false;
 		if (!find_error(lexer, input))
-			check_bofore_execute(&lexer, env, input);
+			check_bofore_execute(&lexer, &env, input);
 		else
 			free(input);
 	}
