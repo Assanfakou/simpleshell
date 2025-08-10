@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:53:32 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/09 23:11:19 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/10 22:47:00 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ char	*get_cmd_path_loop(char **paths, char *cmd)
 	char	*full_path;
 
 	i = 0;
+	full_path = NULL;
 	while (paths && paths[i])
 	{
 		chunk = ft_strjoin(paths[i], "/");

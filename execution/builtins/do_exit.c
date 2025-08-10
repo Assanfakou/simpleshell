@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 16:35:57 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/09 22:53:38 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/10 01:14:51 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	do_exit(char **args, t_env **env)
 	{
 		write(2, "minishell: exit: too many arguments\n", 36);
 		status_set(1);
-		exit(status_get());
+		return (1);
 	}
 	n = ft_atoi(args[1]);
 	cleaning_env_and_cmd(env);
