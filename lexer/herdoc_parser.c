@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:22:27 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/09 22:33:54 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/11 01:03:58 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,7 @@ char	*expand_herdoc_line(char *str, t_env *env, bool expand)
 
 	word = ft_strdup("");
 	if (ft_strchr(str, '$') && expand == false)
-	{
 		processed = expand_variable(str, env);
-		free(str);
-	}
 	else
 		processed = str;
 	word = join_and_free_two(word, processed);
