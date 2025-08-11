@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/08 16:12:47 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/11 03:44:44 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*collect_joined_words(t_lexer *lexer, t_env *env)
 			break ;
 	}
 	if (quoted == false && ft_strlen(word) == 0)
-		return (NULL);
+		return (free(word), NULL);
 	return (word);
 }
 
