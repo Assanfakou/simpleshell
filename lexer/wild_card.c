@@ -84,12 +84,15 @@ void	join_current_dir(t_cmd *cmd, char *patern)
 	struct dirent *dir;
 	
 	dir_files = opendir(".");
+	if (!dir_files)
+		return ;
 	while (dir_files)
 	{
 		dir = readdir(dir_files);
 		if (!dir)
 			break;
-			//printf("%s\n", dir->d_name);
+		if (dir->d_name[0] == '.' && patern[0] != '.')
+			continue ;
 		if (wildcmp(dir->d_name, patern))
 			add_to_argv(cmd, ft_strdup(dir->d_name));
 	}
