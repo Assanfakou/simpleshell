@@ -45,8 +45,8 @@ int	exec_builtin(t_cmd *cmd, t_env **env)
 		exit = do_echo(cmd->argv, *env);
 	else if (ft_strcmp(cmd->argv[0], "pwd") == 0)
 		exit = do_pwd(cmd->argv, *env);
-	else if (ft_strcmp(cmd->argv[0], "exit") == 0)
-		exit = do_exit(cmd->argv, env);
+	// else if (ft_strcmp(cmd->argv[0], "exit") == 0)
+	// 	exit = do_exit(cmd->argv, env);
 	else if (ft_strcmp(cmd->argv[0], "env") == 0)
 		exit = do_env(cmd->argv, env);
 	else if (ft_strcmp(cmd->argv[0], "export") == 0)
@@ -63,6 +63,8 @@ void	executor(t_cmd *cmd, t_env **env)
 	if (!cmd->argv || !cmd->argv[0])
 		if (handle_redirect_only(cmd))
 			return ;
+	if (cmd->argv && is_builtin(cmd) && !ft_strcmp(cmd->argv[0], "exit"))
+		do_exit(cmd->argv, env);
 	if (is_builtin(cmd) && !has_pipe(cmd))
 		if (handle_builtin(cmd, env))
 			return ;
