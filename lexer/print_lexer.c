@@ -1,16 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.lexer.c                                      :+:      :+:    :+:   */
+/*   print_lexer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:23:02 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/06 13:23:04 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/12 23:04:38 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parce.h"
+
+int	wds(t_token *tok)
+{
+	if (tok->type == TOK_WORD || tok->type == TOK_DOUBLE
+		|| tok->type == TOK_SINGLE)
+		return (1);
+	return (0);
+}
+
+void	asterisk_or_args(char *arg, t_cmd *cmd)
+{
+	if (arg && ft_strchr(arg, '*'))
+		join_current_dir(cmd, arg);
+	else if (arg)
+		add_to_argv(cmd, arg);
+}
 
 void	ft_red_printf(t_redir_type type, char *name)
 {

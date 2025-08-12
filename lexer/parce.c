@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/12 06:59:34 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/12 23:05:23 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,10 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 	while (1)
 	{
 		tok = lexer_peek_next_token(lexer);
-		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE
-			|| tok.type == TOK_SINGLE)
+		if (wds(&tok))
 		{
 			arg = collect_joined_words(lexer, env);
-			if (arg && ft_strchr(arg, '*'))
-				join_current_dir(cmd, arg); 
-			else if (arg)
-				add_to_argv(cmd, arg);
+			asterisk_or_args(arg, cmd);
 		}
 		else if (check_for_red(tok))
 			redirect_del(&tok, cmd, lexer, env);

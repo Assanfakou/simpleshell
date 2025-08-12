@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 07:08:53 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/12 07:09:16 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/12 23:08:32 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,6 @@ void	join_current_dir(t_cmd *cmd, char *patern)
 		if (wildcmp(dir->d_name, patern))
 			add_to_argv(cmd, ft_strdup(dir->d_name));
 	}
+	free(patern);
 	closedir(dir_files);
 }

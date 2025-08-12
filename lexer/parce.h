@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/11 23:40:32 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/12 23:03:55 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,8 @@ bool				_wildcmp_help(char *str, char *pattern);
 
 bool				ends_with_substr(char *str, char *endian, size_t subsz);
 char				*ft_strstr(char *str, char *sub, size_t subsz);
+
+int					wds(t_token *tok);
+void				asterisk_or_args(char *arg, t_cmd *cmd);
 
 #endif
