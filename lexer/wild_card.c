@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 07:08:53 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/12 23:08:32 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/13 00:47:11 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ char	*ft_strstr(char *str, char *little, size_t z)
 	return (NULL);
 }
 
+/*
+** ends_with_substr:
+** Checks if `str` ends with the string `end` of length `i`.
+** Returns true if the suffix matches exactly, otherwise false.
+*/
+
 bool	ends_with_substr(char *str, char *end, size_t i)
 {
 	if (ft_strlen(str) < i)
@@ -48,6 +54,18 @@ bool	ends_with_substr(char *str, char *end, size_t i)
 	}
 	return (true);
 }
+
+/*
+** _wildcmp_help:
+** Helper function for wildcmp(). Handles cases when `pattern`
+** contains '*' wildcards. Matches each segment of the pattern
+** against `str` in the correct order.
+**
+** Rules:
+** - '*' can match any sequence (including empty).
+** - If the last segment of the pattern has no trailing '*',
+**   it must match the end of the string.
+*/
 
 bool	_wildcmp_help(char *str, char *pattern)
 {
@@ -74,6 +92,17 @@ bool	_wildcmp_help(char *str, char *pattern)
 	return (true);
 }
 
+/*
+** wildcmp:
+** Compares `str` with `pattern` where '*' matches any sequence of characters.
+** Returns true if the string fully matches the pattern, false otherwise.
+**
+** Example:
+**   wildcmp("hello.c", "*.c")  -> true
+**   wildcmp("hello.c", "h*o.c") -> true
+**   wildcmp("hello.c", "*.h")   -> false
+*/
+
 bool	wildcmp(char *str, char *pattern)
 {
 	while (*pattern && *pattern != '*')
@@ -85,10 +114,19 @@ bool	wildcmp(char *str, char *pattern)
 	}
 	if (!*pattern && *str)
 		return (false);
-	if (!*pattern && !*str)
-		return (true);
 	return (_wildcmp_help(str, pattern));
 }
+
+/*
+** join_current_dir:
+** Opens the current directory (".") and iterates over each file.
+** - Hidden files (starting with '.') are skipped unless the pattern
+**   also starts with '.'.
+** - Files matching the wildcard `patern` are duplicated and added
+**   to the command arguments via add_to_argv().
+**
+** Frees `patern` before returning.
+*/
 
 void	join_current_dir(t_cmd *cmd, char *patern)
 {
