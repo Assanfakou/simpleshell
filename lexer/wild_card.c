@@ -13,7 +13,7 @@ char	*ft_strstr(char *str, char *little, size_t z)
 		j = 0;
 		while (little && str[i + j] == little[j] && j < z)
 			j++;
-		if (j == little)
+		if (j == z)
 			return (&str[i]);
 		i++;
 	}
