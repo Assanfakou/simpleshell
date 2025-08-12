@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wild_card.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/12 07:08:53 by hfakou            #+#    #+#             */
+/*   Updated: 2025/08/12 07:09:16 by hfakou           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parce.h"
 
 char	*ft_strstr(char *str, char *little, size_t z)
@@ -80,17 +92,20 @@ bool	wildcmp(char *str, char *pattern)
 
 void	join_current_dir(t_cmd *cmd, char *patern)
 {
-	DIR *dir_files;
-	struct dirent *dir;
-	
+	DIR				*dir_files;
+	struct dirent	*dir;
+
 	dir_files = opendir(".");
 	if (!dir_files)
+	{
+		write(2, "Error while opening the directory\n", 34);
 		return ;
+	}
 	while (dir_files)
 	{
 		dir = readdir(dir_files);
 		if (!dir)
-			break;
+			break ;
 		if (dir->d_name[0] == '.' && patern[0] != '.')
 			continue ;
 		if (wildcmp(dir->d_name, patern))
