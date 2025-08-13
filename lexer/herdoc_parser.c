@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:22:27 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/11 03:58:31 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/13 02:16:08 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,45 @@ char	*herdoc_handler(t_env *env, t_lexer *lexer)
 	return (result);
 }
 
+char	*join_current_dir_redi(char *patern)
+{
+	DIR				*dir_files;
+	struct dirent	*dir;
+	int i;
+	char *filename;
+	
+	i = 0;
+	dir_files = opendir(".");
+	if (!dir_files)
+	{
+		write(2, "Error while opening the directory\n", 34);
+		return (NULL);
+	}
+	while (dir_files)
+	{
+		dir = readdir(dir_files);
+		if (!dir)
+			break ;
+		if (dir->d_name[0] == '.' && patern[0] != '.')
+			continue ;
+		if (wildcmp(dir->d_name, patern))
+		{
+			filename = ft_strdup(dir->d_name);
+			i++;
+		}
+	}
+	free(patern);
+	closedir(dir_files);
+	if (i == 1)
+		return (filename);	
+	free(filename);
+	return (NULL);
+}
 void	redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 {
 	char	*final_del;
 	char	*target;
+	char	*ast_tar;
 
 	*tok = lexer_next_token(lexer);
 	if (tok->type == TOK_HERDOC)
@@ -136,7 +171,16 @@ void	redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 	else
 	{
 		target = collect_joined_words(lexer, env);
-		if (!target)
+		if (target && ft_strchr(target, '*'))
+		{
+			ast_tar = join_current_dir_redi(target);
+			if (ast_tar)
+				add_redirection(cmd, type_redir(tok), ast_tar);
+			else
+				write (2, "wild_card error\n", 16);
+			return ;
+		}
+		else if (!target)
 			target = ft_strdup("");
 		add_redirection(cmd, type_redir(tok), target);
 	}
