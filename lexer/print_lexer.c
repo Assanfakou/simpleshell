@@ -23,7 +23,12 @@ int	wds(t_token *tok)
 void	asterisk_or_args(char *arg, t_cmd *cmd)
 {
 	if (arg && ft_strchr(arg, '*'))
-		join_current_dir(cmd, arg);
+	{
+		if (!join_current_dir(cmd, arg))
+			add_to_argv(cmd, arg);
+		else
+			free(arg);
+	}
 	else if (arg)
 		add_to_argv(cmd, arg);
 }

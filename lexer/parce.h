@@ -16,6 +16,7 @@
 # include "../signals.h"
 # include "lexer.h"
 # include <dirent.h>
+#include <stdbool.h>
 
 typedef enum s_redir_type
 {
@@ -84,7 +85,7 @@ void				handle_astrisk(t_cmd *cmd, char *patern);
 
 int					free_two(char *s1, char *s2);
 
-void				join_current_dir(t_cmd *cmd, char *patern);
+bool				join_current_dir(t_cmd *cmd, char *patern);
 bool				wildcmp(char *str, char *pattern);
 bool				_wildcmp_help(char *str, char *pattern);
 
@@ -94,4 +95,5 @@ char				*ft_strstr(char *str, char *sub, size_t subsz);
 int					wds(t_token *tok);
 void				asterisk_or_args(char *arg, t_cmd *cmd);
 
+bool	next_joined_word_is_pattern(t_lexer *lexer, t_env *env);
 #endif

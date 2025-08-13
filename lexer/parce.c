@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parce.h"
+#include <stdbool.h>
 
 char	*join_in_exp(t_token tok, char *if_var, t_env *env, char *word)
 {
@@ -24,6 +25,39 @@ char	*join_in_exp(t_token tok, char *if_var, t_env *env, char *word)
 		processed = expand_variable(if_var, env);
 	final = join_and_free_two(word, processed);
 	return (final);
+}
+
+bool	next_joined_word_is_pattern(t_lexer *lexer, t_env *env)
+{
+	t_token	next_tok;
+	t_token	tok;
+	t_lexer lexer_back;
+	int i;
+
+	lexer_back = *lexer;
+	while (1)
+	{
+		tok = lexer_next_token(lexer);
+		if (tok.type == TOK_SINGLE || tok.type == TOK_DOUBLE)
+		{
+			i = 0;
+			while (i < tok.len)
+			{
+				if (tok.literal[i] == '*')
+				{
+					*lexer = lexer_back;
+					return (false);
+				}
+				i++;
+			}
+		}
+		next_tok = lexer_peek_next_token(lexer);
+		if ((next_tok.type != TOK_WORD && next_tok.type != TOK_SINGLE
+			&& next_tok.type != TOK_DOUBLE) || next_tok.space == true)
+			break ;
+	}
+	*lexer = lexer_back;
+	return (true);
 }
 
 /*
@@ -96,7 +130,6 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 	t_cmd	*head;
 	t_cmd	*cmd;
 	t_token	tok;
-	char	*arg;
 
 	head = create_cmd();
 	cmd = head;
@@ -105,8 +138,10 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 		tok = lexer_peek_next_token(lexer);
 		if (wds(&tok))
 		{
-			arg = collect_joined_words(lexer, env);
-			asterisk_or_args(arg, cmd);
+			if (next_joined_word_is_pattern(lexer, env))
+				asterisk_or_args(collect_joined_words(lexer, env), cmd);
+			else
+				add_to_argv(cmd, collect_joined_words(lexer, env));
 		}
 		else if (check_for_red(tok))
 			redirect_del(&tok, cmd, lexer, env);

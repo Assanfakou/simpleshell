@@ -118,20 +118,14 @@ char	*herdoc_handler(t_env *env, t_lexer *lexer)
 	return (result);
 }
 
-char	*join_current_dir_redi(char *patern)
+char *get_single_file_or_null(char *patern)
 {
 	DIR				*dir_files;
 	struct dirent	*dir;
-	int i;
 	char *filename;
 	
-	i = 0;
 	dir_files = opendir(".");
-	if (!dir_files)
-	{
-		write(2, "Error while opening the directory\n", 34);
-		return (NULL);
-	}
+	filename = NULL;
 	while (dir_files)
 	{
 		dir = readdir(dir_files);
@@ -141,17 +135,27 @@ char	*join_current_dir_redi(char *patern)
 			continue ;
 		if (wildcmp(dir->d_name, patern))
 		{
-			filename = ft_strdup(dir->d_name);
-			i++;
+			if (filename)
+				return (closedir(dir_files), NULL);
+			filename = dir->d_name;
 		}
 	}
-	free(patern);
-	closedir(dir_files);
-	if (i == 1)
-		return (filename);	
-	free(filename);
-	return (NULL);
+	if (filename)
+		filename = ft_strjoin(filename, "");
+	else
+		filename = ft_strdup(patern);
+	return (closedir(dir_files), filename);
 }
+
+char	*join_current_dir_redi(char *patern)
+{
+	char *new_target;
+
+	new_target = get_single_file_or_null(patern);
+	free(patern);
+	return (new_target);
+}
+
 void	redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 {
 	char	*final_del;
