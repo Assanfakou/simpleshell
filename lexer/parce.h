@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/07 22:12:19 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/13 06:47:58 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "../signals.h"
 # include "lexer.h"
+# include <dirent.h>
+# include <stdbool.h>
 
 typedef enum s_redir_type
 {
@@ -82,5 +84,21 @@ void				ft_red_printf(t_redir_type type, char *name);
 void				handle_astrisk(t_cmd *cmd, char *patern);
 
 int					free_two(char *s1, char *s2);
+
+bool				join_current_dir(t_cmd *cmd, char *patern);
+bool				wildcmp(char *str, char *pattern);
+bool				_wildcmp_help(char *str, char *pattern);
+
+bool				ends_with_substr(char *str, char *endian, size_t subsz);
+char				*ft_strstr(char *str, char *sub, size_t subsz);
+
+int					wds(t_token *tok);
+void				asterisk_or_args(char *arg, t_cmd *cmd);
+
+bool				next_joined_word_is_pattern(t_lexer *lexer);
+int					asterisk_in_filename(char *target, t_cmd *cmd,
+						t_token *tok);
+char				*get_single_file_or_null(char *patern);
+char				*join_current_dir_redi(char *patern);
 
 #endif

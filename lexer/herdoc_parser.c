@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:22:27 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/11 01:03:58 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/13 06:44:25 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,18 +107,15 @@ char	*herdoc_handler(t_env *env, t_lexer *lexer)
 	while (!g_herdoc_stop)
 	{
 		line = readline("> ");
-		if (!line && write_herr() && free_two(line, del))
+		if (!line && write_herr())
 			break ;
-		if (ft_strcmp(line, del) == 0 && free_two(line, del))
+		if (ft_strcmp(line, del) == 0 && free_two(line, NULL))
 			break ;
 		result = join_and_free_two(result, expand_herdoc_line(line, env,
 					expand));
 	}
-	if (!g_herdoc_stop)
-		return (result);
-	else
-		free_two(del, result);
-	return (NULL);
+	free(del);
+	return (result);
 }
 
 void	redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
@@ -133,14 +130,15 @@ void	redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 		final_del = herdoc_handler(env, lexer);
 		if (final_del)
 			add_redirection(cmd, type_redir(tok), final_del);
-		else
+		return ;
+	}
+	target = collect_joined_words(lexer, env);
+	if (target && ft_strchr(target, '*'))
+	{
+		if (asterisk_in_filename(target, cmd, tok))
 			return ;
 	}
-	else
-	{
-		target = collect_joined_words(lexer, env);
-		if (!target)
-			target = ft_strdup("");
-		add_redirection(cmd, type_redir(tok), target);
-	}
+	else if (!target)
+		target = ft_strdup("");
+	add_redirection(cmd, type_redir(tok), target);
 }

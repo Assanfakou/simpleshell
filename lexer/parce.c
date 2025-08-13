@@ -6,11 +6,12 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/08 16:12:47 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/13 06:47:40 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parce.h"
+#include <stdbool.h>
 
 char	*join_in_exp(t_token tok, char *if_var, t_env *env, char *word)
 {
@@ -61,7 +62,7 @@ char	*collect_joined_words(t_lexer *lexer, t_env *env)
 			break ;
 	}
 	if (quoted == false && ft_strlen(word) == 0)
-		return (NULL);
+		return (free(word), NULL);
 	return (word);
 }
 
@@ -96,19 +97,18 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 	t_cmd	*head;
 	t_cmd	*cmd;
 	t_token	tok;
-	char	*arg;
 
 	head = create_cmd();
 	cmd = head;
 	while (1)
 	{
 		tok = lexer_peek_next_token(lexer);
-		if (tok.type == TOK_WORD || tok.type == TOK_DOUBLE
-			|| tok.type == TOK_SINGLE)
+		if (wds(&tok))
 		{
-			arg = collect_joined_words(lexer, env);
-			if (arg)
-				add_to_argv(cmd, arg);
+			if (next_joined_word_is_pattern(lexer))
+				asterisk_or_args(collect_joined_words(lexer, env), cmd);
+			else
+				add_to_argv(cmd, collect_joined_words(lexer, env));
 		}
 		else if (check_for_red(tok))
 			redirect_del(&tok, cmd, lexer, env);

@@ -27,9 +27,9 @@ bonus: $(OBJ) $(OBJ_BONUS)
 	@ar rcs $(NAME) $^
 
 %.o: %.c
-	$(cc) $(CCFLAGS) -c $< -o $@
+	@$(cc) $(CCFLAGS) -c $< -o $@
 clean :
-	rm -f $(OBJ) $(OBJ_BONUS)
+	@rm -f $(OBJ) $(OBJ_BONUS)
 
 fclean : clean
 	@rm -f $(NAME)
