@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 07:08:53 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/13 00:47:11 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/13 07:09:18 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ bool	join_current_dir(t_cmd *cmd, char *patern)
 {
 	DIR				*dir_files;
 	struct dirent	*dir;
-	bool added;
+	bool			added;
 
 	dir_files = opendir(".");
 	added = false;
@@ -154,6 +154,5 @@ bool	join_current_dir(t_cmd *cmd, char *patern)
 			added = true;
 		}
 	}
-	closedir(dir_files);
-	return (added);
+	return (closedir(dir_files), added);
 }

@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:22:27 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/13 02:16:08 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/13 06:44:25 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,49 +118,10 @@ char	*herdoc_handler(t_env *env, t_lexer *lexer)
 	return (result);
 }
 
-char *get_single_file_or_null(char *patern)
-{
-	DIR				*dir_files;
-	struct dirent	*dir;
-	char *filename;
-	
-	dir_files = opendir(".");
-	filename = NULL;
-	while (dir_files)
-	{
-		dir = readdir(dir_files);
-		if (!dir)
-			break ;
-		if (dir->d_name[0] == '.' && patern[0] != '.')
-			continue ;
-		if (wildcmp(dir->d_name, patern))
-		{
-			if (filename)
-				return (closedir(dir_files), NULL);
-			filename = dir->d_name;
-		}
-	}
-	if (filename)
-		filename = ft_strjoin(filename, "");
-	else
-		filename = ft_strdup(patern);
-	return (closedir(dir_files), filename);
-}
-
-char	*join_current_dir_redi(char *patern)
-{
-	char *new_target;
-
-	new_target = get_single_file_or_null(patern);
-	free(patern);
-	return (new_target);
-}
-
 void	redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 {
 	char	*final_del;
 	char	*target;
-	char	*ast_tar;
 
 	*tok = lexer_next_token(lexer);
 	if (tok->type == TOK_HERDOC)
@@ -169,23 +130,15 @@ void	redirect_del(t_token *tok, t_cmd *cmd, t_lexer *lexer, t_env *env)
 		final_del = herdoc_handler(env, lexer);
 		if (final_del)
 			add_redirection(cmd, type_redir(tok), final_del);
-		else
-			return ;
+		return ;
 	}
-	else
+	target = collect_joined_words(lexer, env);
+	if (target && ft_strchr(target, '*'))
 	{
-		target = collect_joined_words(lexer, env);
-		if (target && ft_strchr(target, '*'))
-		{
-			ast_tar = join_current_dir_redi(target);
-			if (ast_tar)
-				add_redirection(cmd, type_redir(tok), ast_tar);
-			else
-				write (2, "wild_card error\n", 16);
+		if (asterisk_in_filename(target, cmd, tok))
 			return ;
-		}
-		else if (!target)
-			target = ft_strdup("");
-		add_redirection(cmd, type_redir(tok), target);
 	}
+	else if (!target)
+		target = ft_strdup("");
+	add_redirection(cmd, type_redir(tok), target);
 }

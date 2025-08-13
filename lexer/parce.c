@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 14:08:19 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/12 23:05:23 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/13 06:47:40 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,39 +25,6 @@ char	*join_in_exp(t_token tok, char *if_var, t_env *env, char *word)
 		processed = expand_variable(if_var, env);
 	final = join_and_free_two(word, processed);
 	return (final);
-}
-
-bool	next_joined_word_is_pattern(t_lexer *lexer, t_env *env)
-{
-	t_token	next_tok;
-	t_token	tok;
-	t_lexer lexer_back;
-	int i;
-
-	lexer_back = *lexer;
-	while (1)
-	{
-		tok = lexer_next_token(lexer);
-		if (tok.type == TOK_SINGLE || tok.type == TOK_DOUBLE)
-		{
-			i = 0;
-			while (i < tok.len)
-			{
-				if (tok.literal[i] == '*')
-				{
-					*lexer = lexer_back;
-					return (false);
-				}
-				i++;
-			}
-		}
-		next_tok = lexer_peek_next_token(lexer);
-		if ((next_tok.type != TOK_WORD && next_tok.type != TOK_SINGLE
-			&& next_tok.type != TOK_DOUBLE) || next_tok.space == true)
-			break ;
-	}
-	*lexer = lexer_back;
-	return (true);
 }
 
 /*
@@ -138,7 +105,7 @@ t_cmd	*build_cmd_list(t_lexer *lexer, t_env *env)
 		tok = lexer_peek_next_token(lexer);
 		if (wds(&tok))
 		{
-			if (next_joined_word_is_pattern(lexer, env))
+			if (next_joined_word_is_pattern(lexer))
 				asterisk_or_args(collect_joined_words(lexer, env), cmd);
 			else
 				add_to_argv(cmd, collect_joined_words(lexer, env));

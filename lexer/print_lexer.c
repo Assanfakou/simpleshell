@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 13:23:02 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/12 23:04:38 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/13 06:52:51 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,6 @@ int	wds(t_token *tok)
 		|| tok->type == TOK_SINGLE)
 		return (1);
 	return (0);
-}
-
-void	asterisk_or_args(char *arg, t_cmd *cmd)
-{
-	if (arg && ft_strchr(arg, '*'))
-	{
-		if (!join_current_dir(cmd, arg))
-			add_to_argv(cmd, arg);
-		else
-			free(arg);
-	}
-	else if (arg)
-		add_to_argv(cmd, arg);
 }
 
 void	ft_red_printf(t_redir_type type, char *name)
