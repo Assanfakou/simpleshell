@@ -54,8 +54,7 @@ void	prepare_path_and_exec(t_cmd *temp, t_env **env, int *pipes)
 	char	*path;
 	char	**envp;
 
-	if (temp->argv[0][0] == '/' || (temp->argv[0][0] == '.'
-			&& temp->argv[0][1] == '/'))
+	if (ft_strchr(temp->argv[0], '/'))
 		path = ft_strdup(temp->argv[0]);
 	else
 		path = get_cmd_path(temp->argv[0], *env);
