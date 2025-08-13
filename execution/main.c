@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:53:00 by rmaanane          #+#    #+#             */
-/*   Updated: 2025/08/13 02:40:25 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/13 08:26:05 by rmaanane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,10 @@ void	executor(t_cmd *cmd, t_env **env)
 		if (handle_redirect_only(cmd))
 			return ;
 	if (cmd->argv && is_builtin(cmd) && !has_pipe(cmd) && !ft_strcmp(cmd->argv[0], "exit"))
+	{
 		do_exit(cmd->argv, env);
+		return ;
+	}
 	if (is_builtin(cmd) && !has_pipe(cmd))
 		if (handle_builtin(cmd, env))
 			return ;
