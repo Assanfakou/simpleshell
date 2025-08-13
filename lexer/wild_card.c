@@ -128,16 +128,18 @@ bool	wildcmp(char *str, char *pattern)
 ** Frees `patern` before returning.
 */
 
-void	join_current_dir(t_cmd *cmd, char *patern)
+bool	join_current_dir(t_cmd *cmd, char *patern)
 {
 	DIR				*dir_files;
 	struct dirent	*dir;
+	bool added;
 
 	dir_files = opendir(".");
+	added = false;
 	if (!dir_files)
 	{
 		write(2, "Error while opening the directory\n", 34);
-		return ;
+		return (false);
 	}
 	while (dir_files)
 	{
@@ -147,8 +149,11 @@ void	join_current_dir(t_cmd *cmd, char *patern)
 		if (dir->d_name[0] == '.' && patern[0] != '.')
 			continue ;
 		if (wildcmp(dir->d_name, patern))
+		{
 			add_to_argv(cmd, ft_strdup(dir->d_name));
+			added = true;
+		}
 	}
-	free(patern);
 	closedir(dir_files);
+	return (added);
 }
