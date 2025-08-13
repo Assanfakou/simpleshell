@@ -6,7 +6,7 @@
 /*   By: hfakou <hfakou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:34:33 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/13 06:47:58 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/13 11:29:22 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,14 @@
 # include "lexer.h"
 # include <dirent.h>
 # include <stdbool.h>
+
+# ifndef COLOR
+#  define COLORE "\033[0;33m"
+# endif
+
+# ifndef RESET
+#  define RESET "\e[0m"
+# endif
 
 typedef enum s_redir_type
 {

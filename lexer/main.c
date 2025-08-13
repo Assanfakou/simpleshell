@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:07:44 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/10 01:01:36 by rmaanane         ###   ########.fr       */
+/*   Updated: 2025/08/13 11:26:35 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		handle_signals_interactive();
-		input = readline("minishell: ");
+		input = readline(COLORE"minishell$ " RESET);
 		if (!input)
-			return (free_exit(input, env), 0);
+			return (free_exit(input, env), status_get());
 		add_history(input);
 		g_herdoc_stop = false;
 		if (!find_error(lexer, input))

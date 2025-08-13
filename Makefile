@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
@@ -33,4 +33,4 @@ $(LIBFT):
 re: fclean all
 
 .SECONDARY: $(OBJ)
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re
