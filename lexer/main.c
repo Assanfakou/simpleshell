@@ -6,7 +6,7 @@
 /*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:07:44 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/13 11:26:35 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/14 10:59:38 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,25 @@ void	check_bofore_execute(t_lexer *lex, t_env **env, char *input)
 		free_t_cmd(head);
 	}
 }
+char *generate_prompt(void)
+{
+	char *last;
+	char *second;
+	char *join;
 
+	join = ft_strjoin(COLORE"minishell ", "(");
+	second = join_and_free_two(join, ft_itoa(status_get()));
+	last = ft_strjoin(second, ") $"RESET);
+	free(second);
+	return (last);
+}	
 int	main(int ac, char **av, char **envp)
 {
 	t_env	*env;
 	t_lexer	lexer;
 	char	*input;
 	t_cmd	*head;
+	char *prompt;
 
 	(void)ac;
 	(void)av;
@@ -60,7 +72,9 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		handle_signals_interactive();
-		input = readline(COLORE"minishell$ " RESET);
+		prompt = generate_prompt(); 
+		input = readline(prompt);
+		free(prompt);
 		if (!input)
 			return (free_exit(input, env), status_get());
 		add_history(input);
