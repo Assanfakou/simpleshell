@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmaanane <ridamaanane@gmail.com>           +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:07:44 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/14 10:59:38 by hfakou           ###   ########.fr       */
+/*   Updated: 2025/08/15 15:47:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,10 @@ int	main(int ac, char **av, char **envp)
 	t_env	*env;
 	t_lexer	lexer;
 	char	*input;
-	t_cmd	*head;
 	char *prompt;
 
 	(void)ac;
 	(void)av;
-	head = NULL;
 	env = _create_env(envp);
 	while (1)
 	{
