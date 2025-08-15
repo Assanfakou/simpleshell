@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:07:44 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/15 15:47:34 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/15 16:06:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char *generate_prompt(void)
 
 	join = ft_strjoin(COLORE"minishell ", "(");
 	second = join_and_free_two(join, ft_itoa(status_get()));
-	last = ft_strjoin(second, ") $"RESET);
+	last = ft_strjoin(second, ") $ "RESET);
 	free(second);
 	return (last);
 }	
