@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 14:07:44 by hfakou            #+#    #+#             */
-/*   Updated: 2025/08/15 16:06:39 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/19 16:24:53 by hfakou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,14 @@ char *generate_prompt(void)
 	char *last;
 	char *second;
 	char *join;
+	char *forth;
 
-	join = ft_strjoin(COLORE"minishell ", "(");
-	second = join_and_free_two(join, ft_itoa(status_get()));
-	last = ft_strjoin(second, ") $ "RESET);
-	free(second);
-	return (last);
+	join = ft_strjoin(COLORE"(hfakou_and_rmaanane_shell ", getcwd(NULL, 0));
+	second = ft_strjoin(join, "  (");	
+	last = join_and_free_two(second, ft_itoa(status_get()));
+	forth = ft_strjoin(last, ") $ "RESET);
+	free(last);
+	return (forth);
 }	
 int	main(int ac, char **av, char **envp)
 {
